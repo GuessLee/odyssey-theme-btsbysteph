@@ -19,6 +19,16 @@ export const footerSocials = [
     url: 'https://littlesticks.dev/discord',
     icon: "ic:baseline-discord",
   },
+  {
+	name: 'Instagram',
+	url: 'https://www.instagram.com/sunshine_steph',
+	icon: "mdi:instagram",
+  },
+//   {
+// 	name: 'TikTok',
+// 	url: 'https://www.tiktok.com/@sunshine_steph',
+// 	icon: "mdi:tiktok",
+//   },
 ]
 
 export const footerLists = [
