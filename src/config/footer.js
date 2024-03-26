@@ -1,7 +1,7 @@
 export const footerSocials = [
   {
     name: 'Twitter',
-    url: 'https://twitter.com/littlesticksdev',
+    url: 'https://linktr.ee/SunshineSteph?utm_source=linktree_profile_share&ltsid=61ae010a-49df-47c4-8c11-2863670bf663', //redirect to linktree
     icon: "mdi:twitter",
   },
   {
