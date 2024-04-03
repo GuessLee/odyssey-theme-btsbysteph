@@ -1,3 +1,4 @@
+import { tiktokIcon } from '../icons/icons.js';
 export const footerSocials = [
   {
     name: 'Twitter',
@@ -5,30 +6,15 @@ export const footerSocials = [
     icon: "mdi:twitter",
   },
   {
-    name: 'Youtube',
-    url: 'https://youtube.com/c/LittleSticks',
-    icon: "mdi:youtube",
-  },
-  {
-    name: 'Github',
-    url: 'https://github.com/littlesticks',
-    icon: "mdi:github",
-  },
-  {
-    name: 'Discord',
-    url: 'https://littlesticks.dev/discord',
-    icon: "ic:baseline-discord",
-  },
-  {
 	name: 'Instagram',
 	url: 'https://www.instagram.com/sunshine_steph',
 	icon: "mdi:instagram",
   },
-//   {
-// 	name: 'TikTok',
-// 	url: 'https://www.tiktok.com/@sunshine_steph',
-// 	icon: "mdi:tiktok",
-//   },
+{
+	name: 'TikTok',
+	url: 'https://www.tiktok.com/@sunshine_steph',
+	icon: "tiktokIcon",
+},
 ]
 
 export const footerLists = [
