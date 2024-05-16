@@ -1,7 +1,7 @@
 export const nav = [
 	{
 		title: 'Home',
-		slug: '/landing-pages/landing-1',
+		slug: '/',
 	},
 /* 	{
 		title: 'Portfolio',
