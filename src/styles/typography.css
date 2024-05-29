@@ -11,6 +11,39 @@
   src: url('/assets/fonts/Raleway-Regular.ttf') format('ttf'),
        url('/assets/fonts/Raleway-Regular.ttf') format('ttf');
 }
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/Raleway-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/Raleway-Italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/Raleway-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/Raleway-BoldItalic.ttf') format('truetype');
+}
+
 /* roboto-serif-600 - latin */
 @font-face {
   font-family: 'Roboto Serif';
