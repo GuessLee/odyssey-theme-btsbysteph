@@ -44,6 +44,13 @@
   src: url('/assets/fonts/Raleway-BoldItalic.ttf') format('truetype');
 }
 
+/* Italianno - new addition being added */
+@font-face {
+  font-family: 'Italianno';
+  src: url('Italianno-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 /* roboto-serif-600 - latin */
 @font-face {
   font-family: 'Roboto Serif';
