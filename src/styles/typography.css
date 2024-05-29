@@ -2,14 +2,37 @@
   https://google-webfonts-helper.herokuapp.com/fonts/lato?subsets=latin
 */
 
-/* Add your font name and file names */
+/* Raleway Truetype Font */
 @font-face {
   font-family: 'Raleway';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   font-display: swap;
-  src: url('/assets/fonts/Raleway-Regular.ttf') format('ttf'),
-       url('/assets/fonts/Raleway-Regular.ttf') format('ttf');
+  src: url('/assets/fonts/Raleway-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/Raleway-Italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/Raleway-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/Raleway-BoldItalic.ttf') format('truetype');
 }
 /* roboto-serif-600 - latin */
 @font-face {
@@ -80,7 +103,10 @@
   --font-size-xl: clamp(35.16px, 1.39vw + 29.6px, 47.37px);
   --font-size-xxl: clamp(43.95px, 2.18vw + 35.22px, 63.15px);
   --font-size-xxxl: clamp(54.93px, 3.32vw + 41.64px, 84.17px);
-  --theme-font-family-serif: 'Raleway', serif;
+
+  /* Theme Fonts */
+  --theme-font-family-serif: 'Raleway', Georgia, Cambria, 'Times New Roman', Times, serif;
+  --theme-font-family-sans: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;  
 }
 
 html,
