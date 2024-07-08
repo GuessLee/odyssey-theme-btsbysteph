@@ -21,3 +21,8 @@ pnpm-debug.log*
 
 icon.d.ts
 *.cache
+
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*

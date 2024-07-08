@@ -17,13 +17,24 @@
 		"@astrojs/lit": "^4.0.1",
 		"@astrojs/mdx": "^2.1.1",
 		"@astrojs/sitemap": "^0.1.0",
+		"@aws-amplify/backend": "^1.0.4",
+		"@aws-amplify/backend-cli": "^1.1.0",
 		"@iconify-json/ic": "^1.1.17",
 		"@iconify-json/mdi": "^1.1.64",
 		"@webcomponents/template-shadowroot": "^0.2.1",
 		"astro": "^4.4.13",
 		"astro-icon": "^1.1.0",
+		"aws-cdk": "^2.148.0",
+		"aws-cdk-lib": "^2.148.0",
+		"constructs": "^10.3.0",
 		"date-fns": "^2.28.0",
+		"esbuild": "^0.23.0",
 		"lit": "^3.1.2",
-		"prettier-plugin-astro": "^0.0.12"
+		"prettier-plugin-astro": "^0.0.12",
+		"tsx": "^4.16.2",
+		"typescript": "^5.5.3"
+	},
+	"dependencies": {
+		"aws-amplify": "^6.3.8"
 	}
 }
