@@ -10,7 +10,7 @@ export const footerSocials = [
   },
   {
 	name: 'Instagram',
-	url: 'https://www.instagram.com/sunshine_steph',
+	url: 'https://www.instagram.com/btsbysteph/?igsh=MWZzMnpxbGhyOWFsaQ%3D%3D&utm_source=qr',
 	icon: "mdi:instagram",
   },
 /* {
