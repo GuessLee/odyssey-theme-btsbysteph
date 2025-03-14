@@ -80,7 +80,46 @@ const seo = {
 
 	<!-- <YouTubeEmbedSection url="https://www.youtube.com/watch?v=Alsz2Z3Beqs" rounded
 	/> -->
-
+	
+	<style>
+		.video-container {
+		  display: flex;
+		  justify-content: center; /* Centers all videos */
+		  align-items: center;
+		  gap: 20px; /* Adds space between videos */
+		  flex-wrap: wrap; /* Ensures responsiveness */
+		  margin-top: 20px;
+		}
+		
+		.video-container video {
+		  width: 400px;
+		  height: 480px;
+		  border-radius: 10px;
+		  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+		}
+		</style>
+		
+		<!-- Updated Video Layout -->
+		<div class="video-container">
+		  <!-- Left Video -->
+		  <video controls>
+			<source src="https://btsbs.s3.us-east-2.amazonaws.com/C9nBkdVRoJ5.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		  </video>
+		
+		  <!-- Middle Video -->
+		  <video controls>
+			<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGyZELqRdgY.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		  </video>
+		
+		  <!-- Right Video -->
+		  <video controls>
+			<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGs9WgIRL0P.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		  </video>
+		</div>
+	  
 	<StickyTextImageSection>
 		<div slot="text-container">
 			<h3>Pricing and Services</h3>
