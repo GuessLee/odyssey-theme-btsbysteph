@@ -19,14 +19,19 @@ const seo = {
 				</p>
 				<div>
 					<p>
-						<!-- <em><a href="tel:8008675309">(800) 867-5309</a></em> • <em
-							> -->
-							<a href="mailto:hello@odysseytheme.com">info@btsbs.com</a
-							></em
-						>
+						<a href="mailto:hello@odysseytheme.com">info@btsbs.com</a>
 					</p>
 				</div>
+
+				<!-- 📌 New Video Embed Below Email -->
+				<div class="contact-video">
+					<video autoplay loop muted playsinline width="300">
+						<source src="https://btsbs.s3.us-east-2.amazonaws.com/C-IaHybR3N0_contact.mp4" type="video/mp4">
+						Your browser does not support the video tag.
+					</video>
+				</div>
 			</div>
+
 			<div class="col-2__container">
 				<ContactForm />
 			</div>
@@ -55,9 +60,22 @@ const seo = {
 		flex-direction: column;
 		justify-content: center;
 	}
+	.contact-video {
+		margin-top: 20px;
+		display: flex;
+		justify-content: center;
+	}
+	.contact-video video {
+		border-radius: 10px;
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+		width: 300px; /* Ensures the video is smaller */
+	}
 	@media (max-width: 768px) {
 		.contact-hero__section {
 			grid-template-columns: 1fr;
+		}
+		.contact-video video {
+			width: 90%; /* Makes it responsive */
 		}
 	}
 </style>
