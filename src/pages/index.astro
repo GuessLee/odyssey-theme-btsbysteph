@@ -28,7 +28,7 @@ const seo = {
 	<TextAndImageHero reversed>
 		<div slot="text-container">
 			<h3>Why work with a wedding content creator? </h3>
-			<h4>A quick 24-48 hour turnaround where you can enjoy reliving the magic of your wedding day almost instantly.</h4>
+			<h4>A quick turnaround where you can enjoy reliving the magic of your wedding day almost instantly.</h4>
 			<p>With over 5 years of experience spanning general content creation and diverse roles within the wedding industry, I bring a wealth of expertise to this industry.
 				Through innovative photography and cinematic videography, I'll transcend your wedding moments into timeless masterpieces. 
 				Trust me to intricately weave your unique love story with unparalleled style and sophistication.</p>
@@ -80,7 +80,46 @@ const seo = {
 
 	<!-- <YouTubeEmbedSection url="https://www.youtube.com/watch?v=Alsz2Z3Beqs" rounded
 	/> -->
-
+	
+	<style>
+		.video-container {
+		  display: flex;
+		  justify-content: center; /* Centers all videos */
+		  align-items: center;
+		  gap: 20px; /* Adds space between videos */
+		  flex-wrap: wrap; /* Ensures responsiveness */
+		  margin-top: 20px;
+		}
+		
+		.video-container video {
+		  width: 400px;
+		  height: 480px;
+		  border-radius: 10px;
+		  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+		}
+		</style>
+		
+		<!-- Updated Video Layout -->
+		<div class="video-container">
+		  <!-- Left Video -->
+		  <video controls controlsList="nodownload" oncontextmenu="return false;">
+			<source src="https://btsbs.s3.us-east-2.amazonaws.com/C9nBkdVRoJ5.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		  </video>
+		
+		  <!-- Middle Video -->
+		  <video controls controlsList="nodownload" oncontextmenu="return false;">
+			<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGyZELqRdgY.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		  </video>
+		
+		  <!-- Right Video -->
+		  <video controls controlsList="nodownload" oncontextmenu="return false;">
+			<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGs9WgIRL0P.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		  </video>
+		</div>
+	  
 	<StickyTextImageSection>
 		<div slot="text-container">
 			<h3>Pricing and Services</h3>
