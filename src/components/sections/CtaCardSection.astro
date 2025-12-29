@@ -13,15 +13,27 @@ const {background, color} = Astro.props;
 
 <style>
   .cta-card__section {
-    /* --section-bg: var(--theme-surface-1); */
-    --section-bg: #f3efe3;
-    --section-color: var(--theme-on-surface-1);
-    margin: var(--section-margin) auto;
-    padding: 2rem;
+    --section-bg: var(--theme-surface-3, #1a1a1a);
+    --section-color: var(--theme-on-surface-3, #ffffff);
+    margin: calc(var(--section-margin) * 1.5) auto;
+    padding: 5rem 3rem;
     background-color: var(--section-bg);
     color: var(--section-color);
-    border-radius: var(--theme-shape-radius);
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
   }
+
+  .cta-card__section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--theme-accent), transparent);
+  }
+
   .cta-card__container {
     margin: 0 auto;
     max-width: var(--container-max-width-narrow);
@@ -29,5 +41,26 @@ const {background, color} = Astro.props;
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+
+  .cta-card__container :global(h2) {
+    font-family: var(--theme-font-family-display);
+    font-size: var(--font-size-xl);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .cta-card__container :global(p) {
+    font-family: var(--theme-font-family-serif);
+    font-size: var(--font-size-md);
+    font-style: italic;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .cta-card__section {
+      padding: 4rem 2rem;
+    }
   }
 </style>

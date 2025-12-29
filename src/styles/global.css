@@ -10,6 +10,40 @@ body {
 	position: relative;
 }
 
+/* Smooth scrolling */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Better image defaults */
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+	outline: 2px solid var(--theme-accent);
+	outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+	background-color: var(--theme-accent);
+	color: #fff;
+}
+
+/* Links */
+a {
+	color: inherit;
+	transition: color var(--theme-transition);
+}
+
+a:hover {
+	color: var(--theme-accent);
+}
+
 pre {
   padding: 1em;
   border-radius: 0.5em;

@@ -6,24 +6,81 @@ const {quoteText, customerName} = Astro.props;
 
 <section class="customer-quote__section">
   <Container narrow>
-    <blockquote>"{quoteText}"</blockquote>
-    <p>&mdash; {customerName}</p>
+    <div class="quote-icon">"</div>
+    <blockquote>{quoteText}</blockquote>
+    <div class="customer-info">
+      <span class="customer-line"></span>
+      <p class="customer-name">{customerName}</p>
+    </div>
   </Container>
 </section>
 
-  <style>
-.customer-quote__section {
-  margin: calc(var(--section-margin) * 2) auto;
-  padding: 3rem;
-  background-color: var(--theme-surface-1);
-  text-align: center;
-}
-.customer-quote__section blockquote {
-  padding: 0;
-  border: none;
-  font-size: var(--font-size-md);
-  font-weight: 400;
-  font-style: italic;
-  line-height: 1.8;
-}
+<style>
+  .customer-quote__section {
+    margin: calc(var(--section-margin) * 1.5) auto;
+    padding: 5rem 3rem;
+    background-color: var(--theme-surface-2);
+    text-align: center;
+    position: relative;
+  }
+
+  .quote-icon {
+    font-family: var(--theme-font-family-display);
+    font-size: 6rem;
+    line-height: 1;
+    color: var(--theme-accent);
+    opacity: 0.3;
+    margin-bottom: -2rem;
+  }
+
+  .customer-quote__section blockquote {
+    padding: 0;
+    border: none;
+    font-family: var(--theme-font-family-serif);
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--theme-on-surface-2);
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+  }
+
+  .customer-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .customer-line {
+    display: block;
+    width: 40px;
+    height: 1px;
+    background-color: var(--theme-accent);
+  }
+
+  .customer-name {
+    font-family: var(--theme-font-family-sans);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 0;
+    color: var(--theme-accent);
+  }
+
+  @media (max-width: 768px) {
+    .customer-quote__section {
+      padding: 4rem 2rem;
+    }
+
+    .quote-icon {
+      font-size: 4rem;
+    }
+
+    .customer-quote__section blockquote {
+      font-size: var(--font-size-md);
+    }
+  }
 </style>

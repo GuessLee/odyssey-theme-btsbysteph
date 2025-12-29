@@ -19,24 +19,58 @@ import Container from '../core/Container.astro';
     </section>
   </Container>
 
-  <style>
+<style>
   .three-col-text__section {
     --column-count: 3;
     --column-width: calc(100% / var(--column-count));
-    margin: var(--section-margin) auto;
+    margin: calc(var(--section-margin) * 1.5) auto;
     display: flex;
     flex-wrap: wrap;
     text-align: center;
     justify-content: space-evenly;
+    gap: 2rem;
   }
+
   .three-col-text__column {
-    width: var(--column-width);
-    margin-bottom: 2rem;
-    padding: 1rem;
+    width: calc(var(--column-width) - 2rem);
+    padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    background-color: var(--theme-surface-1);
+    position: relative;
+    transition: all var(--theme-transition);
+  }
+
+  .three-col-text__column::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background-color: var(--theme-accent);
+  }
+
+  .three-col-text__column:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  .three-col-text__column :global(h2) {
+    font-family: var(--theme-font-family-display);
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--theme-accent);
+  }
+
+  .three-col-text__column :global(p) {
+    font-size: var(--font-size-base);
+    line-height: 1.8;
+    opacity: 0.85;
   }
 
   @media(max-width: 1200px) {
@@ -44,9 +78,14 @@ import Container from '../core/Container.astro';
       --column-count: 2;
     }
   }
+
   @media(max-width: 768px) {
     .three-col-text__section {
       --column-count: 1;
+    }
+
+    .three-col-text__column {
+      width: 100%;
     }
   }
 </style>
