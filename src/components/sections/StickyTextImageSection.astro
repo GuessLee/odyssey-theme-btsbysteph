@@ -16,30 +16,126 @@ const {reversed} = Astro.props;
 </Container>
 
 
-  <style>
+<style>
   .sticky-text-image__section {
-    margin: calc(var(--section-margin) * 2) auto;
+    margin: calc(var(--section-margin) * 1.5) auto;
     display: grid;
-    grid-template-columns: 6fr 4fr;
+    grid-template-columns: 1fr 1fr;
     position: relative;
-    gap: 2rem;
+    gap: 4rem;
+    align-items: start;
   }
+
   .sticky-text-image__section--reversed {
-    grid-template-columns: 4fr 6fr;
+    grid-template-columns: 1fr 1fr;
   }
+
   .sticky-text-image__section--reversed .sticky-text-image__text {
     order: 2;
   }
+
+  .sticky-text-image__text {
+    padding: 2rem 0;
+  }
+
+  .sticky-text-image__text :global(h3) {
+    font-family: var(--theme-font-family-display);
+    font-size: var(--font-size-xl);
+    font-weight: 500;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .sticky-text-image__text :global(h3)::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background-color: var(--theme-accent);
+    margin-top: 1rem;
+  }
+
+  /* Package name styling - using Italianno */
+  .sticky-text-image__text :global(h3[style*="Italianno"]) {
+    font-family: 'Italianno', cursive;
+    font-size: var(--font-size-xxl);
+    font-weight: 400;
+    color: var(--theme-accent);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .sticky-text-image__text :global(h3[style*="Italianno"])::after {
+    display: none;
+  }
+
+  .sticky-text-image__text :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .sticky-text-image__text :global(li) {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+  }
+
+  .sticky-text-image__text :global(li)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 8px;
+    height: 1px;
+    background-color: var(--theme-accent);
+  }
+
+  .sticky-text-image__text :global(li:first-child) {
+    font-weight: 600;
+    font-size: var(--font-size-md);
+    color: var(--theme-accent);
+  }
+
   .sticky-text-image__image :global(:first-child) {
     position: sticky;
-    top: 0;
+    top: 100px;
   }
+
   .sticky-text-image__section :global(img) {
-    border-radius: var(--theme-shape-radius);
+    border-radius: 0;
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+    transition: transform var(--theme-transition-slow);
   }
+
+  .sticky-text-image__section :global(img):hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 900px) {
+    .sticky-text-image__section {
+      gap: 3rem;
+    }
+  }
+
   @media (max-width: 768px) {
     .sticky-text-image__section {
       grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .sticky-text-image__section--reversed .sticky-text-image__text {
+      order: 0;
+    }
+
+    .sticky-text-image__image :global(:first-child) {
+      position: relative;
+      top: 0;
     }
   }
 </style>

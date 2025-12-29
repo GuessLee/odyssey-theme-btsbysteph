@@ -24,35 +24,108 @@ const { reversed } = Astro.props;
 
 <style>
 	.text-and-image__section {
-		margin: var(--section-margin) auto;
-		min-height: clamp(90vh, 100vw, calc(100vh - var(--navbar-height)));
+		margin: 0 auto var(--section-margin) auto;
+		min-height: clamp(80vh, 90vw, calc(100vh - 80px));
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		align-items: center;
-		gap: 1rem;
+		gap: 4rem;
 	}
+
 	.text-and-image__section--reversed .text-and-image__text {
 		order: 2;
 	}
+
 	.text-and-image__text {
-		padding: 2rem 0;
+		padding: 3rem 0;
 		justify-self: center;
-		max-width: 25rem;
+		max-width: 480px;
 	}
+
+	.text-and-image__text :global(h3) {
+		font-family: var(--theme-font-family-display);
+		font-size: var(--font-size-xl);
+		font-weight: 500;
+		line-height: 1.15;
+		margin-bottom: 1rem;
+	}
+
+	.text-and-image__text :global(h4) {
+		font-family: var(--theme-font-family-serif);
+		font-size: var(--font-size-md);
+		font-weight: 400;
+		font-style: italic;
+		color: var(--theme-accent);
+		margin-bottom: 1.5rem;
+	}
+
+	.text-and-image__text :global(p) {
+		font-size: var(--font-size-base);
+		line-height: 1.9;
+		color: var(--theme-on-bg);
+		opacity: 0.85;
+	}
+
+	.text-and-image__btns {
+		margin-top: 2rem;
+	}
+
+	.text-and-image__image {
+		position: relative;
+	}
+
+	.text-and-image__image::before {
+		content: '';
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		right: -20px;
+		bottom: -20px;
+		border: 2px solid var(--theme-accent);
+		z-index: -1;
+		opacity: 0.3;
+	}
+
 	.text-and-image__image :global(img) {
 		width: 100%;
 		height: 100%;
-		max-height: 80vh;
+		max-height: 75vh;
 		object-fit: cover;
-		border-radius: var(--theme-shape-radius);
+		border-radius: 0;
+		transition: transform var(--theme-transition-slow);
 	}
+
+	.text-and-image__image:hover :global(img) {
+		transform: scale(1.02);
+	}
+
+	@media (max-width: 900px) {
+		.text-and-image__section {
+			gap: 3rem;
+		}
+
+		.text-and-image__text {
+			max-width: 100%;
+		}
+	}
+
 	@media (max-width: 768px) {
 		.text-and-image__section {
-			margin: 2rem auto 0 auto;
+			margin: 2rem auto var(--section-margin) auto;
 			grid-template-columns: 1fr;
+			min-height: auto;
 		}
+
+		.text-and-image__section--reversed .text-and-image__text {
+			order: 0;
+		}
+
 		.text-and-image__text {
 			padding: 2rem 0;
+		}
+
+		.text-and-image__image::before {
+			display: none;
 		}
 	}
 </style>
