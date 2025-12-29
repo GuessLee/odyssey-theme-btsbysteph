@@ -1,23 +1,14 @@
-import { tiktokIcon } from '../icons/icons.js';
-
-console.log("TikTok Icon:", tiktokIcon);
-
 export const footerSocials = [
   {
-    name: 'Twitter',
-    url: 'https://linktr.ee/SunshineSteph?utm_source=linktree_profile_share&ltsid=61ae010a-49df-47c4-8c11-2863670bf663', //redirect to linktree
-    icon: "mdi:twitter",
+    name: 'Linktree',
+    url: 'https://linktr.ee/SunshineSteph?utm_source=linktree_profile_share&ltsid=61ae010a-49df-47c4-8c11-2863670bf663',
+    icon: "linktree",
   },
   {
-	name: 'Instagram',
-	url: 'https://www.instagram.com/btsbysteph/?igsh=MWZzMnpxbGhyOWFsaQ%3D%3D&utm_source=qr',
-	icon: "mdi:instagram",
+    name: 'Instagram',
+    url: 'https://www.instagram.com/btsbysteph/?igsh=MWZzMnpxbGhyOWFsaQ%3D%3D&utm_source=qr',
+    icon: "mdi:instagram",
   },
-/* {
-	name: 'TikTok',
-	url: 'https://www.tiktok.com/@sunshine_steph',
-	icon: "tiktokIcon",
-}, */
 ]
 
 export const footerLists = [

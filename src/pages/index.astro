@@ -56,69 +56,131 @@ const seo = {
 
 	<ThreeColumnTextSection>
 		<div slot="column-1-body">
-			<h2>Why #1</h2>
+			<h2>Authentic Moments</h2>
 			<p>
 			  Dive into the genuine emotions and spontaneous moments of your special day with access to raw footage captured on an iPhone. Experience the authenticity firsthand.
 			</p>
-		  </div>		  
-		<!-- <Button slot="column-1-cta">Learn More</Button> -->
+		  </div>
 		<div slot="column-2-body">
-			<h2>Why #2</h2>
+			<h2>Behind The Scenes</h2>
 			<p>
 				Gain an intimate and authentic view of your wedding day through raw footage shot on an iPhone. It's akin to peering behind the curtain, revealing the real-life moments that made your day unforgettable.
 			</p>
 		</div>
-		<!-- <Button slot="column-2-cta" outlined>Learn More</Button> -->
 		<div slot="column-3-body">
-			<h2>Why #3</h2>
+			<h2>Perfect Complement</h2>
 			<p>
-				While raw iPhone footage adds a distinctive touch, it harmoniously complements professional photography and videography. Together, we offer a comprehensive portrayal of your wedding day, blending authenticity with artistry. 
+				While raw iPhone footage adds a distinctive touch, it harmoniously complements professional photography and videography. Together, we offer a comprehensive portrayal of your wedding day, blending authenticity with artistry.
 			</p>
 		</div>
-		<!-- <Button slot="column-3-cta">Learn More</Button> -->
 	</ThreeColumnTextSection>
 
 	<!-- <YouTubeEmbedSection url="https://www.youtube.com/watch?v=Alsz2Z3Beqs" rounded
 	/> -->
 	
 	<style>
+		.portfolio-section {
+			max-width: var(--container-max-width);
+			margin: calc(var(--section-margin) * 1.5) auto;
+			padding: 0 2rem;
+		}
+
+		.portfolio-header {
+			text-align: center;
+			margin-bottom: 3rem;
+		}
+
+		.portfolio-header h2 {
+			font-family: var(--theme-font-family-display);
+			font-size: var(--font-size-xl);
+			font-weight: 500;
+			margin-bottom: 0.5rem;
+		}
+
+		.portfolio-header p {
+			font-family: var(--theme-font-family-serif);
+			font-size: var(--font-size-md);
+			font-style: italic;
+			color: var(--theme-accent);
+		}
+
 		.video-container {
-		  display: flex;
-		  justify-content: center; /* Centers all videos */
-		  align-items: center;
-		  gap: 20px; /* Adds space between videos */
-		  flex-wrap: wrap; /* Ensures responsiveness */
-		  margin-top: 20px;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 2rem;
+			justify-items: center;
 		}
-		
+
+		.video-wrapper {
+			position: relative;
+			overflow: hidden;
+			transition: transform var(--theme-transition);
+		}
+
+		.video-wrapper:hover {
+			transform: translateY(-8px);
+		}
+
 		.video-container video {
-		  width: 400px;
-		  height: 480px;
-		  border-radius: 10px;
-		  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+			width: 100%;
+			height: 500px;
+			object-fit: cover;
+			border-radius: 0;
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+			transition: box-shadow var(--theme-transition);
 		}
-		</style>
-		
-		<!-- Updated Video Layout -->
-		<div class="video-container">
-		  <!-- Left Video -->
-		  <video controls controlslist="nodownload" oncontextmenu="return false;">
-			<source src="https://btsbs.s3.us-east-2.amazonaws.com/C9nBkdVRoJ5.mp4" type="video/mp4">
-			Your browser does not support the video tag.
-		  </video>
-		
-		  <!-- Middle Video -->
-		  <video controls controlslist="nodownload" oncontextmenu="return false;">
-			<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGyZELqRdgY_fixed.mp4" type="video/mp4">
-			Your browser does not support the video tag.
-		  </video>
-		
-		  <!-- Right Video -->
-		  <video controls controlslist="nodownload" oncontextmenu="return false;">
-			<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGs9WgIRL0P_fixed.mp4" type="video/mp4">
-			Your browser does not support the video tag.
-		  </video>
+
+		.video-wrapper:hover video {
+			box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+		}
+
+		@media (max-width: 1024px) {
+			.video-container {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+		@media (max-width: 768px) {
+			.video-container {
+				grid-template-columns: 1fr;
+				gap: 1.5rem;
+			}
+
+			.video-container video {
+				height: 450px;
+			}
+		}
+	</style>
+
+	<!-- Portfolio Video Section -->
+	<section class="portfolio-section">
+		<div class="portfolio-header">
+			<h2>My Work</h2>
+			<p>A glimpse into the magic I capture</p>
 		</div>
+		<div class="video-container">
+			<div class="video-wrapper">
+				<video controls controlslist="nodownload" oncontextmenu="return false;">
+					<source src="https://btsbs.s3.us-east-2.amazonaws.com/C9nBkdVRoJ5.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+
+			<div class="video-wrapper">
+				<video controls controlslist="nodownload" oncontextmenu="return false;">
+					<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGyZELqRdgY_fixed.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+
+			<div class="video-wrapper">
+				<video controls controlslist="nodownload" oncontextmenu="return false;">
+					<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGs9WgIRL0P_fixed.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+		</div>
+	</section>
 	  
 	<StickyTextImageSection>
 		<div slot="text-container">
@@ -213,16 +275,13 @@ const seo = {
 		</picture>
 	</StickyTextImageSection>
 
-	<CtaCardSection
-		background="var(--theme-surface-2)"
-		color="var(--theme-on-surface-2)"
-	>
-		<h2>Behind The Scenes With Me</h2>
+	<CtaCardSection>
+		<h2>Let's Create Magic Together</h2>
 		<p>
-			Let Me Capture Your Special Moments
+			Ready to capture the authentic moments of your special day?
 		</p>
-		<Button href="/company/contact" customIcon
-			>Contact Me <Fragment slot="icon">
+		<Button href="/company/contact" onPrimary customIcon
+			>Get In Touch <Fragment slot="icon">
 				<Icon name="ic:baseline-chevron-right" />
 			</Fragment></Button
 		>
