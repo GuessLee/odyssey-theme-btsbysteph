@@ -1,0 +1,312 @@
+---
+// Standalone pricing page for printing/saving as PDF
+// No layout wrapper - this is a self-contained print-ready page
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Packages - BTS By Steph</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@400;500;600;700&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-bg: #FFFAF7;
+      --color-text: #2C2C2C;
+      --color-accent: #C4A484;
+      --color-accent-dark: #8B7355;
+      --color-surface: #FAF6F3;
+      --color-surface-2: #F5EDE6;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Work Sans', -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-serif);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.4;
+      padding: 1.25rem;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--color-accent);
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+    }
+
+    .page-title {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent-dark);
+    }
+
+    /* Package Cards */
+    .packages {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .package-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-surface-2);
+      padding: 1rem 1.25rem;
+      position: relative;
+    }
+
+    .package-card.featured {
+      background: var(--color-surface-2);
+      border-color: var(--color-accent);
+    }
+
+    .package-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-accent);
+      color: white;
+      font-family: var(--font-sans);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.75rem;
+    }
+
+    .package-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--color-accent);
+    }
+
+    .package-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .package-price {
+      text-align: right;
+    }
+
+    .price-amount {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-accent-dark);
+    }
+
+    .price-note {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      color: var(--color-accent-dark);
+      letter-spacing: 0.05em;
+    }
+
+    .package-coverage {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--color-accent-dark);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .package-features {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.25rem 1rem;
+    }
+
+    .package-features li {
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      color: var(--color-text);
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .package-features li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.45em;
+      width: 5px;
+      height: 5px;
+      background: var(--color-accent);
+      border-radius: 50%;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 1.25rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--color-accent);
+      text-align: center;
+    }
+
+    .footer-tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--color-accent-dark);
+      margin-bottom: 0.35rem;
+    }
+
+    .footer-contact {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      color: var(--color-text);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-contact a {
+      color: var(--color-accent-dark);
+      text-decoration: none;
+    }
+
+    /* Fine Print */
+    .fine-print {
+      margin-top: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      color: var(--color-accent-dark);
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .package-card {
+        break-inside: avoid;
+      }
+
+      .package-card.featured::before {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    @page {
+      margin: 0.5in;
+      size: letter;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1 class="brand-name">BTS By Steph</h1>
+    <p class="page-title">Wedding Packages</p>
+  </header>
+
+  <main class="packages">
+    <!-- Bridal Bliss -->
+    <article class="package-card">
+      <div class="package-header">
+        <h2 class="package-name">Bridal Bliss</h2>
+        <div class="package-price">
+          <div class="price-amount">$600</div>
+          <div class="price-note">starting at</div>
+        </div>
+      </div>
+      <p class="package-coverage">4 Hours of Coverage</p>
+      <ul class="package-features">
+        <li>1 consultation call</li>
+        <li>Full wedding photo & video gallery</li>
+        <li>Shot on the latest iPhone</li>
+        <li>Delivered within 24-48 hours</li>
+        <li>1 edited recap video</li>
+        <li>1 reel or TikTok</li>
+      </ul>
+    </article>
+
+    <!-- Tie The Knot - Featured -->
+    <article class="package-card featured">
+      <div class="package-header">
+        <h2 class="package-name">Tie The Knot</h2>
+        <div class="package-price">
+          <div class="price-amount">$900</div>
+          <div class="price-note">starting at</div>
+        </div>
+      </div>
+      <p class="package-coverage">8 Hours of Coverage</p>
+      <ul class="package-features">
+        <li>1 consultation call</li>
+        <li>Full wedding photo & video gallery</li>
+        <li>Shot on the latest iPhone</li>
+        <li>Delivered within 24-48 hours</li>
+        <li>1 edited recap video</li>
+        <li>3 reels or TikToks</li>
+      </ul>
+    </article>
+
+    <!-- Love Story -->
+    <article class="package-card">
+      <div class="package-header">
+        <h2 class="package-name">Love Story</h2>
+        <div class="package-price">
+          <div class="price-amount">$1,200</div>
+          <div class="price-note">starting at</div>
+        </div>
+      </div>
+      <p class="package-coverage">10 Hours of Coverage</p>
+      <ul class="package-features">
+        <li>2 consultation calls</li>
+        <li>Full wedding photo & video gallery</li>
+        <li>Shot on the latest iPhone</li>
+        <li>Delivered within 24-48 hours</li>
+        <li>1 edited recap video</li>
+        <li>4 reels or TikToks</li>
+      </ul>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-tagline">Capturing your love story, one moment at a time</p>
+    <p class="footer-contact">
+      <a href="https://btsbs.com">btsbs.com</a>
+    </p>
+    <p class="fine-print">Prices subject to change. Travel fees may apply for locations outside service area.</p>
+  </footer>
+</body>
+</html>
