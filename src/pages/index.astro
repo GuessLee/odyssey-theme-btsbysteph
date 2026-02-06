@@ -6,7 +6,6 @@ import {
 	CustomerQuoteSection,
 	ThreeColumnTextSection,
 	YouTubeEmbedSection,
-	StickyTextImageSection,
 	CtaCardSection,
 } from '@components/odyssey-theme';
 import Layout from '../layouts/Page.astro';
@@ -150,6 +149,193 @@ const seo = {
 				height: 450px;
 			}
 		}
+
+		/* Pricing Cards */
+		.pricing-section {
+			max-width: var(--container-max-width);
+			margin: calc(var(--section-margin) * 1.5) auto;
+			padding: 0 2rem;
+		}
+
+		.pricing-header {
+			text-align: center;
+			margin-bottom: 3rem;
+		}
+
+		.pricing-header h2 {
+			font-family: var(--theme-font-family-display);
+			font-size: var(--font-size-xl);
+			font-weight: 500;
+			margin-bottom: 0.5rem;
+		}
+
+		.pricing-header p {
+			font-family: var(--theme-font-family-serif);
+			font-size: var(--font-size-md);
+			font-style: italic;
+			color: var(--theme-accent);
+		}
+
+		.pricing-cards {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 2rem;
+			align-items: start;
+		}
+
+		.pricing-card {
+			position: relative;
+			background: var(--theme-surface-1);
+			border: 1px solid rgba(196, 164, 132, 0.15);
+			padding: 2.5rem 2rem;
+			text-align: center;
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+			transition: transform var(--theme-transition), box-shadow var(--theme-transition);
+		}
+
+		.pricing-card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+		}
+
+		.pricing-card.featured {
+			background: var(--theme-primary);
+			color: var(--theme-on-primary);
+			transform: scale(1.05);
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+			z-index: 1;
+		}
+
+		.pricing-card.featured:hover {
+			transform: scale(1.05) translateY(-10px);
+			box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+		}
+
+		.popular-badge {
+			position: absolute;
+			top: -14px;
+			left: 50%;
+			transform: translateX(-50%);
+			background: var(--theme-accent);
+			color: #fff;
+			font-family: var(--theme-font-family-sans);
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			padding: 0.4rem 1.5rem;
+		}
+
+		.card-top {
+			margin-bottom: 2rem;
+			padding-bottom: 1.5rem;
+			border-bottom: 1px solid rgba(196, 164, 132, 0.2);
+		}
+
+		.pricing-card.featured .card-top {
+			border-bottom-color: rgba(255, 255, 255, 0.15);
+		}
+
+		.package-name {
+			font-family: 'Italianno', cursive;
+			font-size: 2.2rem;
+			font-weight: 400;
+			margin-bottom: 0.75rem;
+		}
+
+		.price {
+			font-family: var(--theme-font-family-display);
+			font-size: 3rem;
+			font-weight: 600;
+			line-height: 1;
+			margin-bottom: 0.25rem;
+		}
+
+		.price-note {
+			font-family: var(--theme-font-family-serif);
+			font-size: 0.9rem;
+			font-style: italic;
+			opacity: 0.7;
+		}
+
+		.features {
+			list-style: none;
+			padding: 0;
+			margin: 0 0 2rem 0;
+			text-align: left;
+		}
+
+		.features li {
+			font-family: var(--theme-font-family-sans);
+			font-size: 0.95rem;
+			padding: 0.6rem 0;
+			border-bottom: 1px solid rgba(196, 164, 132, 0.1);
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.pricing-card.featured .features li {
+			border-bottom-color: rgba(255, 255, 255, 0.08);
+		}
+
+		.features li::before {
+			content: '✓';
+			font-weight: 700;
+			color: var(--theme-accent);
+			flex-shrink: 0;
+		}
+
+		.pricing-card.featured .features li::before {
+			color: var(--theme-accent);
+		}
+
+		.card-btn {
+			display: inline-block;
+			font-family: var(--theme-font-family-sans);
+			font-size: 0.85rem;
+			font-weight: 600;
+			letter-spacing: 0.15em;
+			text-transform: uppercase;
+			text-decoration: none;
+			padding: 0.9rem 2.5rem;
+			border: 2px solid var(--theme-accent);
+			color: var(--theme-accent);
+			background: transparent;
+			transition: all var(--theme-transition);
+		}
+
+		.card-btn:hover {
+			background: var(--theme-accent);
+			color: #fff;
+		}
+
+		.pricing-card.featured .card-btn {
+			border-color: var(--theme-accent);
+			color: var(--theme-on-primary);
+		}
+
+		.pricing-card.featured .card-btn:hover {
+			background: var(--theme-accent);
+			color: #fff;
+		}
+
+		@media (max-width: 1024px) {
+			.pricing-cards {
+				grid-template-columns: 1fr;
+				max-width: 420px;
+				margin: 0 auto;
+				gap: 2.5rem;
+			}
+
+			.pricing-card.featured {
+				transform: scale(1);
+			}
+
+			.pricing-card.featured:hover {
+				transform: translateY(-10px);
+			}
+		}
 	</style>
 
 	<!-- Portfolio Video Section -->
@@ -182,98 +368,132 @@ const seo = {
 		</div>
 	</section>
 	  
-	<StickyTextImageSection>
-		<div slot="text-container">
-			<h3>Pricing and Services</h3>
-			<h3 style="font-family: 'Italianno', sans-serif;"> Bridal Bliss Package </h3>
-			<ul>
-				<li>Starts at $600</li>
-				<li>4 hours of coverage</li>
-				<li>1 consultation call</li>
-				<li>Full wedding photo and video gallery</li>
-				<li>Shot on the latest iPhone</li>
-				<li>Delivered within 24-48 hours</li>
-				<li>1 edited recap video</li>
-				<li>1 reels or tiktok</li>
-			  </ul>			  
-			<h3 style="font-family: 'Italianno', sans-serif;"> Tie The Knot Package </h3>
-			<ul>
-				<li>Starts at $900</li>
-				<li>8 hours of coverage</li>
-				<li>1 consultation call</li>
-				<li>Full wedding photo and video gallery</li>
-				<li>Shot on the latest iPhone</li>
-				<li>Delivered within 24-48 hours</li>
-				<li>1 edited recap video</li>
-				<li>3 reels or tiktok</li>
-			  </ul>					
-			<h3 style="font-family: 'Italianno', sans-serif;"> Love Story Package </h3>
-			<ul>
-				<li>Starts at $1200</li>
-				<li>10 hours of coverage</li>
-				<li>2 consultation calls</li>
-				<li>Full wedding photo and video gallery</li>
-				<li>Shot on the latest iPhone</li>
-				<li>Delivered within 24-48 hours</li>
-				<li>1 edited recap video</li>
-				<li>4 reels or tiktok</li>
-			  </ul>			  
+	<!-- Wedding Packages -->
+	<section class="pricing-section">
+		<div class="pricing-header">
+			<h2>Wedding Packages</h2>
+			<p>Capture every moment of your special day</p>
 		</div>
-		<picture slot="image-container">
-			<img
-				src="/assets/images/landing-1/me_2.jpg"
-				alt="Astro Odyssey"
-				loading="lazy"
-			/>
-		</picture>
-	</StickyTextImageSection>
+		<div class="pricing-cards">
+			<div class="pricing-card">
+				<div class="card-top">
+					<h3 class="package-name">Bridal Bliss</h3>
+					<div class="price">$550</div>
+					<span class="price-note">starting at</span>
+				</div>
+				<ul class="features">
+					<li>4 hours of coverage</li>
+					<li>1 consultation call</li>
+					<li>Full wedding photo and video gallery</li>
+					<li>Shot on the latest iPhone</li>
+					<li>Delivered within 24-48 hours</li>
+					<li>1 edited recap video</li>
+					<li>1 reel or TikTok</li>
+				</ul>
+				<a href="/company/contact" class="card-btn">Get Started</a>
+			</div>
 
-	<StickyTextImageSection>
-		<div slot="text-container">
-			<h3>General Events Packages</h3>
-			<h3 style="font-family: 'Italianno', sans-serif;"> Essential Moments Package </h3>
-			<ul>
-				<li>Starts at $350</li>
-				<li>2 hours of coverage</li>
-				<li>1 consultation call</li>
-				<li>Full photo & video gallery</li>
-				<li>Shot on the latest iPhone</li>
-				<li>Delivered within 24-48 hours</li>
-				<li>1 edited recap video</li>
-			</ul>
-	
-			<h3 style="font-family: 'Italianno', sans-serif;"> Elevated Experience Package </h3>
-			<ul>
-				<li>Starts at $550</li>
-				<li>4 hours of coverage</li>
-				<li>1 consultation call</li>
-				<li>Full photo & video gallery</li>
-				<li>Shot on the latest iPhone</li>
-				<li>Delivered within 24-48 hours</li>
-				<li>1 edited recap video</li>
-				<li>1 reels or TikToks with trending audio/music</li>
-			</ul>
-	
-			<h3 style="font-family: 'Italianno', sans-serif;"> Elite Spotlight Package </h3>
-			<ul>
-				<li>Starts at $800</li>
-				<li>6 hours of coverage</li>
-				<li>1 consultation call</li>
-				<li>Full photo & video gallery</li>
-				<li>Shot on the latest iPhone</li>
-				<li>Expedited delivery within 12-24 hours</li>
-				<li>1 extended recap video (more moments & storytelling)</li>
-				<li>2 reels or TikToks with trending audio/music</li>
-			</ul>
+			<div class="pricing-card featured">
+				<div class="popular-badge">Most Popular</div>
+				<div class="card-top">
+					<h3 class="package-name">Tie The Knot</h3>
+					<div class="price">$625</div>
+					<span class="price-note">starting at</span>
+				</div>
+				<ul class="features">
+					<li>8 hours of coverage</li>
+					<li>1 consultation call</li>
+					<li>Full wedding photo and video gallery</li>
+					<li>Shot on the latest iPhone</li>
+					<li>Delivered within 24-48 hours</li>
+					<li>1 edited recap video</li>
+					<li>3 reels or TikToks</li>
+				</ul>
+				<a href="/company/contact" class="card-btn">Get Started</a>
+			</div>
+
+			<div class="pricing-card">
+				<div class="card-top">
+					<h3 class="package-name">Love Story</h3>
+					<div class="price">$700</div>
+					<span class="price-note">starting at</span>
+				</div>
+				<ul class="features">
+					<li>10 hours of coverage</li>
+					<li>2 consultation calls</li>
+					<li>Full wedding photo and video gallery</li>
+					<li>Shot on the latest iPhone</li>
+					<li>Delivered within 24-48 hours</li>
+					<li>1 edited recap video</li>
+					<li>4 reels or TikToks</li>
+				</ul>
+				<a href="/company/contact" class="card-btn">Get Started</a>
+			</div>
 		</div>
-		<picture slot="image-container">
-			<img
-				src="/assets/images/landing-1/events.jpg"
-				alt="General Events Coverage"
-				loading="lazy"
-			/>
-		</picture>
-	</StickyTextImageSection>
+	</section>
+
+	<!-- General Events Packages -->
+	<section class="pricing-section">
+		<div class="pricing-header">
+			<h2>General Events Packages</h2>
+			<p>From birthdays to corporate gatherings</p>
+		</div>
+		<div class="pricing-cards">
+			<div class="pricing-card">
+				<div class="card-top">
+					<h3 class="package-name">Essential Moments</h3>
+					<div class="price">$350</div>
+					<span class="price-note">starting at</span>
+				</div>
+				<ul class="features">
+					<li>2 hours of coverage</li>
+					<li>1 consultation call</li>
+					<li>Full photo & video gallery</li>
+					<li>Shot on the latest iPhone</li>
+					<li>Delivered within 24-48 hours</li>
+					<li>1 edited recap video</li>
+				</ul>
+				<a href="/company/contact" class="card-btn">Get Started</a>
+			</div>
+
+			<div class="pricing-card featured">
+				<div class="popular-badge">Most Popular</div>
+				<div class="card-top">
+					<h3 class="package-name">Elevated Experience</h3>
+					<div class="price">$550</div>
+					<span class="price-note">starting at</span>
+				</div>
+				<ul class="features">
+					<li>4 hours of coverage</li>
+					<li>1 consultation call</li>
+					<li>Full photo & video gallery</li>
+					<li>Shot on the latest iPhone</li>
+					<li>Delivered within 24-48 hours</li>
+					<li>1 edited recap video</li>
+					<li>1 reel or TikTok with trending audio</li>
+				</ul>
+				<a href="/company/contact" class="card-btn">Get Started</a>
+			</div>
+
+			<div class="pricing-card">
+				<div class="card-top">
+					<h3 class="package-name">Elite Spotlight</h3>
+					<div class="price">$800</div>
+					<span class="price-note">starting at</span>
+				</div>
+				<ul class="features">
+					<li>6 hours of coverage</li>
+					<li>1 consultation call</li>
+					<li>Full photo & video gallery</li>
+					<li>Shot on the latest iPhone</li>
+					<li>Expedited delivery within 12-24 hours</li>
+					<li>1 extended recap video</li>
+					<li>2 reels or TikToks with trending audio</li>
+				</ul>
+				<a href="/company/contact" class="card-btn">Get Started</a>
+			</div>
+		</div>
+	</section>
 
 	<CtaCardSection>
 		<h2>Let's Create Magic Together</h2>
