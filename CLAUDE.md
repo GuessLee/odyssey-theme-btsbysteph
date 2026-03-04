@@ -4,93 +4,106 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the Odyssey Theme - an Astro-based marketing website theme for startups and businesses. It's been customized for "BTS By Steph" and includes landing pages, a blog system, contact forms, and a complete theming system.
+This is the Odyssey Theme customized for **BTS By Steph** — a wedding content creator (iPhone videography) site. It includes a homepage with portfolio videos and pricing cards, an about page, a contact form, and a standalone print-ready pricing PDF page.
 
 ## Development Commands
 
 - `npm run dev` or `npm start` - Start development server
-- `npm run build` - Build for production 
+- `npm run build` - Build for production
 - `npm run preview` - Preview production build locally
 - `npm run format` - Format code with Prettier
 
+## Framework & Tech Stack
+
+- **Astro 5** (SSG) with TypeScript path aliases
+- **MDX** for blog posts (blog is currently disabled in nav/footer but posts exist)
+- **Lit** web components via `@astrojs/lit`
+- **astro-icon** with `@iconify-json/ic` and `@iconify-json/mdi` icon sets
+- **AWS Amplify** backend (auth/data) — config in `amplify/`
+- **Google Analytics** GA4 (`G-8291Q1LY4D`) injected in `src/layouts/Page.astro`
+
 ## Architecture
 
-### Framework & Tech Stack
-- **Astro 4.4+** with SSG (Static Site Generation)
-- **TypeScript** configuration with path aliases
-- **AWS Amplify** backend integration for auth and data
-- **MDX** for blog posts and content pages
-- **Lit** web components integration
-- **astro-icon** for icon management
+### Layout Chain
 
-### Project Structure
+```
+Base.astro          → <html>, <head>, named slots: announcement-bar, header, footer
+  └─ Page.astro     → adds Header + Footer + Google Analytics; used by all pages
+       └─ Post.astro → wraps blog posts; reads MDX frontmatter (title, publishDate, featuredImage, tags)
+```
 
-#### Key Directories
-- `src/components/` - Reusable Astro components organized by category
-- `src/layouts/` - Base layouts (Base.astro, Page.astro, Post.astro)  
-- `src/pages/` - File-based routing with Astro pages
-- `src/config/` - Site configuration (settings, navigation, footer)
-- `src/styles/` - CSS files including the theme system
-- `amplify/` - AWS Amplify backend configuration
+All pages use `Page.astro` (not `Base.astro` directly).
 
-#### Component Organization
-Components are exported from `src/components/odyssey-theme.js` and organized into:
-- **Core**: Header, Footer, Container, SkipLink, etc.
-- **Sections**: TextSection, HeroSection, StickyTextImageSection, etc. 
-- **Cards**: FeatureCard and other card components
-- **Forms**: ContactForm, FormInput, FormTextarea, etc.
-- **Blog**: BlogPostsList, BlogPostPreview
-- **Buttons**: Reusable Button component
+### Component Barrel
 
-### TypeScript Path Aliases
-Configure in `tsconfig.json`:
+All reusable components are exported from `src/components/odyssey-theme.js`. Import them via the `@components` alias:
+
+```js
+import { Button, CtaCardSection, CustomerQuoteSection } from '@components/odyssey-theme';
+```
+
+**Exception**: `ContactForm` is **not** in the barrel — import it directly:
+```js
+import ContactForm from '../../components/forms/ContactForm.astro';
+```
+
+### TypeScript Path Aliases (`tsconfig.json`)
+
 - `@config` → `src/config/*`
-- `@components` → `src/components/*` 
+- `@components` → `src/components/*`
 - `@layouts` → `src/layouts/*`
 - `@utils` → `src/utils/*`
 - `@styles` → `src/styles/*`
-- `@pages` → `src/pages/*`
 - `@assets` → `src/assets/*`
 - `@icons` → `src/icons/*`
 
-### Theming System
-
-The theme uses CSS custom properties defined in `src/styles/theme.css`:
-- **Colors**: Primary, background, surface variants with corresponding text colors
-- **Layout**: Container widths, grid gaps, section margins
-- **Typography**: Font families for serif and sans-serif
-- **Shapes**: Border radius values for consistent styling
-- **Transitions**: Consistent animation timing
-
-Theme switching can be enabled via `src/config/settings.js` (`enableThemeSwitcher: true`).
-
 ### Site Configuration
 
-Key settings in `src/config/settings.js`:
-- Site title, description, and URL
-- Business name for branding
-- Theme switcher toggle
-- Little Sticks branding toggle
+| File | Purpose |
+|------|---------|
+| `src/config/settings.js` | Site title, URL, business name, theme switcher toggle |
+| `src/config/nav.js` | Top navigation links (array of `{title, slug}`) |
+| `src/config/footer.js` | Footer link lists and social links |
 
-Navigation configured in `src/config/nav.js` with title/slug pairs.
+Theme switcher is currently **disabled** (`enableThemeSwitcher: false`).
+
+### Theming
+
+CSS custom properties in `src/styles/theme.css`. Active palette is a luxury bridal theme:
+
+- `--theme-primary`: `#1a1a1a` (near-black)
+- `--theme-accent`: `#C4A484` (warm champagne/gold)
+- `--theme-bg`: `#FFFAF7` (warm white)
+- Fonts: **Playfair Display** (display), **Cormorant Garamond** (serif), **Work Sans** (sans)
+- Additional font `Italianno` (cursive) is hardcoded in `index.astro` for pricing package names — not a theme variable
+
+Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`.
+
+### Active Pages / Routes
+
+| Route | File | Notes |
+|-------|------|-------|
+| `/` | `src/pages/index.astro` | Portfolio videos + wedding & general events pricing cards |
+| `/company/about` | `src/pages/company/about.astro` | |
+| `/company/contact` | `src/pages/company/contact.astro` | Uses `ContactForm` + S3-hosted video |
+| `/company/legal` | `src/pages/company/legal.astro` | |
+| `/pricing-pdf` | `src/pages/pricing-pdf.astro` | Standalone (no layout), print-ready pricing sheet |
+| `/blog` | `src/pages/blog/index.astro` | Disabled in nav; posts exist in `src/pages/blog/posts/` |
+| `/blog/tags/[slug]` | `src/pages/blog/tags/[slug].astro` | |
+
+### Media & Assets
+
+- Portfolio/contact videos are hosted on **AWS S3**: `https://btsbs.s3.us-east-2.amazonaws.com/`
+- Static images in `public/assets/images/`
+- Videos in `index.astro` use `controlslist="nodownload"` to discourage downloading
 
 ### Content Management
 
-- **Blog posts**: Located in `src/pages/blog/posts/` as `.mdx` files
-- **Static pages**: Regular `.astro` files in `src/pages/` 
-- **Images**: Stored in `public/assets/images/` with organized subdirectories
+- **Blog posts**: `src/pages/blog/posts/*.mdx` — frontmatter fields: `layout`, `title`, `description`, `publishDate`, `featuredImage`, `excerpt`, `tags`
+- Blog is navigateable but not linked in the current nav/footer configuration
 
-### Deployment Configuration
+### Deployment
 
-- **Netlify**: Configured via `netlify.toml` (publish: `dist/`, build: `npm run build`)
-- **Firebase**: Basic `firebase.json` present
-- **AWS Amplify**: Backend resources defined in `amplify/` directory
-
-## Development Guidelines
-
-- Use existing component patterns when adding new functionality
-- Follow the established theming system for consistent styling
-- Leverage TypeScript path aliases for clean imports
-- MDX files support both Markdown and React/Astro components
-- Test theme switching if enabled in settings
-- Consider mobile responsiveness for all new components
+- **Netlify**: `netlify.toml` (publish: `dist/`, build: `npm run build`)
+- **Firebase**: `firebase.json` present but minimal
+- **AWS Amplify**: Backend resources in `amplify/`
