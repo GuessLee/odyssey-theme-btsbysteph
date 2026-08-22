@@ -24,7 +24,8 @@
   --blog-font-script: 'Italianno', cursive;
 }
 
-.blog-warm-scope :global(.btn) {
+.blog-warm-scope a.btn,
+.blog-warm-scope button.btn {
   border-radius: var(--blog-btn-radius);
 }
 
