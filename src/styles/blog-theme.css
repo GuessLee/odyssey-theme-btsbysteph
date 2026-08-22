@@ -1,0 +1,62 @@
+/*
+  BTS By Steph blog: Direction 3 "Warm Film / Golden Hour".
+
+  Scoped to blog surfaces only (imported by src/layouts/Post.astro and
+  src/pages/blog/index.astro) so the homepage/pricing pages keep their
+  current Direction 1 look (sharp-edge --theme-button-border-radius: 0,
+  no image overlays). This is a deliberate scoping choice, not an
+  oversight — see PR description for the sitewide-vs-blog-only tradeoff.
+*/
+:root {
+  --blog-warm-bg: #fff7ec;
+  --blog-surface: #fdefdc;
+  --blog-surface-2: #fbe4c6;
+  --blog-highlight: #d9a54b;
+  --blog-highlight-deep: #b5772e;
+  --blog-radius: 1.25rem;
+  --blog-btn-radius: 999px;
+  --blog-overlay: linear-gradient(
+    155deg,
+    rgba(247, 198, 119, 0.24),
+    transparent 55%,
+    rgba(201, 121, 60, 0.16)
+  );
+  --blog-font-script: 'Italianno', cursive;
+}
+
+.blog-warm-scope :global(.btn) {
+  border-radius: var(--blog-btn-radius);
+}
+
+.blog-warm-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--blog-radius);
+}
+
+.blog-warm-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--blog-overlay);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.blog-warm-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-pill-tag {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blog-highlight-deep);
+  background: var(--blog-surface-2);
+  border-radius: var(--blog-btn-radius);
+  padding: 0.25rem 0.9rem;
+}
