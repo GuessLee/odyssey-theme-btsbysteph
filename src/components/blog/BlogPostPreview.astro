@@ -4,21 +4,24 @@ const {post} = Astro.props;
 
 <li class="blog-post__preview">
   <a href={post.href}>
-    <img src={post.featuredImage} />
+    <div class="blog-warm-image blog-post__preview-img">
+      <img src={post.featuredImage} alt={post.title} />
+    </div>
     <h3>{post.title}</h3>
     {post.excerpt && <p>{post.excerpt}</p>}
+    <span class="blog-post__preview-cta">Read the story &rarr;</span>
   </a>
 </li>
 
 
 <style>
-.blog-post__preview img {
+.blog-post__preview-img {
   margin-bottom: 1rem;
-  border-radius: calc(var(--theme-shape-radius) /2);
-  transition: border-radius var(--theme-transition);
+  aspect-ratio: 4 / 3;
+  transition: transform var(--theme-transition);
 }
-.blog-post__preview:hover img {
-  border-radius: var(--theme-shape-radius);
+.blog-post__preview:hover .blog-post__preview-img {
+  transform: scale(1.01);
 }
 .blog-post__preview a {
   display: block;
@@ -26,6 +29,14 @@ const {post} = Astro.props;
   color: inherit;
 }
 .blog-post__preview h3 {
-  margin: 0;
+  margin: 0 0 0.25rem;
 }
-</style> 
+.blog-post__preview-cta {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: var(--theme-font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--blog-highlight-deep);
+}
+</style>

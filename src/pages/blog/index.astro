@@ -1,15 +1,35 @@
 ---
+import { parse, isBefore } from 'date-fns';
 import {
 	Container,
 	TextCardSection,
+	BlogPostsList,
 } from '@components/odyssey-theme';
 import Layout from '../../layouts/Page.astro';
 import NewsletterForm from '../../components/forms/NewsletterForm.astro';
 import '@styles/blog-theme.css';
 
+const posts = await Astro.glob('./posts/*.mdx').then(posts =>
+	posts
+		.map(({ frontmatter, url }) => ({
+			title: frontmatter.title,
+			description: frontmatter.description,
+			authors: frontmatter.authors,
+			publishDate: parse(frontmatter.publishDate, 'MMMM d, yyyy', new Date()),
+			featuredImage: frontmatter.featuredImage,
+			excerpt: frontmatter.excerpt,
+			href: url,
+		}))
+		.sort((a, b) => {
+			if (isBefore(a.publishDate, b.publishDate)) return 1;
+			if (isBefore(b.publishDate, a.publishDate)) return -1;
+			return 0;
+		})
+);
+
 const seo = {
 	title: 'Journal | BTS By Steph',
-	description: 'The BTS By Steph journal is on its way — real wedding stories, behind-the-scenes videography tips, and what to expect on your day.',
+	description: 'Real wedding stories, behind-the-scenes videography tips, and what to expect on your day.',
 };
 ---
 
@@ -17,21 +37,25 @@ const seo = {
 	<div class="blog-warm-scope">
 		<TextCardSection>
 			<Container narrow>
-				<span class="coming-soon__eyebrow">Coming Soon</span>
+				<span class="journal__eyebrow">BTS By Steph</span>
 				<h1>The <em>Journal</em></h1>
 				<p>
-					Real wedding stories, behind-the-scenes videography tips, and what to
-					expect on your day — the journal is in the works. Drop your email
-					below and be the first to know when it goes live.
+					Real wedding stories, behind-the-scenes videography tips, and what
+					to expect on your day. New here? Get new posts in your inbox.
 				</p>
 				<NewsletterForm />
 			</Container>
 		</TextCardSection>
+		<section class="blog-posts-list__section">
+			<Container narrow>
+				<BlogPostsList posts={posts} />
+			</Container>
+		</section>
 	</div>
 </Layout>
 
 <style>
-	.coming-soon__eyebrow {
+	.journal__eyebrow {
 		display: inline-block;
 		margin-bottom: 0.75rem;
 		font-family: var(--theme-font-family-sans);
@@ -41,19 +65,12 @@ const seo = {
 		letter-spacing: 0.2em;
 		color: var(--blog-highlight-deep);
 	}
-	.coming-soon__eyebrow::before {
-		content: '';
-		display: inline-block;
-		width: 8px;
-		height: 8px;
-		margin-right: 0.5rem;
-		border-radius: 50%;
-		background: var(--blog-highlight);
-		vertical-align: middle;
-	}
 	h1 em {
 		font-style: normal;
 		font-family: var(--blog-font-script);
 		color: var(--blog-highlight-deep);
+	}
+	.blog-posts-list__section {
+		margin: var(--section-margin) auto;
 	}
 </style>
