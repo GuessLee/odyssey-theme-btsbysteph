@@ -39,10 +39,15 @@ All pages use `Page.astro` (not `Base.astro` directly).
 All reusable components are exported from `src/components/odyssey-theme.js`. Import them via the `@components` alias:
 
 ```js
-import { Button, CtaCardSection, CustomerQuoteSection } from '@components/odyssey-theme';
+import {
+	Button,
+	CtaCardSection,
+	CustomerQuoteSection,
+} from '@components/odyssey-theme';
 ```
 
 **Exception**: `ContactForm` is **not** in the barrel — import it directly:
+
 ```js
 import ContactForm from '../../components/forms/ContactForm.astro';
 ```
@@ -62,11 +67,11 @@ import ContactForm from '../../components/forms/ContactForm.astro';
 
 ### Site Configuration
 
-| File | Purpose |
-|------|---------|
+| File                     | Purpose                                               |
+| ------------------------ | ----------------------------------------------------- |
 | `src/config/settings.js` | Site title, URL, business name, theme switcher toggle |
-| `src/config/nav.js` | Top navigation links (array of `{title, slug}`) |
-| `src/config/footer.js` | Footer link lists and social links |
+| `src/config/nav.js`      | Top navigation links (array of `{title, slug}`)       |
+| `src/config/footer.js`   | Footer link lists and social links                    |
 
 Theme switcher is currently **disabled** (`enableThemeSwitcher: false`).
 
@@ -86,15 +91,15 @@ Blog pages layer `src/styles/blog-theme.css` on top (Direction 3 "Warm Film / Go
 
 ### Active Pages / Routes
 
-| Route | File | Notes |
-|-------|------|-------|
-| `/` | `src/pages/index.astro` | Portfolio videos + wedding & general events pricing cards |
-| `/company/about` | `src/pages/company/about.astro` | |
-| `/company/contact` | `src/pages/company/contact.astro` | Uses `ContactForm` + S3-hosted video |
-| `/company/legal` | `src/pages/company/legal.astro` | |
-| `/pricing-pdf` | `src/pages/pricing-pdf.astro` | Standalone (no layout), print-ready pricing sheet |
-| `/blog` | `src/pages/blog/index.astro` | Blog listing; posts in `src/pages/blog/posts/` |
-| `/blog/tags/[slug]` | `src/pages/blog/tags/[slug].astro` | |
+| Route               | File                               | Notes                                                     |
+| ------------------- | ---------------------------------- | --------------------------------------------------------- |
+| `/`                 | `src/pages/index.astro`            | Portfolio videos + wedding & general events pricing cards |
+| `/company/about`    | `src/pages/company/about.astro`    |                                                           |
+| `/company/contact`  | `src/pages/company/contact.astro`  | Uses `ContactForm` + S3-hosted video                      |
+| `/company/legal`    | `src/pages/company/legal.astro`    |                                                           |
+| `/pricing-pdf`      | `src/pages/pricing-pdf.astro`      | Standalone (no layout), print-ready pricing sheet         |
+| `/blog`             | `src/pages/blog/index.astro`       | Blog listing; posts in `src/pages/blog/posts/`            |
+| `/blog/tags/[slug]` | `src/pages/blog/tags/[slug].astro` |                                                           |
 
 ### Media & Assets
 
@@ -112,3 +117,4 @@ Blog pages layer `src/styles/blog-theme.css` on top (Direction 3 "Warm Film / Go
 - **Netlify**: `netlify.toml` (publish: `dist/`, build: `npm run build`)
 - **Firebase**: `firebase.json` present but minimal
 - **AWS Amplify**: Backend resources in `amplify/`
+- **CI**: `.github/workflows/ci.yml` runs `npm ci` + `npm run build` on push/PR to `main`
