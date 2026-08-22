@@ -7,17 +7,26 @@ const {post} = Astro.props;
     <div class="blog-warm-image blog-post__preview-img">
       <img src={post.featuredImage} alt={post.title} />
     </div>
-    <h3>{post.title}</h3>
-    {post.excerpt && <p>{post.excerpt}</p>}
-    <span class="blog-post__preview-cta">Read the story &rarr;</span>
+    <div class="blog-post__preview-body">
+      <h3>{post.title}</h3>
+      {post.excerpt && <p>{post.excerpt}</p>}
+      <span class="blog-post__preview-cta">Read the story &rarr;</span>
+    </div>
   </a>
 </li>
 
 
 <style>
+.blog-post__preview {
+  background: var(--blog-surface);
+  border-radius: var(--blog-radius);
+  box-shadow: var(--blog-card-shadow);
+  overflow: hidden;
+}
 .blog-post__preview-img {
-  margin-bottom: 1rem;
   aspect-ratio: 4 / 3;
+  border-radius: 0;
+  box-shadow: none;
   transition: transform var(--theme-transition);
 }
 .blog-post__preview:hover .blog-post__preview-img {
@@ -28,8 +37,14 @@ const {post} = Astro.props;
   text-decoration: none;
   color: inherit;
 }
+.blog-post__preview-body {
+  padding: 1rem 1.25rem 1.25rem;
+}
 .blog-post__preview h3 {
-  margin: 0 0 0.25rem;
+  margin: 0 0 0.5rem;
+}
+.blog-post__preview p {
+  color: var(--theme-on-surface-1);
 }
 .blog-post__preview-cta {
   display: inline-block;
@@ -37,6 +52,6 @@ const {post} = Astro.props;
   font-family: var(--theme-font-family-sans);
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: var(--blog-highlight-deep);
+  color: var(--blog-accent-text);
 }
 </style>
