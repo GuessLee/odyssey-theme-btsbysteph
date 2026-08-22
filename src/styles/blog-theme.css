@@ -1,44 +1,37 @@
 /*
   BTS By Steph blog: Direction 3 "Warm Film / Golden Hour".
 
-  Scoped to blog surfaces only (imported by src/layouts/Post.astro and
-  src/pages/blog/index.astro) so the homepage/pricing pages keep their
-  current Direction 1 look (sharp-edge --theme-button-border-radius: 0,
-  no image overlays). This is a deliberate scoping choice, not an
-  oversight — see PR description for the sitewide-vs-blog-only tradeoff.
+  Sitewide as of 2026-08-22 -- the warm palette, AA-safe accent text,
+  pill button radius, and image glow shadow all now live as --theme-*
+  tokens in src/styles/theme.css. The --blog-* tokens below are kept as
+  blog-scoped aliases only where blog components (BlogPostPreview,
+  blog-pill-tag) still reference the shorter --blog-* names; the
+  .blog-warm-scope button-radius and h3-font overrides that used to make
+  this file diverge from the rest of the site were removed as redundant
+  once those became the sitewide default (see theme.css / Button.astro).
 
-  Revised 2026-08-22 per captain-approved design critique on the first
-  pass: warmth now lives on imagery/accents only, not page chrome (no
-  page-level beige tint); the accent gold has a separate AA-safe text
-  variant since the original single gold value failed 4.5:1 on small
-  text (~3.6:1 measured); the hero/card image treatment no longer tints
-  the photo itself (a flat overlay was pushing skin tones/whites
-  orange) -- it's a warm shadow lift around the image instead; cards
-  get a real (not invisible) shadow; spacing values below sit on a
-  4px/8px grid.
+  Original captain-approved design critique that shaped these values
+  (warmth on imagery only, not page chrome; no flat photo-tinting
+  overlay; real card shadows; 4px/8px spacing) is now applied
+  sitewide, not just here.
 */
 :root {
   --blog-surface: #fffdfa; /* cards: white/barely-tinted, not beige */
   --blog-surface-2: #fbe4c6; /* small saturated fills only (pill bg) */
-  --blog-highlight: #d9a54b; /* decorative/large-scale gold only */
-  --blog-highlight-deep: #b5772e; /* decorative/large-scale gold only */
-  --blog-accent-text: #7a4d18; /* AA-safe (~6:1 on white, ~5.9:1 on --blog-surface-2) for small text */
-  --blog-radius: 1.25rem;
-  --blog-btn-radius: 999px;
-  --blog-card-shadow: 0 12px 28px -16px rgba(26, 26, 26, 0.22);
-  --blog-image-glow: 0 14px 32px -14px rgba(181, 119, 46, 0.35);
-  --blog-font-script: 'Italianno', cursive;
+  --blog-highlight: var(--theme-highlight);
+  --blog-highlight-deep: var(--theme-highlight-deep);
+  --blog-accent-text: var(--theme-accent-text);
+  --blog-radius: var(--theme-radius-lg);
+  --blog-btn-radius: var(--theme-button-border-radius);
+  --blog-card-shadow: var(--theme-card-shadow);
+  --blog-image-glow: var(--theme-image-glow);
+  --blog-font-script: var(--theme-font-script);
 }
 
-.blog-warm-scope a.btn,
-.blog-warm-scope button.btn {
-  border-radius: var(--blog-btn-radius);
-}
-
-/* Headline duty is Playfair-only within the blog (no Playfair/Cormorant
+/* Post-card titles keep headline duty Playfair-only (no Playfair/Cormorant
    pairing doing the same job) -- Cormorant stays for body/quote/date
-   accents, matching the rest of the site. */
-.blog-warm-scope h3 {
+   accents elsewhere, matching the rest of the site. */
+.blog-post__preview h3 {
   font-family: var(--theme-font-family-display);
 }
 

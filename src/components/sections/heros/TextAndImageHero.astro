@@ -55,7 +55,7 @@ const { reversed } = Astro.props;
 		font-size: var(--font-size-md);
 		font-weight: 400;
 		font-style: italic;
-		color: var(--theme-accent);
+		color: var(--theme-accent-text);
 		margin-bottom: 1.5rem;
 	}
 
@@ -91,7 +91,8 @@ const { reversed } = Astro.props;
 		height: 100%;
 		max-height: 75vh;
 		object-fit: cover;
-		border-radius: 0;
+		border-radius: var(--theme-radius-lg);
+		box-shadow: var(--theme-image-glow);
 		transition: transform var(--theme-transition-slow);
 	}
 

@@ -100,7 +100,7 @@ const seo = {
 			font-family: var(--theme-font-family-serif);
 			font-size: var(--font-size-md);
 			font-style: italic;
-			color: var(--theme-accent);
+			color: var(--theme-accent-text);
 		}
 
 		.video-container {
@@ -124,13 +124,13 @@ const seo = {
 			width: 100%;
 			height: 500px;
 			object-fit: cover;
-			border-radius: 0;
-			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-image-glow);
 			transition: box-shadow var(--theme-transition);
 		}
 
 		.video-wrapper:hover video {
-			box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+			box-shadow: 0 20px 44px -14px rgba(181, 119, 46, 0.45);
 		}
 
 		@media (max-width: 1024px) {
@@ -173,7 +173,7 @@ const seo = {
 			font-family: var(--theme-font-family-serif);
 			font-size: var(--font-size-md);
 			font-style: italic;
-			color: var(--theme-accent);
+			color: var(--theme-accent-text);
 		}
 
 		.pricing-cards {
@@ -187,15 +187,16 @@ const seo = {
 			position: relative;
 			background: var(--theme-surface-1);
 			border: 1px solid rgba(196, 164, 132, 0.15);
+			border-radius: var(--theme-radius-lg);
 			padding: 2.5rem 2rem;
 			text-align: center;
-			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+			box-shadow: var(--theme-card-shadow);
 			transition: transform var(--theme-transition), box-shadow var(--theme-transition);
 		}
 
 		.pricing-card:hover {
 			transform: translateY(-10px);
-			box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+			box-shadow: 0 20px 44px -14px rgba(26, 26, 26, 0.3);
 		}
 
 		.pricing-card.featured {
@@ -224,6 +225,7 @@ const seo = {
 			letter-spacing: 0.1em;
 			text-transform: uppercase;
 			padding: 0.4rem 1.5rem;
+			border-radius: var(--theme-button-border-radius);
 		}
 
 		.card-top {
@@ -300,7 +302,8 @@ const seo = {
 			text-decoration: none;
 			padding: 0.9rem 2.5rem;
 			border: 2px solid var(--theme-accent);
-			color: var(--theme-accent);
+			border-radius: var(--theme-button-border-radius);
+			color: var(--theme-accent-text);
 			background: transparent;
 			transition: all var(--theme-transition);
 		}
