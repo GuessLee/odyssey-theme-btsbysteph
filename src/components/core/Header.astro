@@ -1,6 +1,9 @@
 ---
 import { Icon } from 'astro-icon/components'
 const { navData, rightMenu } = Astro.props;
+const currentPath = Astro.url.pathname;
+const isCurrent = (slug) =>
+	slug === '/' ? currentPath === '/' : currentPath.startsWith(slug);
 ---
 
 <script type="module">
@@ -59,7 +62,7 @@ const { navData, rightMenu } = Astro.props;
       {navData && <nav>
         <ul>
           {navData.map(navItem => (
-            (<li><a href={navItem.slug} >{navItem.title}</a></li>)
+            (<li><a href={navItem.slug} class={isCurrent(navItem.slug) ? 'is-current' : ''} aria-current={isCurrent(navItem.slug) ? 'page' : undefined}>{navItem.title}</a></li>)
           ))}
         </ul>
       </nav>}
@@ -74,13 +77,15 @@ const { navData, rightMenu } = Astro.props;
 <style>
   header {
     width: 100%;
-    padding: 1.25rem 2rem;
+    padding: var(--space-3) var(--space-4);
     min-height: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--theme-bg);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: color-mix(in srgb, var(--theme-bg) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(196, 164, 132, 0.25);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -142,7 +147,7 @@ const { navData, rightMenu } = Astro.props;
     padding: 0;
     list-style: none;
     display: flex;
-    gap: 2.5rem;
+    gap: var(--space-5);
   }
 
   nav ul li a {
@@ -150,11 +155,11 @@ const { navData, rightMenu } = Astro.props;
     color: var(--theme-on-bg);
     font-family: var(--theme-font-family-sans);
     font-size: var(--font-size-sm);
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     position: relative;
-    padding: 0.25rem 0;
+    padding: 0.35rem 0;
     transition: color var(--theme-transition);
   }
 
@@ -164,16 +169,18 @@ const { navData, rightMenu } = Astro.props;
     bottom: 0;
     left: 0;
     width: 0;
-    height: 1px;
-    background-color: var(--theme-accent);
+    height: 1.5px;
+    background-color: var(--theme-highlight-deep);
     transition: width var(--theme-transition);
   }
 
-  nav ul li a:hover {
-    color: var(--theme-accent);
+  nav ul li a:hover,
+  nav ul li a.is-current {
+    color: var(--theme-accent-text);
   }
 
-  nav ul li a:hover::after {
+  nav ul li a:hover::after,
+  nav ul li a.is-current::after {
     width: 100%;
   }
 

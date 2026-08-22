@@ -1,11 +1,30 @@
 ---
+const { onDark } = Astro.props;
 ---
 
-<img src="/favicon.png" alt="Logo" class="odyssey-logo" />
+<span class={`brand-wordmark ${onDark ? 'brand-wordmark--on-dark' : ''}`}>BTS <em>by Steph</em></span>
 
 <style>
-  .odyssey-logo {
-    width: auto;
-    height: 10rem; /* Adjust the height as needed */
+  .brand-wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    font-family: var(--theme-font-family-display);
+    font-weight: 600;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    color: inherit;
+  }
+
+  .brand-wordmark em {
+    font-style: normal;
+    font-family: var(--theme-font-script);
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--theme-highlight-deep);
+  }
+
+  .brand-wordmark--on-dark em {
+    color: var(--theme-highlight);
   }
 </style>
