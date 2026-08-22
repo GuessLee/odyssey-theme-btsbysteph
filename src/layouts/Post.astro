@@ -21,7 +21,7 @@ const seo = {
 };
 ---
 <Layout seo={seo}>
-  <div class="blog-warm-scope post-header__container">
+  <div class="post-header__container">
     <ul class="post-tags__list">
       {allTagsData.map(tag => (
         <li class="post-tags__tag blog-pill-tag">
@@ -41,7 +41,7 @@ const seo = {
       </div>
     )}
   </div>
-  <div class="blog-warm-scope">
+  <div>
     <Container narrow>
       <article id="article">
           <slot></slot>

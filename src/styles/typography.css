@@ -106,9 +106,9 @@ blockquote {
   color: var(--theme-on-bg);
 }
 
-/* Accent text utility */
+/* Accent text utility - AA-safe variant, not the decorative --theme-accent */
 .text-accent {
-  color: var(--theme-accent);
+  color: var(--theme-accent-text);
 }
 
 /* Elegant underline for headings */
@@ -137,6 +137,6 @@ blockquote {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: var(--theme-accent);
+  color: var(--theme-accent-text);
   margin-bottom: 0.75rem;
 }

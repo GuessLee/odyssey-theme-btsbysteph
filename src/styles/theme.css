@@ -21,9 +21,18 @@
 	--theme-surface-3: #1a1a1a;
 	--theme-on-surface-3: #ffffff;
 
-	/* Theme Shapes */
+	/* Theme Shapes - Warm Film / Golden Hour (sitewide, matches blog direction) */
 	--theme-shape-radius: 0.5rem;
-	--theme-button-border-radius: 0;
+	--theme-radius-lg: 1.25rem;
+	--theme-button-border-radius: 999px;
+
+	/* Warm highlight palette - decorative/large-scale gold only, not page chrome */
+	--theme-highlight: #d9a54b;
+	--theme-highlight-deep: #b5772e;
+	--theme-accent-text: #7a4d18; /* AA-safe (~6:1 on white) for small/body text; --theme-accent fails AA for text */
+	--theme-card-shadow: 0 12px 28px -16px rgba(26, 26, 26, 0.22);
+	--theme-image-glow: 0 14px 32px -14px rgba(181, 119, 46, 0.35);
+	--theme-font-script: 'Italianno', cursive;
 
 	/* Theme Transition - Luxury feel with slower animations */
 	--theme-transition: 0.4s ease;
@@ -64,7 +73,7 @@
 	--theme-on-surface-2: #2C2C2C;
 
 	--theme-shape-radius: 0.5rem;
-	--theme-button-border-radius: 0;
+	--theme-button-border-radius: 999px;
 
 	--theme-transition: 0.4s ease;
 
