@@ -28,7 +28,8 @@ const posts = Object.values(postModules)
 
 const seo = {
 	title: 'Journal | BTS By Steph',
-	description: 'Real wedding stories, behind-the-scenes videography tips, and what to expect on your day.',
+	description:
+		'Real wedding stories, behind-the-scenes videography tips, and what to expect on your day.',
 };
 ---
 
@@ -39,15 +40,15 @@ const seo = {
 				<span class="journal__eyebrow">BTS By Steph</span>
 				<h1>The <em>Journal</em></h1>
 				<p>
-					Real wedding stories, behind-the-scenes videography tips, and what
-					to expect on your day. New here? Get new posts in your inbox.
+					Real wedding stories, behind-the-scenes videography tips, and what to
+					expect on your day. New here? Get new posts in your inbox.
 				</p>
 				<NewsletterForm />
 			</Container>
 		</TextCardSection>
 		<section class="blog-posts-list__section">
 			<Container narrow>
-				<BlogPostsList posts={posts} />
+				<BlogPostsList {posts} />
 			</Container>
 		</section>
 	</div>

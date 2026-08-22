@@ -16,7 +16,7 @@ This is the Odyssey Theme customized for **BTS By Steph** — a wedding content 
 ## Framework & Tech Stack
 
 - **Astro 5** (SSG) with TypeScript path aliases
-- **MDX** for blog posts (blog is currently disabled in nav/footer but posts exist)
+- **MDX** for blog posts (linked in nav/footer as `/blog`)
 - **Lit** web components via `@astrojs/lit`
 - **astro-icon** with `@iconify-json/ic` and `@iconify-json/mdi` icon sets
 - **AWS Amplify** backend (auth/data) — config in `amplify/`
@@ -56,6 +56,9 @@ import ContactForm from '../../components/forms/ContactForm.astro';
 - `@styles` → `src/styles/*`
 - `@assets` → `src/assets/*`
 - `@icons` → `src/icons/*`
+- `@lib` → `src/lib/*`
+- `@pages` → `src/pages/*`
+- `@data` → `src/data/*`
 
 ### Site Configuration
 
@@ -79,6 +82,8 @@ CSS custom properties in `src/styles/theme.css`. Active palette is a luxury brid
 
 Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`.
 
+Blog pages layer `src/styles/blog-theme.css` on top (Direction 3 "Warm Film / Golden Hour" tokens: `--blog-*` custom properties, incl. `Italianno` via `--blog-font-script`). Scoped to `.blog-warm-scope` so it doesn't affect the homepage/pricing sharp-edge button style — see the file's header comment for the tradeoff rationale.
+
 ### Active Pages / Routes
 
 | Route | File | Notes |
@@ -88,7 +93,7 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 | `/company/contact` | `src/pages/company/contact.astro` | Uses `ContactForm` + S3-hosted video |
 | `/company/legal` | `src/pages/company/legal.astro` | |
 | `/pricing-pdf` | `src/pages/pricing-pdf.astro` | Standalone (no layout), print-ready pricing sheet |
-| `/blog` | `src/pages/blog/index.astro` | Disabled in nav; posts exist in `src/pages/blog/posts/` |
+| `/blog` | `src/pages/blog/index.astro` | Blog listing; posts in `src/pages/blog/posts/` |
 | `/blog/tags/[slug]` | `src/pages/blog/tags/[slug].astro` | |
 
 ### Media & Assets
@@ -100,7 +105,7 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 ### Content Management
 
 - **Blog posts**: `src/pages/blog/posts/*.mdx` — frontmatter fields: `layout`, `title`, `description`, `publishDate`, `featuredImage`, `excerpt`, `tags`
-- Blog is navigateable but not linked in the current nav/footer configuration
+- Blog is linked in nav (`src/config/nav.js`) and footer (`src/config/footer.js`)
 
 ### Deployment
 
