@@ -125,6 +125,19 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 - **AWS Amplify**: Backend resources in `amplify/`
 - **CI**: `.github/workflows/ci.yml` runs `npm ci` + `npm run build` on push/PR to `main`
 
+## Branching & Deploy Strategy (standing rule — read before opening any PR)
+
+Two live deployments watch this repo via VCS auto-deploy, not just CI:
+
+- `develop` → `https://develop.d2kzeu15mx2xps.amplifyapp.com` — staging.
+- `main` → `https://btsbs.com` — production, live to real customers.
+
+**Every PR targets `develop`. Never `main` directly, no exceptions** — not for docs, not for a one-line fix, regardless of how small or confident the change is.
+
+`develop` → `main` promotion is a separate, deliberate PR that only happens after a human has reviewed the actual live staging URL above (not a local build, not a description of the change) and explicitly approved it. This promotion PR is the only path that touches production.
+
+A change is not done when CI passes or the local build works — it is done when it is confirmed correct on the real staging deployment. If anything on staging doesn't look right, keep iterating with new commits/PRs against `develop` until it actually is right before asking for promotion.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
