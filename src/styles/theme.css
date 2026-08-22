@@ -50,6 +50,7 @@
 	--space-9: 8rem; /* 128px */
 
 	/* Theme Layout */
+	--navbar-height: 77px; /* actual sticky header height, referenced by hero/contact min-height calcs */
 	--section-margin: var(--space-8);
 	--theme-grid-gap: 2rem;
 	--container-max-width: 1400px;
