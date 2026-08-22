@@ -1,0 +1,69 @@
+/*
+  BTS By Steph blog: Direction 3 "Warm Film / Golden Hour".
+
+  Scoped to blog surfaces only (imported by src/layouts/Post.astro and
+  src/pages/blog/index.astro) so the homepage/pricing pages keep their
+  current Direction 1 look (sharp-edge --theme-button-border-radius: 0,
+  no image overlays). This is a deliberate scoping choice, not an
+  oversight — see PR description for the sitewide-vs-blog-only tradeoff.
+
+  Revised 2026-08-22 per captain-approved design critique on the first
+  pass: warmth now lives on imagery/accents only, not page chrome (no
+  page-level beige tint); the accent gold has a separate AA-safe text
+  variant since the original single gold value failed 4.5:1 on small
+  text (~3.6:1 measured); the hero/card image treatment no longer tints
+  the photo itself (a flat overlay was pushing skin tones/whites
+  orange) -- it's a warm shadow lift around the image instead; cards
+  get a real (not invisible) shadow; spacing values below sit on a
+  4px/8px grid.
+*/
+:root {
+  --blog-surface: #fffdfa; /* cards: white/barely-tinted, not beige */
+  --blog-surface-2: #fbe4c6; /* small saturated fills only (pill bg) */
+  --blog-highlight: #d9a54b; /* decorative/large-scale gold only */
+  --blog-highlight-deep: #b5772e; /* decorative/large-scale gold only */
+  --blog-accent-text: #7a4d18; /* AA-safe (~6:1 on white, ~5.9:1 on --blog-surface-2) for small text */
+  --blog-radius: 1.25rem;
+  --blog-btn-radius: 999px;
+  --blog-card-shadow: 0 12px 28px -16px rgba(26, 26, 26, 0.22);
+  --blog-image-glow: 0 14px 32px -14px rgba(181, 119, 46, 0.35);
+  --blog-font-script: 'Italianno', cursive;
+}
+
+.blog-warm-scope a.btn,
+.blog-warm-scope button.btn {
+  border-radius: var(--blog-btn-radius);
+}
+
+/* Headline duty is Playfair-only within the blog (no Playfair/Cormorant
+   pairing doing the same job) -- Cormorant stays for body/quote/date
+   accents, matching the rest of the site. */
+.blog-warm-scope h3 {
+  font-family: var(--theme-font-family-display);
+}
+
+.blog-warm-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--blog-radius);
+  box-shadow: var(--blog-image-glow);
+}
+
+.blog-warm-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+}
+
+.blog-pill-tag {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blog-accent-text);
+  background: var(--blog-surface-2);
+  border-radius: var(--blog-btn-radius);
+  padding: 0.25rem 0.75rem;
+}

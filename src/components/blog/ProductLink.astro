@@ -1,0 +1,80 @@
+---
+// Build-time-only product reference for MDX blog posts, e.g.:
+//   <ProductLink ref="creator-ops:42" />
+// `ref` is `creator-ops:<product id>` -- creator-ops keys products by a
+// plain NocoDB integer row id (no slug/ASIN column on Products; ASIN is a
+// per-platform attribute on a separate Links table). It's looked up in
+// src/data/products.json, a manually-maintained allowlist, not a live
+// catalog sync -- see report.md section 2 for the full design and why:
+// no runtime coupling to creator-ops/NocoDB uptime, and no live product
+// browsing from this repo. Update products.json by hand when a post
+// needs to reference a new creator-ops product.
+//
+// Fails the build if `ref` isn't in the allowlist, on purpose: a silently
+// broken product card is worse than a build failure an author has to fix.
+import products from '@data/products.json';
+
+const { ref, context } = Astro.props;
+const product = products[ref];
+
+if (!product) {
+	throw new Error(
+		`<ProductLink ref="${ref}"> has no matching entry in src/data/products.json. Add it there before referencing it from a post.`
+	);
+}
+---
+
+<a class="product-link" href={product.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored">
+	<img class="product-link__img" src={product.image} alt={product.name} loading="lazy" />
+	<span class="product-link__body">
+		<span class="product-link__name">{product.name}</span>
+		{context && <span class="product-link__context">{context}</span>}
+		<span class="product-link__price">{product.price}</span>
+	</span>
+</a>
+
+<style>
+	.product-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		max-width: 22rem;
+		margin: 0.5rem 0;
+		padding: 0.5rem 0.75rem;
+		background-color: var(--theme-surface-1);
+		color: var(--theme-on-surface-1);
+		border-radius: var(--theme-shape-radius);
+		text-decoration: none;
+		transition: transform var(--theme-transition);
+	}
+	.product-link:hover {
+		transform: translateY(-2px);
+	}
+	.product-link__img {
+		width: 3rem;
+		height: 3rem;
+		object-fit: cover;
+		border-radius: calc(var(--theme-shape-radius) / 2);
+		flex: 0 0 auto;
+	}
+	.product-link__body {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+	.product-link__name {
+		font-family: var(--theme-font-family-sans);
+		font-weight: 600;
+		font-size: var(--font-size-sm);
+	}
+	.product-link__context {
+		font-size: var(--font-size-sm);
+		opacity: 0.75;
+	}
+	.product-link__price {
+		font-family: var(--theme-font-family-sans);
+		font-size: var(--font-size-sm);
+		color: var(--theme-accent-dark);
+		font-weight: 600;
+	}
+</style>
