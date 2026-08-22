@@ -1,7 +1,8 @@
 ---
 import { Container } from '@components/odyssey-theme';
-import Layout from './Page.astro'; 
+import Layout from './Page.astro';
 import { generateTagData } from '../utils/helpers';
+import '@styles/blog-theme.css';
 
 const {content: {title, description, publishDate, canonicalURL, featuredImage, tags} } = Astro.props;
 
@@ -19,28 +20,34 @@ const seo = {
 	image: featuredImage,
 };
 ---
-<Layout seo={seo}> 
-  <div class="post-header__container"> 
+<Layout seo={seo}>
+  <div class="blog-warm-scope post-header__container">
     <ul class="post-tags__list">
       {allTagsData.map(tag => (
-        <li class="post-tags__tag">
+        <li class="post-tags__tag blog-pill-tag">
           <a href={`/blog/tags/${tag.slug}`}>
             {tag.title}
           </a>
         </li>
       ))}
     </ul>
-    <h1>{title}</h1>
+    <h1 class="post-layout__title">{title}</h1>
     <p class="post-layout__date">
       <time><em>{publishDate}</em></time>
     </p>
-    {featuredImage && <img class="post-layout__img" src={featuredImage} alt={title} />}
+    {featuredImage && (
+      <div class="blog-warm-image post-layout__img">
+        <img src={featuredImage} alt={title} />
+      </div>
+    )}
   </div>
-  <Container narrow>  
-    <article id="article">
-        <slot></slot>
-    </article>
-  </Container>
+  <div class="blog-warm-scope">
+    <Container narrow>
+      <article id="article">
+          <slot></slot>
+      </article>
+    </Container>
+  </div>
 </Layout>
 
 <style>
@@ -56,17 +63,27 @@ const seo = {
     margin: 1rem auto;
     padding: 0;
     list-style: none;
-  }
-  .post-tags__tag {
-    text-transform: uppercase;
+    display: flex;
+    gap: 0.5rem;
   }
   .post-tags__tag a {
-    font-size: var(--font-size-sm);
     text-decoration: none;
+    color: inherit;
+  }
+  .post-layout__title {
+    font-family: var(--theme-font-family-display);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--theme-primary);
   }
   .post-layout__img {
-    margin: 0 auto 1rem auto;
-    border-radius: var(--theme-shape-radius);
+    margin: 1rem auto;
+    aspect-ratio: 3 / 2;
+  }
+  @media (min-width: 640px) {
+    .post-layout__img {
+      aspect-ratio: 16 / 9;
+    }
   }
   .post-layout__date {
     margin-bottom: 1rem;

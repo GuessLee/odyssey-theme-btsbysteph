@@ -16,7 +16,7 @@ This is the Odyssey Theme customized for **BTS By Steph** — a wedding content 
 ## Framework & Tech Stack
 
 - **Astro 5** (SSG) with TypeScript path aliases
-- **MDX** for blog posts (blog is currently disabled in nav/footer but posts exist)
+- **MDX** for blog posts (linked in nav/footer as `/blog`)
 - **Lit** web components via `@astrojs/lit`
 - **astro-icon** with `@iconify-json/ic` and `@iconify-json/mdi` icon sets
 - **AWS Amplify** backend (auth/data) — config in `amplify/`
@@ -39,10 +39,15 @@ All pages use `Page.astro` (not `Base.astro` directly).
 All reusable components are exported from `src/components/odyssey-theme.js`. Import them via the `@components` alias:
 
 ```js
-import { Button, CtaCardSection, CustomerQuoteSection } from '@components/odyssey-theme';
+import {
+	Button,
+	CtaCardSection,
+	CustomerQuoteSection,
+} from '@components/odyssey-theme';
 ```
 
 **Exception**: `ContactForm` is **not** in the barrel — import it directly:
+
 ```js
 import ContactForm from '../../components/forms/ContactForm.astro';
 ```
@@ -56,14 +61,17 @@ import ContactForm from '../../components/forms/ContactForm.astro';
 - `@styles` → `src/styles/*`
 - `@assets` → `src/assets/*`
 - `@icons` → `src/icons/*`
+- `@lib` → `src/lib/*`
+- `@pages` → `src/pages/*`
+- `@data` → `src/data/*`
 
 ### Site Configuration
 
-| File | Purpose |
-|------|---------|
+| File                     | Purpose                                               |
+| ------------------------ | ----------------------------------------------------- |
 | `src/config/settings.js` | Site title, URL, business name, theme switcher toggle |
-| `src/config/nav.js` | Top navigation links (array of `{title, slug}`) |
-| `src/config/footer.js` | Footer link lists and social links |
+| `src/config/nav.js`      | Top navigation links (array of `{title, slug}`)       |
+| `src/config/footer.js`   | Footer link lists and social links                    |
 
 Theme switcher is currently **disabled** (`enableThemeSwitcher: false`).
 
@@ -79,17 +87,19 @@ CSS custom properties in `src/styles/theme.css`. Active palette is a luxury brid
 
 Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`.
 
+Blog pages layer `src/styles/blog-theme.css` on top (Direction 3 "Warm Film / Golden Hour" tokens: `--blog-*` custom properties, incl. `Italianno` via `--blog-font-script`). Scoped to `.blog-warm-scope` so it doesn't affect the homepage/pricing sharp-edge button style — see the file's header comment for the tradeoff rationale.
+
 ### Active Pages / Routes
 
-| Route | File | Notes |
-|-------|------|-------|
-| `/` | `src/pages/index.astro` | Portfolio videos + wedding & general events pricing cards |
-| `/company/about` | `src/pages/company/about.astro` | |
-| `/company/contact` | `src/pages/company/contact.astro` | Uses `ContactForm` + S3-hosted video |
-| `/company/legal` | `src/pages/company/legal.astro` | |
-| `/pricing-pdf` | `src/pages/pricing-pdf.astro` | Standalone (no layout), print-ready pricing sheet |
-| `/blog` | `src/pages/blog/index.astro` | Disabled in nav; posts exist in `src/pages/blog/posts/` |
-| `/blog/tags/[slug]` | `src/pages/blog/tags/[slug].astro` | |
+| Route               | File                               | Notes                                                     |
+| ------------------- | ---------------------------------- | --------------------------------------------------------- |
+| `/`                 | `src/pages/index.astro`            | Portfolio videos + wedding & general events pricing cards |
+| `/company/about`    | `src/pages/company/about.astro`    |                                                           |
+| `/company/contact`  | `src/pages/company/contact.astro`  | Uses `ContactForm` + S3-hosted video                      |
+| `/company/legal`    | `src/pages/company/legal.astro`    |                                                           |
+| `/pricing-pdf`      | `src/pages/pricing-pdf.astro`      | Standalone (no layout), print-ready pricing sheet         |
+| `/blog`             | `src/pages/blog/index.astro`       | Blog listing; posts in `src/pages/blog/posts/`            |
+| `/blog/tags/[slug]` | `src/pages/blog/tags/[slug].astro` |                                                           |
 
 ### Media & Assets
 
@@ -100,10 +110,11 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 ### Content Management
 
 - **Blog posts**: `src/pages/blog/posts/*.mdx` — frontmatter fields: `layout`, `title`, `description`, `publishDate`, `featuredImage`, `excerpt`, `tags`
-- Blog is navigateable but not linked in the current nav/footer configuration
+- Blog is linked in nav (`src/config/nav.js`) and footer (`src/config/footer.js`)
 
 ### Deployment
 
 - **Netlify**: `netlify.toml` (publish: `dist/`, build: `npm run build`)
 - **Firebase**: `firebase.json` present but minimal
 - **AWS Amplify**: Backend resources in `amplify/`
+- **CI**: `.github/workflows/ci.yml` runs `npm ci` + `npm run build` on push/PR to `main`

@@ -4,28 +4,55 @@ const {post} = Astro.props;
 
 <li class="blog-post__preview">
   <a href={post.href}>
-    <img src={post.featuredImage} />
-    <h3>{post.title}</h3>
-    {post.excerpt && <p>{post.excerpt}</p>}
+    <div class="blog-warm-image blog-post__preview-img">
+      <img src={post.featuredImage} alt={post.title} />
+    </div>
+    <div class="blog-post__preview-body">
+      <h3>{post.title}</h3>
+      {post.excerpt && <p>{post.excerpt}</p>}
+      <span class="blog-post__preview-cta">Read the story &rarr;</span>
+    </div>
   </a>
 </li>
 
 
 <style>
-.blog-post__preview img {
-  margin-bottom: 1rem;
-  border-radius: calc(var(--theme-shape-radius) /2);
-  transition: border-radius var(--theme-transition);
+.blog-post__preview {
+  background: var(--blog-surface);
+  border-radius: var(--blog-radius);
+  box-shadow: var(--blog-card-shadow);
+  overflow: hidden;
 }
-.blog-post__preview:hover img {
-  border-radius: var(--theme-shape-radius);
+.blog-post__preview-img {
+  aspect-ratio: 4 / 3;
+  border-radius: 0;
+  /* Card already has --blog-card-shadow; skip image-level --blog-image-glow to avoid double shadow. */
+  box-shadow: none;
+  transition: transform var(--theme-transition);
+}
+.blog-post__preview:hover .blog-post__preview-img {
+  transform: scale(1.01);
 }
 .blog-post__preview a {
   display: block;
   text-decoration: none;
   color: inherit;
 }
-.blog-post__preview h3 {
-  margin: 0;
+.blog-post__preview-body {
+  padding: 1rem 1.25rem 1.25rem;
 }
-</style> 
+.blog-post__preview h3 {
+  margin: 0 0 0.5rem;
+}
+.blog-post__preview p {
+  color: var(--theme-on-surface-1);
+}
+.blog-post__preview-cta {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: var(--theme-font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--blog-accent-text);
+}
+</style>

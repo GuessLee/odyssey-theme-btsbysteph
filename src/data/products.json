@@ -1,0 +1,10 @@
+{
+	"_comment": "Build-time allowlist for <ProductLink ref=\"...\">. Each key is `creator-ops:<product id>` -- creator-ops identifies products by a plain NocoDB integer row id (its Products table has no slug/ASIN column; ASIN lives per-platform on a separate Links table, since one product can have multiple platform links). This is a manually-maintained subset, not a live catalog sync -- see src/components/blog/ProductLink.astro and report section 2 (data/btsbs-redesign-1/report.md) for the full design. When curating an entry, pick the specific Links row's affiliate URL for the platform you want this card to point to. Remove this placeholder entry once a real product is added.",
+	"creator-ops:0": {
+		"name": "Example placeholder product",
+		"image": "/assets/images/badges/open-in-codesandbox.svg",
+		"price": "$0.00",
+		"affiliateUrl": "https://example.com",
+		"updatedAt": "2026-08-22"
+	}
+}
