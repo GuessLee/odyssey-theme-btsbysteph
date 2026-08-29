@@ -1,21 +1,33 @@
 ---
+import { parse, isBefore } from 'date-fns';
 import { Icon } from 'astro-icon/components';
 import {
 	AnnouncementBar,
 	Button,
+	Container,
 	CustomerQuoteSection,
 	ThreeColumnTextSection,
-	YouTubeEmbedSection,
 	CtaCardSection,
 } from '@components/odyssey-theme';
 import Layout from '../layouts/Page.astro';
-import TextAndImageHero from '../components/sections/heros/TextAndImageHero.astro';
 
 const seo = {
 	title: 'BTS By Steph | Wedding Content Creator',
 	description: 'BTS By Steph | Wedding Content Creator',
 	image: 'Bts.png'
 };
+
+const postModules = import.meta.glob('./blog/posts/*.mdx', { eager: true });
+const journalPosts = Object.values(postModules)
+	.map(({ frontmatter, url }) => ({
+		title: frontmatter.title,
+		excerpt: frontmatter.excerpt,
+		featuredImage: frontmatter.featuredImage,
+		publishDate: parse(frontmatter.publishDate, 'MMMM d, yyyy', new Date()),
+		href: url,
+	}))
+	.sort((a, b) => (isBefore(a.publishDate, b.publishDate) ? 1 : -1))
+	.slice(0, 2);
 ---
 
 <AnnouncementBar
@@ -24,89 +36,194 @@ const seo = {
 	slot="announcement-bar"
 />
 <Layout {seo}>
-	<TextAndImageHero reversed>
-		<div slot="text-container">
-			<h3>Why work with a wedding content creator? </h3>
-			<h4>A quick turnaround where you can enjoy reliving the magic of your wedding day almost instantly.</h4>
-			<p>With over 5 years of experience spanning general content creation and diverse roles within the wedding industry, I bring a wealth of expertise to this industry.
-				Through innovative photography and cinematic videography, I'll transcend your wedding moments into timeless masterpieces. 
-				Trust me to intricately weave your unique love story with unparalleled style and sophistication.</p>
-		</div>
-		<div slot="btns-container">
-			<Button href="/company/contact" customIcon
-				>Message Me <Fragment slot="icon">
-					<Icon name="ic:baseline-chevron-right" />
-				</Fragment></Button
-			>
-		</div>
-		<picture slot="image-container">
-			<img
-				src="/assets/images/landing-1/osmoselfie.jpg"
-				alt="Astro Odyssee"
-				id="home-hero-image"
-			/>
-		</picture>
-	</TextAndImageHero>
-
-	<CustomerQuoteSection
-		quoteText="She's amazing at capturing the perfect moments and putting them together."
-		customerName="Samantha B."
-	/>
-
-	<ThreeColumnTextSection>
-		<div slot="column-1-body">
-			<h2>Authentic Moments</h2>
-			<p>
-			  Dive into the genuine emotions and spontaneous moments of your special day with access to raw footage captured on an iPhone. Experience the authenticity firsthand.
-			</p>
-		  </div>
-		<div slot="column-2-body">
-			<h2>Behind The Scenes</h2>
-			<p>
-				Gain an intimate and authentic view of your wedding day through raw footage shot on an iPhone. It's akin to peering behind the curtain, revealing the real-life moments that made your day unforgettable.
-			</p>
-		</div>
-		<div slot="column-3-body">
-			<h2>Perfect Complement</h2>
-			<p>
-				While raw iPhone footage adds a distinctive touch, it harmoniously complements professional photography and videography. Together, we offer a comprehensive portrayal of your wedding day, blending authenticity with artistry.
-			</p>
-		</div>
-	</ThreeColumnTextSection>
-
-	<!-- <YouTubeEmbedSection url="https://www.youtube.com/watch?v=Alsz2Z3Beqs" rounded
-	/> -->
-	
 	<style>
-		.portfolio-section {
-			max-width: var(--container-max-width);
-			margin: calc(var(--section-margin) * 1.5) auto;
-			padding: 0 2rem;
+		/* ---- shared section rhythm ---- */
+		.home-section {
+			margin: 0 auto;
+			padding: var(--space-8) var(--space-4);
 		}
 
-		.portfolio-header {
+		.home-section--tinted {
+			background-color: var(--theme-surface-1);
+		}
+
+		.home-section__head {
 			text-align: center;
-			margin-bottom: 3rem;
+			max-width: 640px;
+			margin: 0 auto var(--space-6);
 		}
 
-		.portfolio-header h2 {
-			font-family: var(--theme-font-family-display);
-			font-size: var(--font-size-xl);
-			font-weight: 500;
-			margin-bottom: 0.5rem;
+		.home-section__head h2 {
+			margin: 0.5rem 0 0;
 		}
 
-		.portfolio-header p {
-			font-family: var(--theme-font-family-serif);
-			font-size: var(--font-size-md);
-			font-style: italic;
+		/* ---- hero ---- */
+		.hero {
+			padding: var(--space-8) var(--space-4) var(--space-7);
+		}
+
+		.hero__grid {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
+			display: grid;
+			grid-template-columns: 1.05fr 0.95fr;
+			align-items: center;
+			gap: var(--space-6);
+		}
+
+		.hero__lede {
+			font-family: var(--theme-font-script);
+			font-size: clamp(2.75rem, 5vw, 4rem);
+			line-height: 0.9;
 			color: var(--theme-accent-text);
+			display: block;
+			margin: 0.25rem 0 var(--space-3);
 		}
 
+		.hero h1 {
+			margin: var(--space-2) 0 0;
+			font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+		}
+
+		.hero__sub {
+			font-family: var(--theme-font-family-serif);
+			font-size: 1.2rem;
+			font-style: italic;
+			color: var(--theme-on-bg);
+			opacity: 0.75;
+			max-width: 42ch;
+			margin: 0 0 var(--space-5);
+		}
+
+		.hero__trust-row {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: var(--space-4);
+			margin-top: var(--space-6);
+		}
+
+		.hero__stat {
+			display: flex;
+			flex-direction: column;
+			gap: 0.15rem;
+		}
+
+		.hero__stat strong {
+			font-family: var(--theme-font-family-display);
+			font-size: 1.6rem;
+			font-weight: 600;
+			color: var(--theme-primary);
+		}
+
+		.hero__stat span {
+			font-size: 0.75rem;
+			letter-spacing: 0.04em;
+			color: var(--theme-on-bg);
+			opacity: 0.65;
+		}
+
+		.hero__divider {
+			width: 1px;
+			height: 30px;
+			background: rgba(196, 164, 132, 0.4);
+		}
+
+		.hero__image {
+			position: relative;
+			aspect-ratio: 4 / 5;
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-image-glow);
+			overflow: hidden;
+		}
+
+		.hero__image::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+			background: linear-gradient(200deg, rgba(217, 165, 75, 0.32) 0%, transparent 45%);
+			mix-blend-mode: multiply;
+		}
+
+		.hero__image img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		@media (max-width: 900px) {
+			.hero__grid {
+				grid-template-columns: 1fr;
+			}
+
+			.hero__image {
+				order: -1;
+				max-width: 420px;
+				margin: 0 auto;
+			}
+		}
+
+		/* ---- about teaser ---- */
+		.about-teaser__grid {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
+			display: grid;
+			grid-template-columns: 0.8fr 1.2fr;
+			align-items: center;
+			gap: var(--space-7);
+		}
+
+		.about-teaser__image {
+			position: relative;
+			aspect-ratio: 1 / 1;
+			max-width: 420px;
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-image-glow);
+			overflow: hidden;
+		}
+
+		.about-teaser__image img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.about-teaser__body p {
+			max-width: 56ch;
+			opacity: 0.85;
+		}
+
+		.about-teaser__signature {
+			font-family: var(--theme-font-script);
+			font-size: 2.4rem;
+			color: var(--theme-accent-text);
+			margin-top: var(--space-2);
+		}
+
+		@media (max-width: 900px) {
+			.about-teaser__grid {
+				grid-template-columns: 1fr;
+				text-align: center;
+			}
+
+			.about-teaser__image {
+				margin: 0 auto;
+			}
+
+			.about-teaser__body p {
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+
+		/* ---- portfolio ---- */
 		.video-container {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			gap: 2rem;
+			gap: var(--space-4);
 			justify-items: center;
 		}
 
@@ -142,7 +259,7 @@ const seo = {
 		@media (max-width: 768px) {
 			.video-container {
 				grid-template-columns: 1fr;
-				gap: 1.5rem;
+				gap: var(--space-3);
 			}
 
 			.video-container video {
@@ -150,36 +267,13 @@ const seo = {
 			}
 		}
 
-		/* Pricing Cards */
-		.pricing-section {
-			max-width: var(--container-max-width);
-			margin: calc(var(--section-margin) * 1.5) auto;
-			padding: 0 2rem;
-		}
-
-		.pricing-header {
-			text-align: center;
-			margin-bottom: 3rem;
-		}
-
-		.pricing-header h2 {
-			font-family: var(--theme-font-family-display);
-			font-size: var(--font-size-xl);
-			font-weight: 500;
-			margin-bottom: 0.5rem;
-		}
-
-		.pricing-header p {
-			font-family: var(--theme-font-family-serif);
-			font-size: var(--font-size-md);
-			font-style: italic;
-			color: var(--theme-accent-text);
-		}
-
+		/* ---- pricing ---- */
 		.pricing-cards {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			gap: 2rem;
+			gap: var(--space-4);
 			align-items: start;
 		}
 
@@ -188,7 +282,7 @@ const seo = {
 			background: var(--theme-surface-1);
 			border: 1px solid rgba(196, 164, 132, 0.15);
 			border-radius: var(--theme-radius-lg);
-			padding: 2.5rem 2rem;
+			padding: var(--space-5) var(--space-4);
 			text-align: center;
 			box-shadow: var(--theme-card-shadow);
 			transition: transform var(--theme-transition), box-shadow var(--theme-transition);
@@ -203,13 +297,13 @@ const seo = {
 			background: var(--theme-primary);
 			color: var(--theme-on-primary);
 			transform: scale(1.05);
-			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+			box-shadow: 0 20px 44px -12px rgba(181, 119, 46, 0.35);
 			z-index: 1;
 		}
 
 		.pricing-card.featured:hover {
 			transform: scale(1.05) translateY(-10px);
-			box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+			box-shadow: 0 28px 56px -14px rgba(181, 119, 46, 0.45);
 		}
 
 		.popular-badge {
@@ -229,8 +323,8 @@ const seo = {
 		}
 
 		.card-top {
-			margin-bottom: 2rem;
-			padding-bottom: 1.5rem;
+			margin-bottom: var(--space-4);
+			padding-bottom: var(--space-3);
 			border-bottom: 1px solid rgba(196, 164, 132, 0.2);
 		}
 
@@ -263,7 +357,7 @@ const seo = {
 		.features {
 			list-style: none;
 			padding: 0;
-			margin: 0 0 2rem 0;
+			margin: 0 0 var(--space-4) 0;
 			text-align: left;
 		}
 
@@ -328,7 +422,7 @@ const seo = {
 				grid-template-columns: 1fr;
 				max-width: 420px;
 				margin: 0 auto;
-				gap: 2.5rem;
+				gap: var(--space-5);
 			}
 
 			.pricing-card.featured {
@@ -339,13 +433,176 @@ const seo = {
 				transform: translateY(-10px);
 			}
 		}
+
+		/* ---- journal preview ---- */
+		.journal-preview__head {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
+			max-width: var(--container-max-width);
+			margin: 0 auto var(--space-6);
+			text-align: left;
+		}
+
+		.journal-preview__head h2 {
+			margin: 0.5rem 0 0;
+		}
+
+		.journal-grid {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: var(--space-4);
+		}
+
+		.journal-card {
+			display: block;
+			text-decoration: none;
+			color: inherit;
+		}
+
+		.journal-card__image {
+			aspect-ratio: 16 / 10;
+			margin-bottom: var(--space-3);
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-image-glow);
+			overflow: hidden;
+		}
+
+		.journal-card__image img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: transform var(--theme-transition-slow);
+		}
+
+		.journal-card:hover .journal-card__image img {
+			transform: scale(1.045);
+		}
+
+		.journal-card h3 {
+			margin: 0 0 0.5rem;
+			font-size: var(--font-size-md);
+		}
+
+		.journal-card p {
+			font-size: 0.95rem;
+			opacity: 0.75;
+			margin: 0 0 0.5rem;
+		}
+
+		.journal-card__read {
+			font-size: 0.8rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--theme-accent-text);
+		}
+
+		@media (max-width: 768px) {
+			.journal-preview__head {
+				flex-direction: column;
+				align-items: flex-start;
+				gap: var(--space-3);
+			}
+
+			.journal-grid {
+				grid-template-columns: 1fr;
+			}
+		}
 	</style>
 
+	<!-- Hero -->
+	<section class="hero">
+		<div class="hero__grid">
+			<div>
+				<span class="eyebrow">Wedding Content Creator</span>
+				<h1>Relive the magic<span class="hero__lede">of your golden hour.</span></h1>
+				<p class="hero__sub">
+					Cinematic iPhone videography for South Florida weddings — authentic
+					moments, timeless style, delivered while the day is still warm in
+					your memory.
+				</p>
+				<Button href="/company/contact" customIcon
+					>Message Me <Fragment slot="icon">
+						<Icon name="ic:baseline-chevron-right" />
+					</Fragment></Button
+				>
+				<div class="hero__trust-row">
+					<div class="hero__stat"><strong>5+</strong><span>years in weddings</span></div>
+					<div class="hero__divider"></div>
+					<div class="hero__stat"><strong>24–48h</strong><span>turnaround</span></div>
+					<div class="hero__divider"></div>
+					<div class="hero__stat"><strong>100%</strong><span>iPhone-shot</span></div>
+				</div>
+			</div>
+			<div class="hero__image">
+				<img src="/assets/images/landing-1/osmoselfie.jpg" alt="Steph filming on location" />
+			</div>
+		</div>
+	</section>
+
+	<!-- Value Props -->
+	<ThreeColumnTextSection>
+		<div slot="column-1-body">
+			<h2>Authentic Moments</h2>
+			<p>
+			  Dive into the genuine emotions and spontaneous moments of your special day with access to raw footage captured on an iPhone. Experience the authenticity firsthand.
+			</p>
+		  </div>
+		<div slot="column-2-body">
+			<h2>Behind The Scenes</h2>
+			<p>
+				Gain an intimate and authentic view of your wedding day through raw footage shot on an iPhone. It's akin to peering behind the curtain, revealing the real-life moments that made your day unforgettable.
+			</p>
+		</div>
+		<div slot="column-3-body">
+			<h2>Perfect Complement</h2>
+			<p>
+				While raw iPhone footage adds a distinctive touch, it harmoniously complements professional photography and videography. Together, we offer a comprehensive portrayal of your wedding day, blending authenticity with artistry.
+			</p>
+		</div>
+	</ThreeColumnTextSection>
+
+	<!-- About Teaser -->
+	<section class="home-section">
+		<div class="about-teaser__grid">
+			<div class="about-teaser__image">
+				<img src="/assets/images/home/steph.jpg" alt="Stephanie, BTS By Steph" />
+			</div>
+			<div class="about-teaser__body">
+				<span class="eyebrow">Behind the Lens</span>
+				<h2>Hi, I'm Stephanie</h2>
+				<p>
+					Master of Matrimony Media and your wedding day content creator — but
+					you can call me Steph. With over 5 years of experience spanning
+					general content creation and diverse roles within the wedding
+					industry, I bring a wealth of expertise to intricately weave your
+					unique love story with unparalleled style and sophistication.
+				</p>
+				<p>
+					Born and raised under the sunny skies of Miami, with two daughters
+					who keep me on my toes — Miami isn't just where I live, it's my
+					muse, my playground, and my canvas.
+				</p>
+				<div class="about-teaser__signature">Steph</div>
+				<div style="margin-top: var(--space-4)">
+					<Button href="/company/about" outlined customIcon
+						>More About Me <Fragment slot="icon">
+							<Icon name="ic:baseline-chevron-right" />
+						</Fragment></Button
+					>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<!-- Portfolio Video Section -->
-	<section class="portfolio-section">
-		<div class="portfolio-header">
-			<h2>My Work</h2>
-			<p>A glimpse into the magic I capture</p>
+	<section class="home-section home-section--tinted">
+		<div class="home-section__head">
+			<span class="eyebrow">My Work</span>
+			<h2>A glimpse into the magic I capture</h2>
 		</div>
 		<div class="video-container">
 			<div class="video-wrapper">
@@ -370,12 +627,12 @@ const seo = {
 			</div>
 		</div>
 	</section>
-	  
+
 	<!-- Wedding Packages -->
-	<section class="pricing-section">
-		<div class="pricing-header">
-			<h2>Wedding Packages</h2>
-			<p>Capture every moment of your special day</p>
+	<section class="home-section">
+		<div class="home-section__head">
+			<span class="eyebrow">Wedding Packages</span>
+			<h2>Capture every moment of your special day</h2>
 		</div>
 		<div class="pricing-cards">
 			<div class="pricing-card">
@@ -435,11 +692,16 @@ const seo = {
 		</div>
 	</section>
 
+	<CustomerQuoteSection
+		quoteText="She's amazing at capturing the perfect moments and putting them together."
+		customerName="Samantha B."
+	/>
+
 	<!-- General Events Packages -->
-	<section class="pricing-section">
-		<div class="pricing-header">
-			<h2>General Events Packages</h2>
-			<p>From birthdays to corporate gatherings</p>
+	<section class="home-section home-section--tinted">
+		<div class="home-section__head">
+			<span class="eyebrow">General Events</span>
+			<h2>From birthdays to corporate gatherings</h2>
 		</div>
 		<div class="pricing-cards">
 			<div class="pricing-card">
@@ -498,6 +760,33 @@ const seo = {
 		</div>
 	</section>
 
+	<!-- Journal Preview -->
+	<section class="home-section">
+		<div class="journal-preview__head">
+			<div>
+				<span class="eyebrow">From the Journal</span>
+				<h2>Real wedding stories, straight from the field</h2>
+			</div>
+			<Button href="/blog" outlined customIcon
+				>Read the Journal <Fragment slot="icon">
+					<Icon name="ic:baseline-chevron-right" />
+				</Fragment></Button
+			>
+		</div>
+		<div class="journal-grid">
+			{journalPosts.map((post) => (
+				<a class="journal-card" href={post.href}>
+					<div class="journal-card__image">
+						<img src={post.featuredImage} alt={post.title} />
+					</div>
+					<h3>{post.title}</h3>
+					<p>{post.excerpt}</p>
+					<span class="journal-card__read">Read the story →</span>
+				</a>
+			))}
+		</div>
+	</section>
+
 	<CtaCardSection>
 		<h2>Let's Create Magic Together</h2>
 		<p>
@@ -510,4 +799,3 @@ const seo = {
 		>
 	</CtaCardSection>
 </Layout>
-

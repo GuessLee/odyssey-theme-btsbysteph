@@ -38,8 +38,20 @@
 	--theme-transition: 0.4s ease;
 	--theme-transition-slow: 0.6s ease;
 
+	/* Spacing scale - 8px base, applied sitewide for consistent section rhythm */
+	--space-1: 0.5rem; /* 8px */
+	--space-2: 1rem; /* 16px */
+	--space-3: 1.5rem; /* 24px */
+	--space-4: 2rem; /* 32px */
+	--space-5: 3rem; /* 48px */
+	--space-6: 4rem; /* 64px */
+	--space-7: 5rem; /* 80px */
+	--space-8: 6rem; /* 96px */
+	--space-9: 8rem; /* 128px */
+
 	/* Theme Layout */
-	--section-margin: 5rem;
+	--navbar-height: 77px; /* actual sticky header height, referenced by hero/contact min-height calcs */
+	--section-margin: var(--space-8);
 	--theme-grid-gap: 2rem;
 	--container-max-width: 1400px;
 	--container-max-width-narrow: 900px;
@@ -77,7 +89,7 @@
 
 	--theme-transition: 0.4s ease;
 
-	--section-margin: 5rem;
+	--section-margin: var(--space-8, 6rem);
 	--theme-grid-gap: 2rem;
 	--container-max-width: 1400px;
 	--container-max-width-narrow: 900px;

@@ -86,9 +86,12 @@ CSS custom properties in `src/styles/theme.css`. Active palette is a luxury brid
 - `--theme-bg`: `#FFFAF7` (warm white) — warmth lives on imagery/shadows, not page-chrome backgrounds
 - `--theme-button-border-radius`: `999px` (pill) — read by `Button.astro`; every shared `<Button>` is a pill, not hardcoded per-component
 - `--theme-radius-lg` (`1.25rem`) / `--theme-card-shadow` / `--theme-image-glow`: warm rounded-corner + shadow-lift treatment for photography and cards — deliberately not a flat photo-tinting overlay
-- Fonts: **Playfair Display** (display/h1-h2), **Cormorant Garamond** (serif/h3-h4, body accents), **Work Sans** (sans); `--theme-font-script` (`Italianno`) is a signature accent only (pricing package names, blog "Journal" wordmark) — never body/post headlines
+- `--space-1` through `--space-9`: 8px-base spacing scale (added in the full-site revamp, 2026-08-22) — `--section-margin` is now just `var(--space-8)`, not a standalone value. Use these for new section padding/gaps instead of one-off rem values.
+- Fonts: **Playfair Display** (display/h1-h2), **Cormorant Garamond** (serif/h3-h4, body accents), **Work Sans** (sans); `--theme-font-script` (`Italianno`) is a signature accent only (pricing package names, blog "Journal" wordmark, and the `Logo.astro` brand wordmark) — never body/post headlines
 
 Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`.
+
+**Open brand question (2026-08-22, unresolved):** every shared `<Button>` (including the homepage hero CTA) renders `--theme-primary` (black), because that's what's actually defined in `theme.css` today. The originally-approved 3-direction mockup showed a gold/terracotta CTA. Nobody has picked a side yet — don't silently "fix" the button color either direction without asking.
 
 `src/styles/blog-theme.css` holds only blog-specific component classes now (`.blog-warm-image`, `.blog-pill-tag`, `.blog-post__preview h3`); its `--blog-*` custom properties are aliases to the sitewide `--theme-*` tokens above, not a separate palette — don't add new literal values there, extend `theme.css` instead.
 
@@ -96,7 +99,7 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 
 | Route               | File                               | Notes                                                     |
 | ------------------- | ---------------------------------- | --------------------------------------------------------- |
-| `/`                 | `src/pages/index.astro`            | Portfolio videos + wedding & general events pricing cards |
+| `/`                 | `src/pages/index.astro`            | Hero → value props → about teaser → portfolio videos → wedding packages → testimonial → general events packages → journal preview → CTA |
 | `/company/about`    | `src/pages/company/about.astro`    |                                                           |
 | `/company/contact`  | `src/pages/company/contact.astro`  | Uses `ContactForm` + S3-hosted video                      |
 | `/company/legal`    | `src/pages/company/legal.astro`    |                                                           |
@@ -121,6 +124,19 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 - **Firebase**: `firebase.json` present but minimal
 - **AWS Amplify**: Backend resources in `amplify/`
 - **CI**: `.github/workflows/ci.yml` runs `npm ci` + `npm run build` on push/PR to `main`
+
+## Branching & Deploy Strategy (standing rule — read before opening any PR)
+
+Two live deployments watch this repo via VCS auto-deploy, not just CI:
+
+- `develop` → `https://develop.d2kzeu15mx2xps.amplifyapp.com` — staging.
+- `main` → `https://btsbs.com` — production, live to real customers.
+
+**Every PR targets `develop`. Never `main` directly, no exceptions** — not for docs, not for a one-line fix, regardless of how small or confident the change is.
+
+`develop` → `main` promotion is a separate, deliberate PR that only happens after a human has reviewed the actual live staging URL above (not a local build, not a description of the change) and explicitly approved it. This promotion PR is the only path that touches production.
+
+A change is not done when CI passes or the local build works — it is done when it is confirmed correct on the real staging deployment. If anything on staging doesn't look right, keep iterating with new commits/PRs against `develop` until it actually is right before asking for promotion.
 
 ## Maintaining this file
 

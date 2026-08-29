@@ -99,13 +99,14 @@ const { footerSocials, footerLists, copyrightName, background, color, showLittle
     width: 40px;
     height: 40px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 0;
+    border-radius: var(--theme-button-border-radius);
     transition: all var(--theme-transition);
   }
 
   .footer-socials__link:hover {
     background-color: var(--theme-accent);
     border-color: var(--theme-accent);
+    transform: translateY(-2px);
   }
 
   .footer-link__list {
