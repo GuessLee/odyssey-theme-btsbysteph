@@ -1,7 +1,8 @@
 :root {
 	/* Theme Colors - Luxury Bridal Palette */
-	--theme-primary: #1a1a1a;
-	--theme-primary-hover: #333333;
+	/* Warm Film / Golden Hour: primary CTA color, captain-approved gold/terracotta (#52). Reuses --theme-accent-text's AA-safe value below rather than --theme-highlight(-deep), which fail AA (~3.9:1) as text color where --theme-primary is also used (hero stat, post title). */
+	--theme-primary: #7a4d18;
+	--theme-primary-hover: #623e13;
 	--theme-on-primary: #fff;
 
 	/* Accent Color - Warm Terracotta/Rose */

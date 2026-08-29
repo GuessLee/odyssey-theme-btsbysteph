@@ -79,7 +79,7 @@ Theme switcher is currently **disabled** (`enableThemeSwitcher: false`).
 
 CSS custom properties in `src/styles/theme.css`. Active palette is a luxury bridal theme, sitewide as of the "Warm Film / Golden Hour" rollout (2026-08-22):
 
-- `--theme-primary`: `#1a1a1a` (near-black)
+- `--theme-primary`: `#7a4d18` (gold/terracotta, same value as `--theme-accent-text`) — drives every shared `<Button>` including the homepage hero CTA
 - `--theme-accent`: `#C4A484` (warm champagne/gold) — decorative use only (borders, underlines, badge fills); fails AA as text color
 - `--theme-accent-text`: `#7a4d18` — AA-safe accent color, use this instead of `--theme-accent` for any actual text
 - `--theme-highlight` / `--theme-highlight-deep`: richer decorative golds (large-scale accents, e.g. blog's script "Journal" word)
@@ -90,8 +90,6 @@ CSS custom properties in `src/styles/theme.css`. Active palette is a luxury brid
 - Fonts: **Playfair Display** (display/h1-h2), **Cormorant Garamond** (serif/h3-h4, body accents), **Work Sans** (sans); `--theme-font-script` (`Italianno`) is a signature accent only (pricing package names, blog "Journal" wordmark, and the `Logo.astro` brand wordmark) — never body/post headlines
 
 Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`.
-
-**Open brand question (2026-08-22, unresolved):** every shared `<Button>` (including the homepage hero CTA) renders `--theme-primary` (black), because that's what's actually defined in `theme.css` today. The originally-approved 3-direction mockup showed a gold/terracotta CTA. Nobody has picked a side yet — don't silently "fix" the button color either direction without asking.
 
 `src/styles/blog-theme.css` holds only blog-specific component classes now (`.blog-warm-image`, `.blog-pill-tag`, `.blog-post__preview h3`); its `--blog-*` custom properties are aliases to the sitewide `--theme-*` tokens above, not a separate palette — don't add new literal values there, extend `theme.css` instead.
 
