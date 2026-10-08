@@ -82,14 +82,26 @@ const isCurrent = (slug) =>
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: color-mix(in srgb, var(--theme-bg) 92%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(196, 164, 132, 0.25);
     position: sticky;
     top: 0;
     z-index: 1000;
     transition: all var(--theme-transition);
+  }
+
+  /* Frosted background lives on a pseudo-element, not the header itself:
+     backdrop-filter makes its element the containing block for
+     position: fixed descendants, which would shrink the full-screen
+     mobile menu overlay down to the header's own height. */
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: color-mix(in srgb, var(--theme-bg) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    pointer-events: none;
   }
 
   header.header--right {
