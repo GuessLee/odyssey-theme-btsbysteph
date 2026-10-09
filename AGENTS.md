@@ -20,7 +20,7 @@ This is the Odyssey Theme customized for **BTS By Steph** — a wedding content 
 - **Lit** web components via `@astrojs/lit`
 - **astro-icon** with `@iconify-json/ic` and `@iconify-json/mdi` icon sets
 - **AWS Amplify** backend (auth/data) — config in `amplify/`
-- **Google Analytics** GA4 (`G-8291Q1LY4D`) injected in `src/components/head/BaseHead.astro`, only when the host is btsbs.com
+- **Google Analytics** GA4 (`G-8291Q1LY4D`) injected in `src/components/head/BaseHead.astro`, only when the host is btsbs.com or www.btsbs.com
 
 ## Architecture
 
