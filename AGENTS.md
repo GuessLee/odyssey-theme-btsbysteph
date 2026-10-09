@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the Odyssey Theme customized for **BTS By Steph** — a wedding content creator (iPhone videography) site. It includes a homepage with portfolio videos and pricing cards, an about page, a contact form, and a standalone print-ready pricing PDF page.
+This is the Odyssey Theme customized for **BTS By Steph** - a wedding content creator (iPhone videography) site. It includes a homepage built around a wall of wedding footage with pricing cards and the enquiry form, a reel library, an about page, a contact form, and a standalone print-ready pricing PDF page.
 
 ## Development Commands
 
@@ -97,7 +97,9 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 
 | Route               | File                               | Notes                                                     |
 | ------------------- | ---------------------------------- | --------------------------------------------------------- |
-| `/`                 | `src/pages/index.astro`            | Hero → value props → about teaser → portfolio videos → wedding packages → testimonial → general events packages → journal preview → CTA |
+| `/`                 | `src/pages/index.astro`            | "Reel Wall" home: hero with clip tiles → one-line promise strip → reel wall (`#reels`) → wedding packages (`#packages`) → testimonial → about strip → enquiry form (`#enquire`) |
+| `/reels`            | `src/pages/reels.astro`            | Reel library: every clip moment in a dense grid, sticky moment filters, enquiry form |
+| `/events`           | `src/pages/events.astro`           | General events packages (moved off the home page)         |
 | `/company/about`    | `src/pages/company/about.astro`    |                                                           |
 | `/company/contact`  | `src/pages/company/contact.astro`  | Uses `ContactForm` + S3-hosted video                      |
 | `/company/legal`    | `src/pages/company/legal.astro`    |                                                           |
@@ -109,12 +111,16 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 
 - Portfolio/contact videos are hosted on **AWS S3**: `https://btsbs.s3.us-east-2.amazonaws.com/`
 - Static images in `public/assets/images/`
-- Videos in `index.astro` use `controlslist="nodownload"` to discourage downloading
+- Wedding footage on `/` and `/reels` is driven by `src/data/clips.js`: one entry per S3 clip, each with one or more `moments` (a start second, a label, a moment tag, and a cover in `src/assets/clips/`). `ClipTile` shows only the cover; `ClipViewer` (one per page) fetches the video when a tile is tapped. No page should autoplay or preload clips.
+- Moment filter chips with no footage render disabled on purpose. The library's by-wedding selector appears only once two clips have a `wedding` name; do not name a couple without their consent.
+- Package names, prices and inclusions live in `src/data/packages.js` (rendered by `PackageCards`); `pricing-pdf.astro` keeps its own list.
+- The viewer's `<video>` uses `controlslist="nodownload"` to discourage downloading
 
 ### Content Management
 
 - **Blog posts**: `src/pages/blog/posts/*.mdx` — frontmatter fields: `layout`, `title`, `description`, `publishDate`, `featuredImage`, `excerpt`, `tags`
-- Blog is linked in nav (`src/config/nav.js`) and footer (`src/config/footer.js`)
+- Blog is linked in nav (`src/config/nav.js`, as "Journal") and footer (`src/config/footer.js`)
+- The header's "Check my date" button comes from `Page.astro`; pages that include `EnquiryBand` pass `enquireHref="#enquire"`, all others fall back to `/company/contact`
 
 ### Deployment
 
