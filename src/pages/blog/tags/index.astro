@@ -1,0 +1,41 @@
+---
+import Layout from '../../../layouts/Page.astro'
+import { Container } from '@components/odyssey-theme';
+import {generateTagData} from '../../../utils/helpers.js'
+
+const postModules = import.meta.glob('../posts/*.mdx', { eager: true });
+const allTagsUnique = new Set();
+
+Object.values(postModules).forEach(post => {
+  post.frontmatter.tags && post.frontmatter.tags.map(tag => {
+    allTagsUnique.add(tag);
+  })
+})
+
+const allTagsData = generateTagData(allTagsUnique);
+
+const seo ={
+  title: 'Journal Tags | BTS By Steph',
+  description: 'Browse journal posts from BTS By Steph by tag.',
+}
+---
+
+<Layout seo={seo}>
+  <Container narrow>
+    <section class="tag-page__section">
+      <h1>Journal Tags</h1>
+      <ul>
+        {allTagsData.map(tag => (
+          <li><a href={`/blog/tags/${tag.slug}/`}>{tag.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  </Container>
+</Layout>
+
+<style>
+.tag-page__section {
+  min-height: 60vh;
+  margin: var(--section-margin);
+}
+</style>

@@ -14,7 +14,21 @@ export interface Props {
 const title = Astro.props.title || settings.title;
 const description = Astro.props.description || settings.description;
 const canonicalURL = Astro.props.canonicalURL || new URL(Astro.url.pathname, Astro.site);
-const image = new URL(Astro.props.image || './Bts.png', Astro.site);
+const image = new URL(Astro.props.image || '/assets/images/share/wedding-share.jpg', Astro.site);
+const usesDefaultImage = !Astro.props.image;
+
+const localBusiness = {
+	'@context': 'https://schema.org',
+	'@type': 'LocalBusiness',
+	name: settings.name,
+	description: settings.description,
+	url: settings.url,
+	image: new URL('/assets/images/share/wedding-share.jpg', Astro.site).href,
+	logo: new URL('/Bts.png', Astro.site).href,
+	email: 'info@btsbs.com',
+	areaServed: 'South Florida',
+	sameAs: ['https://www.instagram.com/btsbysteph/'],
+};
 ---
 
 <!-- Global Metadata -->
@@ -39,6 +53,8 @@ const image = new URL(Astro.props.image || './Bts.png', Astro.site);
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={image} />
+{usesDefaultImage && <meta property="og:image:width" content="1200" />}
+{usesDefaultImage && <meta property="og:image:height" content="630" />}
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
@@ -47,13 +63,25 @@ const image = new URL(Astro.props.image || './Bts.png', Astro.site);
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={image} />
 
+<!-- Structured data -->
+<script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+
 <!-- For Demonstration of the themes -->
 {settings.enableThemeSwitcher && <ThemeProvider />}
 
-<!-- Google Analytics -->
-<script>
+<!-- Google Analytics (gtag.js) - production host only, so staging and local visits are not counted -->
+<script is:inline>
   var host = window.location.hostname;
-  if(host != 'localhost') {
-    // Place Google Analytics code here.
+  if (host === 'btsbs.com' || host === 'www.btsbs.com') {
+    var gtagScript = document.createElement('script');
+    gtagScript.async = true;
+    gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-8291Q1LY4D';
+    document.head.appendChild(gtagScript);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-8291Q1LY4D');
   }
 </script>

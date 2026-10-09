@@ -11,12 +11,6 @@ import {
 } from '@components/odyssey-theme';
 import Layout from '../layouts/Page.astro';
 
-const seo = {
-	title: 'BTS By Steph | Wedding Content Creator',
-	description: 'BTS By Steph | Wedding Content Creator',
-	image: 'Bts.png'
-};
-
 const postModules = import.meta.glob('./blog/posts/*.mdx', { eager: true });
 const journalPosts = Object.values(postModules)
 	.map(({ frontmatter, url }) => ({
@@ -28,14 +22,19 @@ const journalPosts = Object.values(postModules)
 	}))
 	.sort((a, b) => (isBefore(a.publishDate, b.publishDate) ? 1 : -1))
 	.slice(0, 2);
+const latestPost = journalPosts[0];
 ---
 
-<AnnouncementBar
-	text="Read Our Latest Journal Post"
-	href="/blog/posts/welcome-to-the-journal/"
-	slot="announcement-bar"
-/>
-<Layout {seo}>
+<Layout>
+	{
+		latestPost && (
+			<AnnouncementBar
+				text="Read Our Latest Journal Post"
+				href={latestPost.href}
+				slot="announcement-bar"
+			/>
+		)
+	}
 	<style>
 		/* ---- shared section rhythm ---- */
 		.home-section {
@@ -764,7 +763,7 @@ const journalPosts = Object.values(postModules)
 		<div class="journal-preview__head">
 			<div>
 				<span class="eyebrow">From the Journal</span>
-				<h2>Real wedding stories, straight from the field</h2>
+				<h2>Notes for couples planning their day</h2>
 			</div>
 			<Button href="/blog" outlined customIcon
 				>Read the Journal <Fragment slot="icon">
