@@ -38,9 +38,16 @@ const seo = {
 			margin: 0.5rem 0 0;
 		}
 
-		.about-section__head--flush {
-			margin-bottom: 0;
-			padding: var(--space-8) var(--space-4) 0;
+		.about-section--columns {
+			padding-inline: 0;
+		}
+
+		.about-section--columns .about-section__head {
+			padding: 0 var(--space-4);
+		}
+
+		.about-section--columns :global(.three-col-text__section) {
+			margin-block: 0;
 		}
 
 		/* ---- hero ---- */
@@ -108,6 +115,10 @@ const seo = {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
+		}
+
+		.about-split__image--subject-left img {
+			object-position: left center;
 		}
 
 		.about-split__signature {
@@ -208,36 +219,38 @@ const seo = {
 	</HeroSection>
 
 	<!-- What a couple gets -->
-	<div class="about-section__head about-section__head--flush">
-		<span class="eyebrow">What You Get</span>
-		<h2>Your wedding day, the way it actually felt</h2>
-	</div>
-	<ThreeColumnTextSection>
-		<div slot="column-1-body">
-			<h2>The Whole Day, Up Close</h2>
-			<p>
-				From 4 to 10 hours of coverage, depending on your package. Getting
-				ready, first look, ceremony, reception - plus the candid, in-between
-				moments that formal shots tend to miss.
-			</p>
+	<section class="about-section about-section--columns">
+		<div class="about-section__head">
+			<span class="eyebrow">What You Get</span>
+			<h2>Your wedding day, the way it actually felt</h2>
 		</div>
-		<div slot="column-2-body">
-			<h2>Content Made To Share</h2>
-			<p>
-				A full wedding photo and video gallery, an edited recap video, and
-				reels or TikToks cut and ready to post. All of it shot on the latest
-				iPhone.
-			</p>
-		</div>
-		<div slot="column-3-body">
-			<h2>Back In 24-48 Hours</h2>
-			<p>
-				Quick turnaround is the whole point. Your content lands while the day
-				is still fresh, so you can relive it and share it the same week, not
-				months later.
-			</p>
-		</div>
-	</ThreeColumnTextSection>
+		<ThreeColumnTextSection>
+			<div slot="column-1-body">
+				<h2>The Whole Day, Up Close</h2>
+				<p>
+					From 4 to 10 hours of coverage, depending on your package. Getting
+					ready, first look, ceremony, reception - plus the candid, in-between
+					moments that formal shots tend to miss.
+				</p>
+			</div>
+			<div slot="column-2-body">
+				<h2>Content Made To Share</h2>
+				<p>
+					A full wedding photo and video gallery, an edited recap video, and
+					reels or TikToks cut and ready to post. All of it shot on the latest
+					iPhone.
+				</p>
+			</div>
+			<div slot="column-3-body">
+				<h2>Back In 24-48 Hours</h2>
+				<p>
+					Quick turnaround is the whole point. Your content lands while the day
+					is still fresh, so you can relive it and share it the same week, not
+					months later.
+				</p>
+			</div>
+		</ThreeColumnTextSection>
+	</section>
 
 	<!-- Experience and how she works on the day -->
 	<section class="about-section about-section--tinted">
@@ -270,7 +283,7 @@ const seo = {
 					together you get the full picture of your day.
 				</p>
 			</div>
-			<div class="about-split__image">
+			<div class="about-split__image about-split__image--subject-left">
 				<img
 					src="/assets/images/landing-1/osmoselfie.jpg"
 					alt="Steph filming on location with an iPhone on a gimbal"
