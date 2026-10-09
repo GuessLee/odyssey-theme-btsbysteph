@@ -97,6 +97,9 @@ const seo = {
 		}
 		.col-2__container {
 			order: -1;
+			/* Reserves the HoneyBook form's space (1,089 px at 768 px wide, taller below) so the text does not jump when the embed loads */
+			min-height: 1080px;
+			justify-content: flex-start;
 		}
 		.contact-video video {
 			width: 90%; /* Makes it responsive */
