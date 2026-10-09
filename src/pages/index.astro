@@ -379,6 +379,9 @@ import stephFilming from '@assets/images/steph-filming.jpg';
 			}
 
 			.about-teaser__image {
+				/* auto margins shrink a grid item to its content, which is 0 wide
+				   until the lazy photo loads; a width reserves the box up front */
+				width: 100%;
 				max-width: 260px;
 				margin: 0 auto;
 			}
