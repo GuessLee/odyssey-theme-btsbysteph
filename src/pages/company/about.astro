@@ -1,53 +1,367 @@
 ---
-import { TextSection } from '@components/odyssey-theme';
+import { Icon } from 'astro-icon/components';
+import {
+	Button,
+	CtaCardSection,
+	CustomerQuoteSection,
+	ThreeColumnTextSection,
+} from '@components/odyssey-theme';
 import Layout from '../../layouts/Page.astro';
 import HeroSection from '../../components/sections/heros/HeroSection.astro';
 
 const seo = {
-	title: 'About | Astro Odyssey Theme',
-	description: 'About Page',
+	title: 'About Steph | BTS By Steph',
+	description:
+		'Meet Steph, the South Florida wedding content creator behind BTS By Steph. 5+ years in content and weddings, shot on iPhone, delivered within 24-48 hours.',
 };
 ---
 
 <Layout {seo}>
+	<style>
+		/* ---- shared section rhythm (mirrors the homepage) ---- */
+		.about-section {
+			margin: 0 auto;
+			padding: var(--space-8) var(--space-4);
+		}
+
+		.about-section--tinted {
+			background-color: var(--theme-surface-1);
+		}
+
+		.about-section__head {
+			text-align: center;
+			max-width: 640px;
+			margin: 0 auto var(--space-6);
+		}
+
+		.about-section__head h2 {
+			margin: 0.5rem 0 0;
+		}
+
+		.about-section__head--flush {
+			margin-bottom: 0;
+			padding: var(--space-8) var(--space-4) 0;
+		}
+
+		/* ---- hero ---- */
+		.about-hero__title {
+			font-size: var(--font-size-xl);
+			line-height: 1.15;
+			margin: 0.5rem 0 var(--space-3);
+		}
+
+		.about-hero__tagline {
+			font-size: var(--font-size-lg);
+			line-height: 1.2;
+		}
+
+		.about-hero__tagline em {
+			display: block;
+			font-size: var(--font-size-md);
+			opacity: 0.8;
+		}
+
+		.about-hero__cta {
+			margin-top: var(--space-4);
+		}
+
+		/* ---- text + photo splits ---- */
+		.about-split {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
+			display: grid;
+			grid-template-columns: 1.1fr 0.9fr;
+			align-items: center;
+			gap: var(--space-7);
+		}
+
+		.about-split--reversed .about-split__image {
+			order: -1;
+		}
+
+		.about-split__body h2 {
+			margin: 0.5rem 0 var(--space-3);
+		}
+
+		.about-split__body h3 {
+			font-size: var(--font-size-md);
+			color: var(--theme-accent-text);
+			margin: var(--space-4) 0 0.5rem;
+		}
+
+		.about-split__body p {
+			max-width: 56ch;
+			opacity: 0.85;
+		}
+
+		.about-split__image {
+			aspect-ratio: 4 / 5;
+			width: 100%;
+			max-width: 460px;
+			margin: 0 auto;
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-image-glow);
+			overflow: hidden;
+		}
+
+		.about-split__image img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.about-split__signature {
+			font-family: var(--theme-font-script);
+			font-size: 2.4rem;
+			color: var(--theme-accent-text);
+			margin-top: var(--space-2);
+		}
+
+		@media (max-width: 900px) {
+			.about-split {
+				grid-template-columns: 1fr;
+				gap: var(--space-5);
+			}
+
+			.about-split .about-split__image {
+				order: -1;
+				max-width: 420px;
+			}
+		}
+
+		/* ---- portfolio (same treatment as the homepage) ---- */
+		.video-container {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: var(--space-4);
+			justify-items: center;
+		}
+
+		.video-wrapper {
+			position: relative;
+			overflow: hidden;
+			transition: transform var(--theme-transition);
+		}
+
+		.video-wrapper:hover {
+			transform: translateY(-8px);
+		}
+
+		.video-container video {
+			width: 100%;
+			height: 500px;
+			object-fit: cover;
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-image-glow);
+		}
+
+		@media (max-width: 1024px) {
+			.video-container {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+		@media (max-width: 768px) {
+			.video-container {
+				grid-template-columns: 1fr;
+				gap: var(--space-3);
+			}
+
+			.video-container video {
+				height: 450px;
+			}
+		}
+	</style>
+
+	<!-- Hero: who she is and what she does for a couple -->
 	<HeroSection>
 		<div slot="text-container">
-			<h2>Hi, I'm Stephanie!</h2>
-			
-      <h4>
-				<span style="font-size: xx-large;">Master of Matrimony Media</span><br
-				/>
-				<em style="font-size: smaller;">and your wedding day content creator</em
-				>
-			</h4>
-
+			<span class="eyebrow">About Steph</span>
+			<h1 class="about-hero__title">Hi, I'm Stephanie!</h1>
+			<h2 class="about-hero__tagline">
+				Master of Matrimony Media
+				<em>and your wedding day content creator</em>
+			</h2>
 			<p>
-				But you can call me Steph born and raised under the sunny skies of Miami. 
-				With two adorable daughters who keep me on my toes (and occasionally steal my camera), 
-				I’ve mastered the art of capturing candid moments amidst the chaos of family life.
+				But you can call me Steph. I'm the one weaving through your wedding
+				day with an iPhone, catching the laughs, the happy tears, and the
+				dance floor chaos you'd otherwise only hear about later - then getting
+				it all back to you within 24-48 hours.
+			</p>
+			<div class="about-hero__cta">
+				<Button href="/company/contact" customIcon
+					>Message Me <Fragment slot="icon">
+						<Icon name="ic:baseline-chevron-right" />
+					</Fragment></Button
+				>
+			</div>
+		</div>
+		<picture slot="image-container">
+			<img
+				src="/assets/images/home/steph.jpg"
+				alt="Portrait of Stephanie, the wedding content creator behind BTS By Steph"
+				id="home-hero-image"
+			/>
+		</picture>
+	</HeroSection>
+
+	<!-- What a couple gets -->
+	<div class="about-section__head about-section__head--flush">
+		<span class="eyebrow">What You Get</span>
+		<h2>Your wedding day, the way it actually felt</h2>
+	</div>
+	<ThreeColumnTextSection>
+		<div slot="column-1-body">
+			<h2>The Whole Day, Up Close</h2>
+			<p>
+				From 4 to 10 hours of coverage, depending on your package. Getting
+				ready, first look, ceremony, reception - plus the candid, in-between
+				moments that formal shots tend to miss.
 			</p>
 		</div>
-    <picture slot="image-container">
-      <img
-        src="/assets/images/home/steph.jpg"
-        alt="Astro Odyssee"
-        id="home-hero-image"
-      />
-    </picture>
-	</HeroSection>
-  <TextSection narrow>
-    <p>
-      Miami isn't just where I live; it's my muse, my playground, and my canvas. Whether it’s finding the perfect angle for a bridal transition or convincing the groomsmen to try a synchronized dance routine, I’m always up for a creative challenge.   
-    </p>
-    <p>
-      After all, life's to short for boring content, am I right?
-    </p>
-    <p>
-      When I’m not behind the lens, you’ll probably find me chasing my daughters through the nearest park, sipping cafecito at my favorite local spot, or brainstorming ideas for my next client.
-    </p>
-    <!-- <p>
-      Quis distinctio tempora sequi sit repudiandae cumque nostrum deserunt, voluptatibus rem eum fuga modi beatae cum ullam delectus dicta atque eius nam quos corporis. Animi praesentium quae nobis. Odit, mollitia. Voluptatum, hic explicabo. Ex accusamus ipsa ea dolor commodi quas esse ipsum alias et adipisci error necessitatibus atque facere rerum ratione consequatur aspernatur repudiandae minima consectetur fuga, doloremque dolorum pariatur.
-      Ipsam error eaque velit possimus porro eum quod illo iusto officia magnam magni, beatae nisi voluptate praesentium? Saepe distinctio adipisci quas hic quae facilis? Sequi eum hic aperiam impedit minus?
-    </p> -->
-  </TextSection>
+		<div slot="column-2-body">
+			<h2>Content Made To Share</h2>
+			<p>
+				A full wedding photo and video gallery, an edited recap video, and
+				reels or TikToks cut and ready to post. All of it shot on the latest
+				iPhone.
+			</p>
+		</div>
+		<div slot="column-3-body">
+			<h2>Back In 24-48 Hours</h2>
+			<p>
+				Quick turnaround is the whole point. Your content lands while the day
+				is still fresh, so you can relive it and share it the same week, not
+				months later.
+			</p>
+		</div>
+	</ThreeColumnTextSection>
+
+	<!-- Experience and how she works on the day -->
+	<section class="about-section about-section--tinted">
+		<div class="about-split">
+			<div class="about-split__body">
+				<span class="eyebrow">Why Book Me</span>
+				<h2>5+ years of content and weddings, in your corner</h2>
+				<p>
+					I've spent over 5 years across content creation and different roles
+					within the wedding industry. So I know how a wedding day really
+					moves, where the good moments hide, and how to be there for them
+					without getting in anyone's way.
+				</p>
+				<h3>We plan it together</h3>
+				<p>
+					Before the day, we talk through your timeline so I know when to show
+					up and what matters most to you. No rigid shot list, just a clear
+					idea of the moments you never want to forget.
+				</p>
+				<h3>Small camera, big access</h3>
+				<p>
+					I shoot on iPhone on purpose. It's smaller and faster to move with,
+					so I can get close and candid without turning your day into a
+					production.
+				</p>
+				<h3>A teammate for your photo and video crew</h3>
+				<p>
+					I'm not there to replace your photographer or videographer. My
+					behind-the-scenes footage is the perfect complement to theirs, and
+					together you get the full picture of your day.
+				</p>
+			</div>
+			<div class="about-split__image">
+				<img
+					src="/assets/images/landing-1/osmoselfie.jpg"
+					alt="Steph filming on location with an iPhone on a gimbal"
+					loading="lazy"
+				/>
+			</div>
+		</div>
+	</section>
+
+	<!-- Real work, reusing the homepage portfolio videos -->
+	<section class="about-section">
+		<div class="about-section__head">
+			<span class="eyebrow">My Work</span>
+			<h2>See it for yourself</h2>
+		</div>
+		<div class="video-container">
+			<div class="video-wrapper">
+				<video controls controlslist="nodownload" oncontextmenu="return false;">
+					<source src="https://btsbs.s3.us-east-2.amazonaws.com/C9nBkdVRoJ5.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+
+			<div class="video-wrapper">
+				<video controls controlslist="nodownload" oncontextmenu="return false;">
+					<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGyZELqRdgY_fixed.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+
+			<div class="video-wrapper">
+				<video controls controlslist="nodownload" oncontextmenu="return false;">
+					<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGs9WgIRL0P_fixed.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+		</div>
+	</section>
+
+	<CustomerQuoteSection
+		quoteText="She's amazing at capturing the perfect moments and putting them together."
+		customerName="Samantha B."
+	/>
+
+	<!-- Personality as supporting colour -->
+	<section class="about-section">
+		<div class="about-split about-split--reversed">
+			<div class="about-split__body">
+				<span class="eyebrow">Off The Clock</span>
+				<h2>Miami made, cafecito powered</h2>
+				<p>
+					I was born and raised under the sunny skies of Miami, and it's still
+					my muse, my playground, and my canvas. I've also got two adorable
+					daughters who keep me on my toes (and occasionally steal my camera),
+					so capturing candid moments in the middle of happy chaos is pretty
+					much my everyday.
+				</p>
+				<p>
+					That's the energy I bring to your wedding. Whether it's finding the
+					perfect angle for a bridal transition or convincing the groomsmen to
+					try a synchronized dance routine, I'm always up for a creative
+					challenge. After all, life's too short for boring content, am I
+					right?
+				</p>
+				<p>
+					When I'm not behind the lens, you'll probably find me chasing my
+					daughters through the nearest park, sipping cafecito at my favorite
+					local spot, or brainstorming ideas for my next couple.
+				</p>
+				<div class="about-split__signature">Steph</div>
+			</div>
+			<div class="about-split__image">
+				<img
+					src="/assets/images/landing-1/steph_tampa.JPG"
+					alt="Steph at a cafe table with a coffee and a croissant"
+					loading="lazy"
+				/>
+			</div>
+		</div>
+	</section>
+
+	<CtaCardSection>
+		<h2>Let's talk about your day</h2>
+		<p>
+			Tell me your date and what you're dreaming up, and I'll walk you through
+			how it would all work.
+		</p>
+		<Button href="/company/contact" onPrimary customIcon
+			>Get In Touch <Fragment slot="icon">
+				<Icon name="ic:baseline-chevron-right" />
+			</Fragment></Button
+		>
+	</CtaCardSection>
 </Layout>
