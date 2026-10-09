@@ -6,7 +6,6 @@ import Logo from '../components/Logo.astro';
 import settings from '../config/settings';
 import { footerLists, footerSocials } from '../config/footer';
 
-
 export interface Props {
 	seo?: BaseHeadProps;
 }
@@ -16,26 +15,13 @@ import { nav } from '../config/nav.js';
 const { seo } = Astro.props as Props;
 ---
 
-<Layout seo={seo}>
-<head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8291Q1LY4D"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-8291Q1LY4D');
-  </script>
-</head>
-	<Header 
-	rightMenu 
-	navData={nav} 
-	slot="header">
-	  <span slot="logo">
-		<Logo />
-	  </span>
-  </Header>
+<Layout {seo}>
+	<slot name="announcement-bar" slot="announcement-bar" />
+	<Header rightMenu navData={nav} slot="header">
+		<span slot="logo">
+			<Logo />
+		</span>
+	</Header>
 	<div id="page">
 		<slot />
 	</div>
@@ -43,8 +29,8 @@ const { seo } = Astro.props as Props;
 		slot="footer"
 		background="var(--theme-surface-1)"
 		color="var(--theme-on-surface-1)"
-		footerLists={footerLists}
-		footerSocials={footerSocials}
+		{footerLists}
+		{footerSocials}
 		copyrightName={settings.name}
 		showLittleSticksPlug={settings.showLittleSticksPlug}
 	>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://btsbs.com/sitemap-index.xml

@@ -6,7 +6,6 @@ import {
 	BlogPostsList,
 } from '@components/odyssey-theme';
 import Layout from '../../layouts/Page.astro';
-import NewsletterForm from '../../components/forms/NewsletterForm.astro';
 import '@styles/blog-theme.css';
 
 const postModules = import.meta.glob('./posts/*.mdx', { eager: true });
@@ -41,9 +40,8 @@ const seo = {
 				<h1>The <em>Journal</em></h1>
 				<p>
 					Real wedding stories, behind-the-scenes videography tips, and what to
-					expect on your day. New here? Get new posts in your inbox.
+					expect on your day.
 				</p>
-				<NewsletterForm />
 			</Container>
 		</TextCardSection>
 		<section class="blog-posts-list__section">
