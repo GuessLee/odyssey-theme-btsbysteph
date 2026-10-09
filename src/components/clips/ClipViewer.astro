@@ -6,8 +6,7 @@
 import { Icon } from 'astro-icon/components';
 import Button from '../buttons/Button.astro';
 
-const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
-	Astro.props;
+const { enquireHref = '/company/contact' } = Astro.props;
 ---
 
 <dialog class="clip-viewer" data-clip-viewer aria-label="Clip viewer">
@@ -38,7 +37,7 @@ const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
 			free.
 		</p>
 		<span data-clip-enquire>
-			<Button href={enquireHref} onPrimary>{enquireLabel}</Button>
+			<Button href={enquireHref} onPrimary>Check my date</Button>
 		</span>
 		<div class="clip-viewer__nav">
 			<button
@@ -64,6 +63,8 @@ const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
 </dialog>
 
 <script>
+	import { tiles } from '../../data/clips.js';
+
 	const viewer = document.querySelector('[data-clip-viewer]');
 
 	if (viewer) {
@@ -76,13 +77,14 @@ const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
 		let opener = null;
 		// True from asking for a moment until the video has jumped to it.
 		let settling = false;
+		// Start second of the moment the title currently names.
+		let onScreen = 0;
 
 		const startOf = tile => Number(tile.dataset.clipStart) || 0;
 
-		function describe() {
-			const tile = list[index];
-			labelOut.textContent = tile.dataset.clipLabel;
-			momentOut.textContent = tile.dataset.clipMoment;
+		function describe(label, moment) {
+			labelOut.textContent = label;
+			momentOut.textContent = moment;
 			countOut.textContent = `${index + 1} / ${list.length}`;
 		}
 
@@ -91,7 +93,8 @@ const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
 			const start = startOf(tile);
 			const cover = tile.querySelector('img');
 
-			describe();
+			describe(tile.dataset.clipLabel, tile.dataset.clipMoment);
+			onScreen = start;
 			settling = start > 0;
 
 			if (video.dataset.loaded === tile.dataset.clipSrc) {
@@ -101,13 +104,6 @@ const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
 				video.dataset.loaded = tile.dataset.clipSrc;
 				video.poster = cover ? cover.currentSrc || cover.src : '';
 				video.src = tile.dataset.clipSrc;
-				video.addEventListener(
-					'loadedmetadata',
-					() => {
-						if (start) video.currentTime = start;
-					},
-					{ once: true }
-				);
 			}
 			video.play().catch(() => {});
 		}
@@ -117,25 +113,33 @@ const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
 			show();
 		}
 
+		video.addEventListener('loadedmetadata', () => {
+			const start = startOf(list[index]);
+			if (start) video.currentTime = start;
+		});
+
 		// A clip keeps playing past the moment it was opened at, so the title
-		// follows along: it always names the moment currently on screen.
+		// follows along: it always names the moment currently on screen, whether
+		// or not that moment has a tile in the group being stepped through.
 		video.addEventListener('seeked', () => {
 			settling = false;
 		});
 		video.addEventListener('timeupdate', () => {
 			if (settling) return;
-			const src = list[index] && list[index].dataset.clipSrc;
-			let current = -1;
-			list.forEach((tile, i) => {
-				if (tile.dataset.clipSrc !== src) return;
-				if (startOf(tile) > video.currentTime + 0.25) return;
-				if (current === -1 || startOf(tile) > startOf(list[current]))
-					current = i;
+			const src = video.dataset.loaded;
+			let current = null;
+			tiles.forEach(moment => {
+				if (moment.src !== src) return;
+				if (moment.start > video.currentTime + 0.25) return;
+				if (!current || moment.start > current.start) current = moment;
 			});
-			if (current !== -1 && current !== index) {
-				index = current;
-				describe();
-			}
+			if (!current || current.start === onScreen) return;
+			const listed = list.findIndex(
+				tile => tile.dataset.clipSrc === src && startOf(tile) === current.start
+			);
+			if (listed !== -1) index = listed;
+			onScreen = current.start;
+			describe(current.label, current.moment);
 		});
 
 		function open(tile) {
@@ -184,7 +188,7 @@ const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
 			delete video.dataset.loaded;
 			video.load();
 			document.documentElement.style.overflow = '';
-			if (opener) opener.focus();
+			if (opener) opener.focus({ preventScroll: true });
 		});
 	}
 </script>

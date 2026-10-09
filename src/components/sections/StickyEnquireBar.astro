@@ -2,21 +2,17 @@
 // Phone-only bar that keeps the enquiry one tap away while scrolling. It steps
 // aside once the section it points at is on screen. Pair it with EnquiryBand.
 import Button from '../buttons/Button.astro';
-
-const { href = '#enquire' } = Astro.props;
 ---
 
-<div class="sticky-enquire" data-sticky-enquire data-target={href}>
+<div class="sticky-enquire" data-sticky-enquire>
 	<span class="sticky-enquire__text">Is your date still open?</span>
-	<Button {href}>Check my date</Button>
+	<Button href="#enquire">Check my date</Button>
 </div>
 <div class="sticky-enquire__spacer" aria-hidden="true"></div>
 
 <script>
 	document.querySelectorAll('[data-sticky-enquire]').forEach(bar => {
-		const target = bar.dataset.target.startsWith('#')
-			? document.querySelector(bar.dataset.target)
-			: null;
+		const target = document.querySelector('#enquire');
 		if (!target || !('IntersectionObserver' in window)) return;
 		new IntersectionObserver(entries => {
 			bar.classList.toggle(

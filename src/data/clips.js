@@ -215,11 +215,7 @@ function pick(covers) {
 	});
 }
 
-// Any moment left out of tileOrder is appended, so a new clip is never hidden.
-export const tiles = [
-	...pick(tileOrder),
-	...allTiles.filter(tile => !tileOrder.includes(tile.cover)),
-];
+export const tiles = pick(tileOrder);
 
 export const homeWallTiles = tiles.slice(0, homeWallCount);
 
