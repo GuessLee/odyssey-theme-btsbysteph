@@ -1,5 +1,5 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import {
 	Button,
@@ -12,26 +12,13 @@ import HeroSection from '../../components/sections/heros/HeroSection.astro';
 import stephImage from '@assets/images/steph.jpg';
 import atWorkImage from '@assets/images/osmoselfie.jpg';
 import cafeImage from '@assets/images/steph_tampa.jpg';
-import posterReception from '@assets/images/posters/portfolio-reception.jpg';
-import posterTablescape from '@assets/images/posters/portfolio-tablescape.jpg';
-import posterCeremony from '@assets/images/posters/portfolio-ceremony.jpg';
+import { portfolioVideos } from '@data/portfolioVideos';
 
 const seo = {
 	title: 'About Steph | BTS By Steph',
 	description:
 		'Meet Steph, the South Florida wedding content creator behind BTS By Steph. 5+ years in content and weddings, shot on iPhone, delivered within 24-48 hours.',
 };
-
-const portfolioVideos = await Promise.all(
-	[
-		{ src: 'C9nBkdVRoJ5.mp4', poster: posterReception },
-		{ src: 'DGyZELqRdgY_fixed.mp4', poster: posterTablescape },
-		{ src: 'DGs9WgIRL0P_fixed.mp4', poster: posterCeremony },
-	].map(async ({ src, poster }) => ({
-		src: `https://btsbs.s3.us-east-2.amazonaws.com/${src}`,
-		poster: (await getImage({ src: poster, width: 562, format: 'webp' })).src,
-	}))
-);
 ---
 
 <Layout {seo}>
