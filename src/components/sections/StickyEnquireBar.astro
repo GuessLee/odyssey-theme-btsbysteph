@@ -1,0 +1,86 @@
+---
+// Phone-only bar that keeps the enquiry one tap away while scrolling. It steps
+// aside once the section it points at is on screen. Pair it with EnquiryBand.
+import Button from '../buttons/Button.astro';
+
+const { href = '#enquire' } = Astro.props;
+---
+
+<div class="sticky-enquire" data-sticky-enquire data-target={href}>
+	<span class="sticky-enquire__text">Is your date still open?</span>
+	<Button {href}>Check my date</Button>
+</div>
+<div class="sticky-enquire__spacer" aria-hidden="true"></div>
+
+<script>
+	document.querySelectorAll('[data-sticky-enquire]').forEach(bar => {
+		const target = bar.dataset.target.startsWith('#')
+			? document.querySelector(bar.dataset.target)
+			: null;
+		if (!target || !('IntersectionObserver' in window)) return;
+		new IntersectionObserver(entries => {
+			bar.classList.toggle(
+				'is-away',
+				entries.some(entry => entry.isIntersecting)
+			);
+		}).observe(target);
+	});
+</script>
+
+<style>
+	.sticky-enquire,
+	.sticky-enquire__spacer {
+		display: none;
+	}
+
+	@media (max-width: 860px) {
+		.sticky-enquire {
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 900;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--space-2);
+			padding: 0.7rem var(--space-3);
+			padding-bottom: calc(0.7rem + env(safe-area-inset-bottom, 0px));
+			background: color-mix(in srgb, var(--theme-bg) 95%, transparent);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
+			border-top: 1px solid rgba(196, 164, 132, 0.35);
+			box-shadow: 0 -10px 30px -18px rgba(122, 77, 24, 0.5);
+			transition: transform var(--theme-transition);
+		}
+
+		.sticky-enquire.is-away {
+			transform: translateY(110%);
+		}
+
+		.sticky-enquire__text {
+			font-family: var(--theme-font-family-serif);
+			font-size: 1.1rem;
+			font-style: italic;
+			line-height: 1.2;
+		}
+
+		.sticky-enquire :global(.btn) {
+			padding: 0.65rem 1.2rem;
+			white-space: nowrap;
+		}
+
+		/* Keeps the footer's last line clear of the bar. */
+		.sticky-enquire__spacer {
+			display: block;
+			height: 4.5rem;
+			background-color: var(--theme-surface-1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.sticky-enquire {
+			transition: none;
+		}
+	}
+</style>

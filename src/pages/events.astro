@@ -1,0 +1,65 @@
+---
+import { PackageCards } from '@components/odyssey-theme';
+import Layout from '../layouts/Page.astro';
+import { eventPackages } from '@data/packages';
+
+const seo = {
+	title: 'Events Packages | BTS By Steph',
+	description:
+		'iPhone content creation for birthdays, corporate gatherings and other events by BTS By Steph. Three packages, delivered fast.',
+};
+---
+
+<Layout {seo}>
+	<style>
+		.events-section {
+			margin: 0 auto;
+			padding: var(--space-7) var(--space-4) var(--space-6);
+		}
+
+		.events-section__head {
+			text-align: center;
+			max-width: 640px;
+			margin: 0 auto var(--space-6);
+		}
+
+		.events-section__head h1 {
+			font-size: var(--font-size-xl);
+			line-height: 1.15;
+			margin: 0.5rem 0 0;
+		}
+
+		.events-section__back {
+			text-align: center;
+			margin: var(--space-6) 0 0;
+		}
+
+		.events-section__back a {
+			font-size: var(--font-size-sm);
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			text-decoration: none;
+			color: var(--theme-accent-text);
+			border-bottom: 1.5px solid var(--theme-accent);
+			padding-bottom: 2px;
+		}
+
+		@media (max-width: 900px) {
+			.events-section {
+				padding: var(--space-6) var(--space-3) var(--space-5);
+			}
+		}
+	</style>
+
+	<section class="events-section">
+		<div class="events-section__head">
+			<span class="eyebrow">General Events</span>
+			<h1>From birthdays to corporate gatherings</h1>
+		</div>
+		<PackageCards packages={eventPackages} />
+		<p class="events-section__back">
+			Planning a wedding? <a href="/#packages">See wedding packages</a>
+		</p>
+	</section>
+</Layout>

@@ -1,0 +1,382 @@
+---
+// Full-screen viewer for clip tiles. Include it once on any page that renders
+// ClipTile. It listens for clicks on [data-clip-tile] and steps through the
+// visible tiles of the group ([data-clip-group]) the tapped tile belongs to.
+// No video is requested until a tile is tapped.
+import { Icon } from 'astro-icon/components';
+import Button from '../buttons/Button.astro';
+
+const { enquireHref = '/company/contact', enquireLabel = 'Check my date' } =
+	Astro.props;
+---
+
+<dialog class="clip-viewer" data-clip-viewer aria-label="Clip viewer">
+	<button
+		class="clip-viewer__round clip-viewer__close"
+		type="button"
+		data-clip-close
+		aria-label="Close viewer"
+	>
+		<Icon name="ic:baseline-close" width="22px" height="22px" />
+	</button>
+
+	<div class="clip-viewer__stage">
+		<video
+			controls
+			loop
+			playsinline
+			controlslist="nodownload"
+			oncontextmenu="return false;"
+			preload="none"></video>
+	</div>
+
+	<div class="clip-viewer__panel">
+		<span class="eyebrow clip-viewer__moment" data-clip-moment-out></span>
+		<h2 class="clip-viewer__title" data-clip-label-out></h2>
+		<p class="clip-viewer__line">
+			Want your day filmed like this? Tell me your date and I'll tell you if I'm
+			free.
+		</p>
+		<span data-clip-enquire>
+			<Button href={enquireHref} onPrimary>{enquireLabel}</Button>
+		</span>
+		<div class="clip-viewer__nav">
+			<button
+				class="clip-viewer__round"
+				type="button"
+				data-clip-step="-1"
+				aria-label="Previous clip"
+			>
+				<Icon name="ic:baseline-chevron-left" width="24px" height="24px" />
+			</button>
+			<span class="clip-viewer__count" data-clip-count aria-live="polite"
+			></span>
+			<button
+				class="clip-viewer__round"
+				type="button"
+				data-clip-step="1"
+				aria-label="Next clip"
+			>
+				<Icon name="ic:baseline-chevron-right" width="24px" height="24px" />
+			</button>
+		</div>
+	</div>
+</dialog>
+
+<script>
+	const viewer = document.querySelector('[data-clip-viewer]');
+
+	if (viewer) {
+		const video = viewer.querySelector('video');
+		const labelOut = viewer.querySelector('[data-clip-label-out]');
+		const momentOut = viewer.querySelector('[data-clip-moment-out]');
+		const countOut = viewer.querySelector('[data-clip-count]');
+		let list = [];
+		let index = 0;
+		let opener = null;
+		// True from asking for a moment until the video has jumped to it.
+		let settling = false;
+
+		const startOf = tile => Number(tile.dataset.clipStart) || 0;
+
+		function describe() {
+			const tile = list[index];
+			labelOut.textContent = tile.dataset.clipLabel;
+			momentOut.textContent = tile.dataset.clipMoment;
+			countOut.textContent = `${index + 1} / ${list.length}`;
+		}
+
+		function show() {
+			const tile = list[index];
+			const start = startOf(tile);
+			const cover = tile.querySelector('img');
+
+			describe();
+			settling = start > 0;
+
+			if (video.dataset.loaded === tile.dataset.clipSrc) {
+				// Another moment of the clip already loaded: jump, do not refetch.
+				video.currentTime = start;
+			} else {
+				video.dataset.loaded = tile.dataset.clipSrc;
+				video.poster = cover ? cover.currentSrc || cover.src : '';
+				video.src = tile.dataset.clipSrc;
+				video.addEventListener(
+					'loadedmetadata',
+					() => {
+						if (start) video.currentTime = start;
+					},
+					{ once: true }
+				);
+			}
+			video.play().catch(() => {});
+		}
+
+		function step(by) {
+			index = (index + by + list.length) % list.length;
+			show();
+		}
+
+		// A clip keeps playing past the moment it was opened at, so the title
+		// follows along: it always names the moment currently on screen.
+		video.addEventListener('seeked', () => {
+			settling = false;
+		});
+		video.addEventListener('timeupdate', () => {
+			if (settling) return;
+			const src = list[index] && list[index].dataset.clipSrc;
+			let current = -1;
+			list.forEach((tile, i) => {
+				if (tile.dataset.clipSrc !== src) return;
+				if (startOf(tile) > video.currentTime + 0.25) return;
+				if (current === -1 || startOf(tile) > startOf(list[current]))
+					current = i;
+			});
+			if (current !== -1 && current !== index) {
+				index = current;
+				describe();
+			}
+		});
+
+		function open(tile) {
+			const group = tile.closest('[data-clip-group]') || document;
+			list = [...group.querySelectorAll('[data-clip-tile]')].filter(
+				candidate => !candidate.hidden && candidate.offsetParent !== null
+			);
+			index = Math.max(0, list.indexOf(tile));
+			opener = tile;
+			viewer.showModal();
+			document.documentElement.style.overflow = 'hidden';
+			show();
+		}
+
+		document.addEventListener('click', event => {
+			const tile = event.target.closest('[data-clip-tile]');
+			if (tile) open(tile);
+		});
+
+		viewer
+			.querySelectorAll('[data-clip-step]')
+			.forEach(button =>
+				button.addEventListener('click', () =>
+					step(Number(button.dataset.clipStep))
+				)
+			);
+		viewer
+			.querySelector('[data-clip-close]')
+			.addEventListener('click', () => viewer.close());
+		// The enquiry link may point at a section of this page, so get out of its way.
+		viewer
+			.querySelector('[data-clip-enquire]')
+			.addEventListener('click', () => viewer.close());
+		// A click on the backdrop (the dialog element itself) closes the viewer.
+		viewer.addEventListener('click', event => {
+			if (event.target === viewer) viewer.close();
+		});
+		viewer.addEventListener('keydown', event => {
+			if (event.target === video) return;
+			if (event.key === 'ArrowRight') step(1);
+			if (event.key === 'ArrowLeft') step(-1);
+		});
+		viewer.addEventListener('close', () => {
+			video.pause();
+			video.removeAttribute('src');
+			delete video.dataset.loaded;
+			video.load();
+			document.documentElement.style.overflow = '';
+			if (opener) opener.focus();
+		});
+	}
+</script>
+
+<style>
+	.clip-viewer {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		max-height: none;
+		margin: 0;
+		padding: var(--space-4);
+		border: 0;
+		background: rgba(28, 18, 8, 0.95);
+		color: #fff;
+	}
+
+	.clip-viewer[open] {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		align-items: center;
+		gap: var(--space-4);
+	}
+
+	.clip-viewer::backdrop {
+		background: rgba(28, 18, 8, 0.95);
+	}
+
+	.clip-viewer__stage {
+		grid-column: 2;
+		height: min(86vh, 820px);
+		aspect-ratio: 9 / 16;
+		border-radius: var(--theme-radius-lg);
+		overflow: hidden;
+		background: #000;
+		box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);
+	}
+
+	.clip-viewer__stage video {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.clip-viewer__panel {
+		grid-column: 3;
+		justify-self: start;
+		max-width: 340px;
+	}
+
+	.clip-viewer__moment {
+		display: block;
+		color: var(--theme-highlight);
+		margin-bottom: 0.5rem;
+	}
+
+	.clip-viewer__title {
+		font-family: var(--theme-font-family-serif);
+		font-size: var(--font-size-lg);
+		font-weight: 500;
+		letter-spacing: 0;
+		margin: 0 0 0.6rem;
+	}
+
+	.clip-viewer__line {
+		font-size: var(--font-size-sm);
+		line-height: 1.6;
+		opacity: 0.85;
+		margin: 0 0 var(--space-3);
+	}
+
+	.clip-viewer__nav {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		margin-top: var(--space-3);
+	}
+
+	.clip-viewer__count {
+		font-size: var(--font-size-sm);
+		letter-spacing: 0.08em;
+		opacity: 0.8;
+		min-width: 3.5rem;
+		text-align: center;
+	}
+
+	.clip-viewer__round {
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 1px solid rgba(255, 255, 255, 0.45);
+		border-radius: 50%;
+		background: transparent;
+		color: #fff;
+		display: grid;
+		place-items: center;
+		cursor: pointer;
+		transition: background-color var(--theme-transition);
+	}
+
+	.clip-viewer__round:hover {
+		background: rgba(255, 255, 255, 0.16);
+	}
+
+	.clip-viewer__close {
+		position: absolute;
+		top: 1.2rem;
+		right: 1.2rem;
+		z-index: 2;
+	}
+
+	/* Phones: the video takes the screen, the details sit underneath it. */
+	@media (max-width: 860px) {
+		.clip-viewer {
+			padding: 0;
+		}
+
+		.clip-viewer[open] {
+			display: flex;
+			flex-direction: column;
+			gap: 0;
+		}
+
+		.clip-viewer__stage {
+			flex: 1;
+			min-height: 0;
+			width: 100%;
+			height: auto;
+			aspect-ratio: auto;
+			border-radius: 0;
+			box-shadow: none;
+		}
+
+		.clip-viewer__stage video {
+			object-fit: contain;
+		}
+
+		.clip-viewer__panel {
+			max-width: none;
+			width: 100%;
+			padding: 0.9rem 1.25rem 1.1rem;
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			align-items: center;
+			gap: 0.2rem 1rem;
+		}
+
+		.clip-viewer__moment {
+			grid-column: 1 / -1;
+			margin: 0;
+		}
+
+		.clip-viewer__title {
+			font-size: var(--font-size-md);
+			margin: 0;
+		}
+
+		.clip-viewer__line {
+			display: none;
+		}
+
+		.clip-viewer__nav {
+			grid-column: 2;
+			grid-row: 2;
+			margin: 0;
+			gap: 0.4rem;
+		}
+
+		.clip-viewer__count {
+			display: none;
+		}
+
+		.clip-viewer__round {
+			width: 40px;
+			height: 40px;
+		}
+
+		.clip-viewer__panel [data-clip-enquire] {
+			grid-column: 1 / -1;
+			margin-top: 0.7rem;
+		}
+
+		.clip-viewer__panel [data-clip-enquire] :global(.btn) {
+			width: 100%;
+		}
+
+		.clip-viewer__close {
+			top: 0.8rem;
+			right: 0.8rem;
+			border: 0;
+			background: rgba(0, 0, 0, 0.45);
+		}
+	}
+</style>

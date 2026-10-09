@@ -21,6 +21,14 @@ export { default as ThreeColumnTextSection } from './sections/ThreeColumnTextSec
 export { default as YouTubeEmbedSection } from './sections/YouTubeEmbedSection.astro';
 export { default as StickyTextImageSection } from './sections/StickyTextImageSection.astro';
 export { default as CtaCardSection } from './sections/CtaCardSection.astro';
+export { default as EnquiryBand } from './sections/EnquiryBand.astro';
+export { default as PackageCards } from './sections/PackageCards.astro';
+export { default as StickyEnquireBar } from './sections/StickyEnquireBar.astro';
+
+// Clips (footage tiles, the filterable wall, the full-screen viewer)
+export { default as ClipTile } from './clips/ClipTile.astro';
+export { default as ClipWall } from './clips/ClipWall.astro';
+export { default as ClipViewer } from './clips/ClipViewer.astro';
 
 // Blog
 export { default as BlogPostsList } from './blog/BlogPostsList.astro';
