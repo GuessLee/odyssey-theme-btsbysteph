@@ -1,5 +1,6 @@
 ---
 import { parse, isBefore } from 'date-fns';
+import { Image, getImage } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import {
 	AnnouncementBar,
@@ -10,6 +11,11 @@ import {
 	CtaCardSection,
 } from '@components/odyssey-theme';
 import Layout from '../layouts/Page.astro';
+import heroImage from '@assets/images/osmoselfie.jpg';
+import stephImage from '@assets/images/steph.jpg';
+import posterReception from '@assets/images/posters/portfolio-reception.jpg';
+import posterTablescape from '@assets/images/posters/portfolio-tablescape.jpg';
+import posterCeremony from '@assets/images/posters/portfolio-ceremony.jpg';
 
 const postModules = import.meta.glob('./blog/posts/*.mdx', { eager: true });
 const journalPosts = Object.values(postModules)
@@ -23,6 +29,17 @@ const journalPosts = Object.values(postModules)
 	.sort((a, b) => (isBefore(a.publishDate, b.publishDate) ? 1 : -1))
 	.slice(0, 2);
 const latestPost = journalPosts[0];
+
+const portfolioVideos = await Promise.all(
+	[
+		{ src: 'C9nBkdVRoJ5.mp4', poster: posterReception },
+		{ src: 'DGyZELqRdgY_fixed.mp4', poster: posterTablescape },
+		{ src: 'DGs9WgIRL0P_fixed.mp4', poster: posterCeremony },
+	].map(async ({ src, poster }) => ({
+		src: `https://btsbs.s3.us-east-2.amazonaws.com/${src}`,
+		poster: (await getImage({ src: poster, width: 562, format: 'webp' })).src,
+	}))
+);
 ---
 
 <Layout>
@@ -119,13 +136,40 @@ const latestPost = journalPosts[0];
 			font-size: 0.75rem;
 			letter-spacing: 0.04em;
 			color: var(--theme-on-bg);
-			opacity: 0.65;
 		}
 
 		.hero__divider {
 			width: 1px;
 			height: 30px;
 			background: rgba(196, 164, 132, 0.4);
+		}
+
+		@media (max-width: 600px) {
+			.hero__trust-row {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				align-items: stretch;
+				gap: 0;
+			}
+
+			.hero__divider {
+				display: none;
+			}
+
+			.hero__stat {
+				padding: 0 var(--space-1) 0 0.75rem;
+				border-left: 1px solid rgba(196, 164, 132, 0.4);
+			}
+
+			.hero__stat:first-child {
+				padding-left: 0;
+				border-left: 0;
+			}
+
+			.hero__stat strong {
+				font-size: clamp(1rem, 5vw, 1.35rem);
+				white-space: nowrap;
+			}
 		}
 
 		.hero__image {
@@ -228,25 +272,25 @@ const latestPost = journalPosts[0];
 
 		.video-wrapper {
 			position: relative;
-			overflow: hidden;
-			transition: transform var(--theme-transition);
+			height: 500px;
+			max-width: 100%;
+			aspect-ratio: 9 / 16;
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-image-glow);
+			transition: transform var(--theme-transition), box-shadow var(--theme-transition);
 		}
 
 		.video-wrapper:hover {
 			transform: translateY(-8px);
+			box-shadow: 0 20px 44px -14px rgba(181, 119, 46, 0.45);
 		}
 
 		.video-container video {
+			display: block;
 			width: 100%;
-			height: 500px;
+			height: 100%;
 			object-fit: cover;
-			border-radius: var(--theme-radius-lg);
-			box-shadow: var(--theme-image-glow);
-			transition: box-shadow var(--theme-transition);
-		}
-
-		.video-wrapper:hover video {
-			box-shadow: 0 20px 44px -14px rgba(181, 119, 46, 0.45);
+			border-radius: inherit;
 		}
 
 		@media (max-width: 1024px) {
@@ -261,7 +305,7 @@ const latestPost = journalPosts[0];
 				gap: var(--space-3);
 			}
 
-			.video-container video {
+			.video-wrapper {
 				height: 450px;
 			}
 		}
@@ -311,12 +355,13 @@ const latestPost = journalPosts[0];
 			left: 50%;
 			transform: translateX(-50%);
 			background: var(--theme-accent);
-			color: #fff;
+			color: var(--theme-on-bg);
 			font-family: var(--theme-font-family-sans);
 			font-size: 0.75rem;
 			font-weight: 600;
 			letter-spacing: 0.1em;
 			text-transform: uppercase;
+			white-space: nowrap;
 			padding: 0.4rem 1.5rem;
 			border-radius: var(--theme-button-border-radius);
 		}
@@ -351,6 +396,10 @@ const latestPost = journalPosts[0];
 			font-size: 0.9rem;
 			font-style: italic;
 			opacity: 0.7;
+		}
+
+		.pricing-card.featured .price-note {
+			opacity: 1;
 		}
 
 		.features {
@@ -537,8 +586,44 @@ const latestPost = journalPosts[0];
 				</div>
 			</div>
 			<div class="hero__image">
-				<img src="/assets/images/landing-1/osmoselfie.jpg" alt="Steph filming on location" />
+				<Image
+					src={heroImage}
+					alt="Steph filming on location"
+					width={1232}
+					height={1540}
+					fit="cover"
+					widths={[420, 640, 840, 1232]}
+					sizes="(max-width: 900px) min(420px, calc(100vw - 4rem)), 616px"
+					quality={80}
+					loading="eager"
+					fetchpriority="high"
+				/>
 			</div>
+		</div>
+	</section>
+
+	<!-- Portfolio Video Section -->
+	<section class="home-section home-section--tinted">
+		<div class="home-section__head">
+			<span class="eyebrow">My Work</span>
+			<h2>A glimpse into the magic I capture</h2>
+		</div>
+		<div class="video-container">
+			{portfolioVideos.map((video) => (
+				<div class="video-wrapper">
+					<video
+						controls
+						controlslist="nodownload"
+						oncontextmenu="return false;"
+						playsinline
+						preload="none"
+						poster={video.poster}
+					>
+						<source src={video.src} type="video/mp4" />
+						Your browser does not support the video tag.
+					</video>
+				</div>
+			))}
 		</div>
 	</section>
 
@@ -568,7 +653,16 @@ const latestPost = journalPosts[0];
 	<section class="home-section">
 		<div class="about-teaser__grid">
 			<div class="about-teaser__image">
-				<img src="/assets/images/home/steph.jpg" alt="Stephanie, BTS By Steph" />
+				<Image
+					src={stephImage}
+					alt="Stephanie, BTS By Steph"
+					width={840}
+					height={840}
+					fit="cover"
+					widths={[420, 840]}
+					sizes="(max-width: 900px) min(420px, calc(100vw - 4rem)), 420px"
+					quality={80}
+				/>
 			</div>
 			<div class="about-teaser__body">
 				<span class="eyebrow">Behind the Lens</span>
@@ -592,36 +686,6 @@ const latestPost = journalPosts[0];
 						</Fragment></Button
 					>
 				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- Portfolio Video Section -->
-	<section class="home-section home-section--tinted">
-		<div class="home-section__head">
-			<span class="eyebrow">My Work</span>
-			<h2>A glimpse into the magic I capture</h2>
-		</div>
-		<div class="video-container">
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source src="https://btsbs.s3.us-east-2.amazonaws.com/C9nBkdVRoJ5.mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</div>
-
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGyZELqRdgY_fixed.mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</div>
-
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGs9WgIRL0P_fixed.mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
 			</div>
 		</div>
 	</section>

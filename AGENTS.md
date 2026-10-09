@@ -97,7 +97,7 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 
 | Route               | File                               | Notes                                                     |
 | ------------------- | ---------------------------------- | --------------------------------------------------------- |
-| `/`                 | `src/pages/index.astro`            | Hero → value props → about teaser → portfolio videos → wedding packages → testimonial → general events packages → journal preview → CTA |
+| `/`                 | `src/pages/index.astro`            | Hero → portfolio videos → value props → about teaser → wedding packages → testimonial → general events packages → journal preview → CTA |
 | `/company/about`    | `src/pages/company/about.astro`    |                                                           |
 | `/company/contact`  | `src/pages/company/contact.astro`  | Uses `ContactForm` + S3-hosted video                      |
 | `/company/legal`    | `src/pages/company/legal.astro`    |                                                           |

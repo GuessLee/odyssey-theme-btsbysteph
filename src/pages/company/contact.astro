@@ -2,6 +2,10 @@
 import ContactForm from '../../components/forms/ContactForm.astro';
 import Layout from '../../layouts/Page.astro';
 import { Container } from '@components/odyssey-theme';
+import { getImage } from 'astro:assets';
+import posterVenue from '@assets/images/posters/contact-venue.jpg';
+
+const contactPoster = await getImage({ src: posterVenue, width: 480, format: 'webp' });
 
 const seo = {
 	title: 'Contact | BTS By Steph',
@@ -28,7 +32,15 @@ const seo = {
 
 				<!-- 📌 New Video Embed Below Email -->
 				<div class="contact-video">
-					<video autoplay loop muted playsinline width="300">
+					<video
+						autoplay
+						loop
+						muted
+						playsinline
+						width="300"
+						height="533"
+						poster={contactPoster.src}
+					>
 						<source
 							src="https://btsbs.s3.us-east-2.amazonaws.com/C-IaHybR3N0_contact.mp4"
 							type="video/mp4"
@@ -76,10 +88,15 @@ const seo = {
 		border-radius: var(--theme-radius-lg);
 		box-shadow: var(--theme-image-glow);
 		width: 300px; /* Ensures the video is smaller */
+		height: auto;
+		aspect-ratio: 9 / 16;
 	}
 	@media (max-width: 768px) {
 		.contact-hero__section {
 			grid-template-columns: 1fr;
+		}
+		.col-2__container {
+			order: -1;
 		}
 		.contact-video video {
 			width: 90%; /* Makes it responsive */
