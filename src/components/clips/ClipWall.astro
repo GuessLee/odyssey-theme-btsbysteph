@@ -123,7 +123,7 @@ const sizes = isLibrary
 				`${header ? header.offsetHeight : 0}px`
 			);
 		setStickyTop();
-		window.addEventListener('resize', setStickyTop);
+		if (header) new ResizeObserver(setStickyTop).observe(header);
 	});
 </script>
 
