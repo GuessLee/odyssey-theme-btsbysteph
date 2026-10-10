@@ -2,6 +2,14 @@
 import ContactForm from '../../components/forms/ContactForm.astro';
 import Layout from '../../layouts/Page.astro';
 import { Container } from '@components/odyssey-theme';
+import { getImage } from 'astro:assets';
+import posterVenue from '@assets/images/posters/contact-venue.jpg';
+
+const contactPoster = await getImage({
+	src: posterVenue,
+	width: 480,
+	format: 'webp',
+});
 
 const seo = {
 	title: 'Contact | BTS By Steph',
@@ -14,21 +22,31 @@ const seo = {
 	<Container>
 		<section class="contact-hero__section">
 			<div class="contact-hero__text-section">
-				<h1>Contact Me</h1>
-				<p>
-					This is your direct line to me. Planning a wedding or an event, or
-					just have a question? Tell me a little about it and I'll get back to
-					you.
-				</p>
-				<div>
+				<div class="contact-hero__intro">
+					<h1>Contact Me</h1>
 					<p>
-						<a href="mailto:info@btsbs.com">info@btsbs.com</a>
+						This is your direct line to me. Planning a wedding or an event, or
+						just have a question? Tell me a little about it and I'll get back to
+						you.
 					</p>
+					<div>
+						<p>
+							<a href="mailto:info@btsbs.com">info@btsbs.com</a>
+						</p>
+					</div>
 				</div>
 
 				<!-- 📌 New Video Embed Below Email -->
 				<div class="contact-video">
-					<video autoplay loop muted playsinline width="300">
+					<video
+						autoplay
+						loop
+						muted
+						playsinline
+						width="300"
+						height="533"
+						poster={contactPoster.src}
+					>
 						<source
 							src="https://btsbs.s3.us-east-2.amazonaws.com/C-IaHybR3N0_contact.mp4"
 							type="video/mp4"
@@ -62,6 +80,10 @@ const seo = {
 		border-radius: var(--theme-radius-lg);
 		box-shadow: var(--theme-card-shadow);
 	}
+	.contact-hero__intro {
+		display: flex;
+		flex-direction: column;
+	}
 	.col-2__container {
 		display: flex;
 		flex-direction: column;
@@ -76,10 +98,25 @@ const seo = {
 		border-radius: var(--theme-radius-lg);
 		box-shadow: var(--theme-image-glow);
 		width: 300px; /* Ensures the video is smaller */
+		height: auto;
+		aspect-ratio: 9 / 16;
 	}
 	@media (max-width: 768px) {
 		.contact-hero__section {
 			grid-template-columns: 1fr;
+		}
+		.contact-hero__text-section {
+			display: contents;
+		}
+		.contact-hero__intro {
+			padding: var(--space-4);
+			background-color: var(--theme-surface-1);
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-card-shadow);
+		}
+		.contact-video {
+			order: 1;
+			margin-top: 0;
 		}
 		.contact-video video {
 			width: 90%; /* Makes it responsive */

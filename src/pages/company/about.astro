@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import {
 	Button,
@@ -8,6 +9,10 @@ import {
 } from '@components/odyssey-theme';
 import Layout from '../../layouts/Page.astro';
 import HeroSection from '../../components/sections/heros/HeroSection.astro';
+import stephImage from '@assets/images/steph.jpg';
+import atWorkImage from '@assets/images/osmoselfie.jpg';
+import cafeImage from '@assets/images/steph_tampa.jpg';
+import { portfolioVideos } from '@data/portfolioVideos';
 
 const seo = {
 	title: 'About Steph | BTS By Steph',
@@ -152,20 +157,27 @@ const seo = {
 
 		.video-wrapper {
 			position: relative;
-			overflow: hidden;
-			transition: transform var(--theme-transition);
+			height: 500px;
+			max-width: 100%;
+			aspect-ratio: 9 / 16;
+			border-radius: var(--theme-radius-lg);
+			box-shadow: var(--theme-image-glow);
+			transition:
+				transform var(--theme-transition),
+				box-shadow var(--theme-transition);
 		}
 
 		.video-wrapper:hover {
 			transform: translateY(-8px);
+			box-shadow: 0 20px 44px -14px rgba(181, 119, 46, 0.45);
 		}
 
 		.video-container video {
+			display: block;
 			width: 100%;
-			height: 500px;
+			height: 100%;
 			object-fit: cover;
-			border-radius: var(--theme-radius-lg);
-			box-shadow: var(--theme-image-glow);
+			border-radius: inherit;
 		}
 
 		@media (max-width: 1024px) {
@@ -180,7 +192,7 @@ const seo = {
 				gap: var(--space-3);
 			}
 
-			.video-container video {
+			.video-wrapper {
 				height: 450px;
 			}
 		}
@@ -210,10 +222,17 @@ const seo = {
 			</div>
 		</div>
 		<picture slot="image-container">
-			<img
-				src="/assets/images/home/steph.jpg"
+			<Image
+				src={stephImage}
 				alt="Portrait of Stephanie, the wedding content creator behind BTS By Steph"
 				id="home-hero-image"
+				width={1200}
+				height={1500}
+				widths={[480, 720, 960, 1200]}
+				sizes="(max-width: 768px) calc(100vw - 2rem), 600px"
+				quality={80}
+				loading="eager"
+				fetchpriority="high"
 			/>
 		</picture>
 	</HeroSection>
@@ -283,10 +302,16 @@ const seo = {
 				</p>
 			</div>
 			<div class="about-split__image about-split__image--subject-left">
-				<img
-					src="/assets/images/landing-1/osmoselfie.jpg"
+				<Image
+					src={atWorkImage}
 					alt="Steph filming on location with an iPhone on a gimbal"
-					loading="lazy"
+					width={920}
+					height={1150}
+					fit="cover"
+					position="left"
+					widths={[460, 690, 920]}
+					sizes="(max-width: 900px) min(420px, calc(100vw - 4rem)), 460px"
+					quality={80}
 				/>
 			</div>
 		</div>
@@ -299,35 +324,23 @@ const seo = {
 			<h2>See it for yourself</h2>
 		</div>
 		<div class="video-container">
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source
-						src="https://btsbs.s3.us-east-2.amazonaws.com/C9nBkdVRoJ5.mp4"
-						type="video/mp4"
-					/>
-					Your browser does not support the video tag.
-				</video>
-			</div>
-
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source
-						src="https://btsbs.s3.us-east-2.amazonaws.com/DGyZELqRdgY_fixed.mp4"
-						type="video/mp4"
-					/>
-					Your browser does not support the video tag.
-				</video>
-			</div>
-
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source
-						src="https://btsbs.s3.us-east-2.amazonaws.com/DGs9WgIRL0P_fixed.mp4"
-						type="video/mp4"
-					/>
-					Your browser does not support the video tag.
-				</video>
-			</div>
+			{
+				portfolioVideos.map((video) => (
+					<div class="video-wrapper">
+						<video
+							controls
+							controlslist="nodownload"
+							oncontextmenu="return false;"
+							playsinline
+							preload="none"
+							poster={video.poster}
+						>
+							<source src={video.src} type="video/mp4" />
+							Your browser does not support the video tag.
+						</video>
+					</div>
+				))
+			}
 		</div>
 	</section>
 
@@ -363,10 +376,15 @@ const seo = {
 				<div class="about-split__signature">Steph</div>
 			</div>
 			<div class="about-split__image">
-				<img
-					src="/assets/images/landing-1/steph_tampa.JPG"
+				<Image
+					src={cafeImage}
 					alt="Steph at a cafe table with a coffee and a croissant"
-					loading="lazy"
+					width={920}
+					height={1150}
+					fit="cover"
+					widths={[460, 690, 920]}
+					sizes="(max-width: 900px) min(420px, calc(100vw - 4rem)), 460px"
+					quality={80}
 				/>
 			</div>
 		</div>
