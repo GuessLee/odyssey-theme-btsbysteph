@@ -14,13 +14,17 @@ import Button from '../buttons/Button.astro';
 	document.querySelectorAll('[data-sticky-enquire]').forEach(bar => {
 		const target = document.querySelector('#enquire');
 		if (!target || !('IntersectionObserver' in window)) return;
-		new IntersectionObserver(entries => {
-			const entry = entries[entries.length - 1];
-			bar.classList.toggle(
-				'is-away',
-				entry.isIntersecting || entry.boundingClientRect.top < 0
-			);
-		}).observe(target);
+		// The root reaches far above the viewport, so the section still counts as
+		// on screen after it has been scrolled past.
+		new IntersectionObserver(
+			entries => {
+				bar.classList.toggle(
+					'is-away',
+					entries[entries.length - 1].isIntersecting
+				);
+			},
+			{ rootMargin: '100000px 0px 0px 0px' }
+		).observe(target);
 	});
 </script>
 
