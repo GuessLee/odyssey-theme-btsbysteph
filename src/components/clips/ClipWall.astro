@@ -90,10 +90,15 @@ const sizes = isLibrary
 			empty.hidden = shown > 0;
 
 			// A shorter grid can end up behind the pinned filters, so bring its
-			// first row back to just below them.
-			const toolsBox = tools.getBoundingClientRect();
-			const gap = parseFloat(getComputedStyle(tools).marginBottom) || 0;
-			const overlap = toolsBox.bottom + gap - grid.getBoundingClientRect().top;
+			// first row back to just below them. Measure from where the filters
+			// pin, not where they are now: a short grid lets them scroll away too.
+			const toolsStyle = getComputedStyle(tools);
+			if (toolsStyle.position !== 'sticky') return;
+			const pinnedBottom =
+				(parseFloat(toolsStyle.top) || 0) +
+				tools.offsetHeight +
+				(parseFloat(toolsStyle.marginBottom) || 0);
+			const overlap = pinnedBottom - grid.getBoundingClientRect().top;
 			if (overlap > 1) window.scrollBy({ top: -overlap });
 		}
 
