@@ -1,6 +1,7 @@
 ---
 // Phone-only bar that keeps the enquiry one tap away while scrolling. It steps
-// aside once the section it points at is on screen. Pair it with EnquiryBand.
+// aside once the section it points at has been reached, and stays away below
+// it. Pair it with EnquiryBand.
 import Button from '../buttons/Button.astro';
 ---
 
@@ -8,24 +9,23 @@ import Button from '../buttons/Button.astro';
 	<span class="sticky-enquire__text">Is your date still open?</span>
 	<Button href="#enquire">Check my date</Button>
 </div>
-<div class="sticky-enquire__spacer" aria-hidden="true"></div>
 
 <script>
 	document.querySelectorAll('[data-sticky-enquire]').forEach(bar => {
 		const target = document.querySelector('#enquire');
 		if (!target || !('IntersectionObserver' in window)) return;
 		new IntersectionObserver(entries => {
+			const entry = entries[entries.length - 1];
 			bar.classList.toggle(
 				'is-away',
-				entries.some(entry => entry.isIntersecting)
+				entry.isIntersecting || entry.boundingClientRect.top < 0
 			);
 		}).observe(target);
 	});
 </script>
 
 <style>
-	.sticky-enquire,
-	.sticky-enquire__spacer {
+	.sticky-enquire {
 		display: none;
 	}
 
@@ -64,13 +64,6 @@ import Button from '../buttons/Button.astro';
 		.sticky-enquire :global(.btn) {
 			padding: 0.65rem 1.2rem;
 			white-space: nowrap;
-		}
-
-		/* Keeps the footer's last line clear of the bar. */
-		.sticky-enquire__spacer {
-			display: block;
-			height: 4.5rem;
-			background-color: var(--theme-surface-1);
 		}
 	}
 

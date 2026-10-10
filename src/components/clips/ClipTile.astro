@@ -8,12 +8,7 @@ const covers = import.meta.glob('../../assets/clips/*.jpg', {
 	import: 'default',
 });
 
-const {
-	tile,
-	caption = true,
-	eager = false,
-	sizes = '(max-width: 860px) 46vw, 240px',
-} = Astro.props;
+const { tile, caption = true, eager = false, sizes } = Astro.props;
 
 const cover = covers[`../../assets/clips/${tile.cover}.jpg`];
 if (!cover) {
