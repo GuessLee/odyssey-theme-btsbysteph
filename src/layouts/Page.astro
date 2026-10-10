@@ -8,11 +8,13 @@ import { footerLists, footerSocials } from '../config/footer';
 
 export interface Props {
 	seo?: BaseHeadProps;
+	/** Where the header's "Check my date" button goes. Pages that carry the enquiry form pass '#enquire'. */
+	enquireHref?: string;
 }
 
 import { nav } from '../config/nav.js';
 
-const { seo } = Astro.props as Props;
+const { seo, enquireHref = '/company/contact' } = Astro.props as Props;
 ---
 
 <Layout {seo}>
@@ -20,6 +22,9 @@ const { seo } = Astro.props as Props;
 	<Header rightMenu navData={nav} slot="header">
 		<span slot="logo">
 			<Logo />
+		</span>
+		<span slot="action-item" class="header-cta">
+			<Button href={enquireHref}>Check my date</Button>
 		</span>
 	</Header>
 	<div id="page">
@@ -37,3 +42,29 @@ const { seo } = Astro.props as Props;
 		<Logo slot="logo" onDark />
 	</Footer>
 </Layout>
+
+<style>
+	/* The header's enquiry button: a compact version of the shared pill. The
+	   negative block margin lets it sit in the header's padding, so the header
+	   keeps the height --navbar-height records. */
+	.header-cta {
+		display: flex;
+		margin: -0.6rem 0 -0.6rem var(--space-4);
+	}
+
+	.header-cta :global(.btn) {
+		padding: 0.6rem 1.4rem;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 960px) {
+		.header-cta {
+			margin: 0 0 0 var(--space-1);
+		}
+
+		.header-cta :global(.btn) {
+			padding: 0.5rem 0.9rem;
+			font-size: 0.7rem;
+		}
+	}
+</style>

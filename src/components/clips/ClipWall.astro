@@ -1,0 +1,307 @@
+---
+// A filterable grid of clip tiles. `variant="wall"` is the staggered home page
+// wall; `variant="library"` is the dense /reels grid with sticky filters.
+import ClipTile from './ClipTile.astro';
+import { moments } from '@data/clips';
+
+const { tiles, variant = 'wall', weddings = [] } = Astro.props;
+
+const isLibrary = variant === 'library';
+const hasFootage = moment => tiles.some(tile => tile.moment === moment);
+const showWeddings = weddings.length > 1;
+const sizes = isLibrary
+	? '(max-width: 860px) 31vw, (max-width: 1000px) 23vw, 220px'
+	: '(max-width: 860px) 46vw, (max-width: 1000px) 23vw, 260px';
+---
+
+<div class={`clip-wall clip-wall--${variant}`} data-clip-wall>
+	<div class="clip-wall__tools">
+		<div class="clip-wall__chips" role="group" aria-label="Filter by moment">
+			<button
+				class="clip-chip is-on"
+				type="button"
+				data-clip-filter="all"
+				aria-pressed="true">All</button
+			>
+			{
+				moments.map(moment =>
+					hasFootage(moment) ? (
+						<button
+							class="clip-chip"
+							type="button"
+							data-clip-filter={moment}
+							aria-pressed="false"
+						>
+							{moment}
+						</button>
+					) : (
+						<button class="clip-chip" type="button" disabled>
+							{moment}
+							<span class="visually-hidden"> (no footage yet)</span>
+						</button>
+					)
+				)
+			}
+		</div>
+		{
+			showWeddings && (
+				<select
+					class="clip-wall__select"
+					data-clip-wedding-select
+					aria-label="Filter by wedding"
+				>
+					<option value="">All weddings</option>
+					{weddings.map(wedding => (
+						<option value={wedding}>{wedding}</option>
+					))}
+				</select>
+			)
+		}
+	</div>
+
+	<div class="clip-wall__grid" data-clip-group>
+		{tiles.map(tile => <ClipTile tile={tile} sizes={sizes} />)}
+	</div>
+	<p class="clip-wall__empty" data-clip-empty hidden>
+		Nothing here for that combination yet. Try another moment.
+	</p>
+</div>
+
+<script>
+	document.querySelectorAll('[data-clip-wall]').forEach(wall => {
+		const tools = wall.querySelector('.clip-wall__tools');
+		const grid = wall.querySelector('[data-clip-group]');
+		const chips = [...wall.querySelectorAll('[data-clip-filter]')];
+		const select = wall.querySelector('[data-clip-wedding-select]');
+		const empty = wall.querySelector('[data-clip-empty]');
+		let moment = 'all';
+
+		function apply() {
+			const wedding = select ? select.value : '';
+			let shown = 0;
+			grid.querySelectorAll('[data-clip-tile]').forEach(tile => {
+				const matches =
+					(moment === 'all' || tile.dataset.clipMoment === moment) &&
+					(!wedding || tile.dataset.clipWedding === wedding);
+				tile.hidden = !matches;
+				if (matches) shown += 1;
+			});
+			grid.classList.toggle('is-filtered', moment !== 'all' || wedding !== '');
+			empty.hidden = shown > 0;
+
+			// A shorter grid can end up behind the pinned filters, so bring its
+			// first row back to just below them. Measure from where the filters
+			// pin, not where they are now: a short grid lets them scroll away too.
+			const toolsStyle = getComputedStyle(tools);
+			if (toolsStyle.position !== 'sticky') return;
+			const pinnedBottom =
+				(parseFloat(toolsStyle.top) || 0) +
+				tools.offsetHeight +
+				(parseFloat(toolsStyle.marginBottom) || 0);
+			const overlap = pinnedBottom - grid.getBoundingClientRect().top;
+			if (overlap > 1) window.scrollBy({ top: -overlap });
+		}
+
+		chips.forEach(chip =>
+			chip.addEventListener('click', () => {
+				moment = chip.dataset.clipFilter;
+				chips.forEach(other => {
+					const on = other === chip;
+					other.classList.toggle('is-on', on);
+					other.setAttribute('aria-pressed', String(on));
+				});
+				apply();
+			})
+		);
+		if (select) select.addEventListener('change', apply);
+
+		// Sticky filters sit directly under the sticky site header, whatever its height.
+		const header = document.querySelector('#odysseyNavHeader');
+		const setStickyTop = () =>
+			wall.style.setProperty(
+				'--clip-sticky-top',
+				`${header ? header.offsetHeight : 0}px`
+			);
+		setStickyTop();
+		if (header) new ResizeObserver(setStickyTop).observe(header);
+	});
+</script>
+
+<style>
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.clip-wall__tools {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--space-2);
+		margin-bottom: var(--space-3);
+	}
+
+	.clip-wall--library .clip-wall__tools {
+		position: sticky;
+		top: var(--clip-sticky-top, var(--navbar-height));
+		z-index: 20;
+		padding: 0.8rem 0 0.4rem;
+		background: color-mix(in srgb, var(--theme-bg) 94%, transparent);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		border-bottom: 1px solid rgba(196, 164, 132, 0.35);
+	}
+
+	.clip-wall__chips {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		gap: 0.5rem;
+		overflow-x: auto;
+		padding-bottom: 0.4rem;
+		scrollbar-width: none;
+	}
+
+	.clip-wall__chips::-webkit-scrollbar {
+		display: none;
+	}
+
+	.clip-chip {
+		flex: none;
+		border: 1.5px solid var(--theme-accent);
+		border-radius: var(--theme-button-border-radius);
+		background: transparent;
+		color: var(--theme-accent-text);
+		padding: 0.45rem 1rem;
+		font-family: var(--theme-font-family-sans);
+		font-size: 0.8rem;
+		font-weight: 500;
+		letter-spacing: 0.06em;
+		cursor: pointer;
+		transition:
+			background-color 0.25s ease,
+			color 0.25s ease,
+			border-color 0.25s ease;
+	}
+
+	.clip-chip.is-on,
+	.clip-chip:hover:not(:disabled) {
+		background: var(--theme-primary);
+		border-color: var(--theme-primary);
+		color: var(--theme-on-primary);
+	}
+
+	.clip-chip:disabled {
+		border-style: dashed;
+		color: var(--theme-accent-dark);
+		cursor: default;
+	}
+
+	.clip-wall__select {
+		flex: none;
+		border: 1.5px solid var(--theme-accent);
+		border-radius: var(--theme-button-border-radius);
+		background: var(--theme-bg);
+		color: var(--theme-accent-text);
+		padding: 0.45rem 0.9rem;
+		font-family: var(--theme-font-family-sans);
+		font-size: 0.8rem;
+	}
+
+	.clip-wall__grid {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: var(--space-2);
+	}
+
+	/* The home wall drops alternate columns for a hung, less grid-like look. */
+	@media (min-width: 1001px) {
+		.clip-wall--wall .clip-wall__grid {
+			padding-bottom: 2.5rem;
+		}
+
+		.clip-wall--wall
+			.clip-wall__grid:not(.is-filtered)
+			> :global(.clip-tile:nth-child(5n + 2)),
+		.clip-wall--wall
+			.clip-wall__grid:not(.is-filtered)
+			> :global(.clip-tile:nth-child(5n + 4)) {
+			translate: 0 2.5rem;
+		}
+	}
+
+	.clip-wall--library .clip-wall__grid {
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+		gap: 0.8rem;
+	}
+
+	.clip-wall__empty {
+		margin: var(--space-4) 0 0;
+		text-align: center;
+		opacity: 0.75;
+	}
+
+	@media (max-width: 1000px) {
+		.clip-wall__grid,
+		.clip-wall--library .clip-wall__grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 860px) {
+		.clip-wall__tools {
+			flex-direction: column;
+			gap: 0.3rem;
+		}
+
+		.clip-wall__chips {
+			width: 100%;
+		}
+
+		.clip-wall__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.7rem;
+		}
+
+		.clip-wall--wall .clip-wall__grid {
+			padding-bottom: 1.5rem;
+		}
+
+		.clip-wall--wall
+			.clip-wall__grid:not(.is-filtered)
+			> :global(.clip-tile:nth-child(even)) {
+			translate: 0 1.5rem;
+		}
+
+		.clip-wall--library .clip-wall__grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 0.35rem;
+		}
+
+		.clip-wall--library :global(.clip-tile) {
+			border-radius: 0.6rem;
+		}
+
+		.clip-wall--library :global(.clip-tile__label) {
+			left: 0.45rem;
+			right: 0.45rem;
+			bottom: 0.45rem;
+			font-size: 0.85rem;
+		}
+
+		.clip-wall--library :global(.clip-tile__play) {
+			top: 0.4rem;
+			right: 0.4rem;
+			width: 22px;
+			height: 22px;
+		}
+
+		.clip-wall--library :global(.clip-tile__play svg) {
+			width: 10px;
+			height: 10px;
+		}
+	}
+</style>

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the Odyssey Theme customized for **BTS By Steph** — a wedding content creator (iPhone videography) site. It includes a homepage with portfolio videos and pricing cards, an about page, a contact form, and a standalone print-ready pricing PDF page.
+This is the Odyssey Theme customized for **BTS By Steph** - a wedding content creator (iPhone videography) site. It includes a homepage built around a wall of wedding footage with pricing cards and the enquiry form, a reel library, an about page, a contact form, and a standalone print-ready pricing PDF page.
 
 ## Development Commands
 
@@ -97,7 +97,7 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 
 | Route               | File                               | Notes                                                     |
 | ------------------- | ---------------------------------- | --------------------------------------------------------- |
-| `/`                 | `src/pages/index.astro`            | Hero → value props → about teaser → portfolio videos → wedding packages → testimonial → general events packages → journal preview → CTA |
+| `/`                 | `src/pages/index.astro`            | "Reel Wall" home: hero with clip tiles → one-line promise strip → reel wall (`#reels`) → wedding packages (`#packages`) → testimonial → about strip → enquiry form (`#enquire`) |
 | `/company/about`    | `src/pages/company/about.astro`    |                                                           |
 | `/company/contact`  | `src/pages/company/contact.astro`  | Uses `ContactForm` + S3-hosted video                      |
 | `/company/legal`    | `src/pages/company/legal.astro`    |                                                           |
@@ -109,7 +109,7 @@ Unused alternate themes (`dark`, `earth`, `ocean`, `sand`) remain in `theme.css`
 
 - Portfolio/contact videos are hosted on **AWS S3**: `https://btsbs.s3.us-east-2.amazonaws.com/`
 - Static images in `public/assets/images/`
-- Videos in `index.astro` use `controlslist="nodownload"` to discourage downloading
+- The clip viewer's `<video>` uses `controlslist="nodownload"` to discourage downloading
 
 ### Content Management
 

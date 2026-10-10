@@ -1,49 +1,34 @@
 ---
-import { parse, isBefore } from 'date-fns';
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
 import {
-	AnnouncementBar,
 	Button,
-	Container,
+	ClipTile,
+	ClipViewer,
+	ClipWall,
 	CustomerQuoteSection,
-	ThreeColumnTextSection,
-	CtaCardSection,
+	EnquiryBand,
+	PackageCards,
+	StickyEnquireBar,
 } from '@components/odyssey-theme';
 import Layout from '../layouts/Page.astro';
-
-const postModules = import.meta.glob('./blog/posts/*.mdx', { eager: true });
-const journalPosts = Object.values(postModules)
-	.map(({ frontmatter, url }) => ({
-		title: frontmatter.title,
-		excerpt: frontmatter.excerpt,
-		featuredImage: frontmatter.featuredImage,
-		publishDate: parse(frontmatter.publishDate, 'MMMM d, yyyy', new Date()),
-		href: url,
-	}))
-	.sort((a, b) => (isBefore(a.publishDate, b.publishDate) ? 1 : -1))
-	.slice(0, 2);
-const latestPost = journalPosts[0];
+import { heroTiles, homeWallTiles } from '@data/clips';
+import { weddingPackages } from '@data/packages';
+import stephFilming from '@assets/images/steph-filming.jpg';
 ---
 
-<Layout>
-	{
-		latestPost && (
-			<AnnouncementBar
-				text="Read Our Latest Journal Post"
-				href={latestPost.href}
-				slot="announcement-bar"
-			/>
-		)
-	}
+<Layout enquireHref="#enquire">
 	<style>
 		/* ---- shared section rhythm ---- */
 		.home-section {
 			margin: 0 auto;
 			padding: var(--space-8) var(--space-4);
+			scroll-margin-top: var(--navbar-height);
 		}
 
-		.home-section--tinted {
-			background-color: var(--theme-surface-1);
+		.home-section__inner {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
 		}
 
 		.home-section__head {
@@ -56,114 +41,219 @@ const latestPost = journalPosts[0];
 			margin: 0.5rem 0 0;
 		}
 
-		/* ---- hero ---- */
-		.hero {
-			padding: var(--space-8) var(--space-4) var(--space-7);
+		.home-section__head--split {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
+			gap: var(--space-3);
+			max-width: none;
+			margin-bottom: var(--space-4);
+			text-align: left;
 		}
 
-		.hero__grid {
+		.text-link {
+			font-size: var(--font-size-sm);
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			text-decoration: none;
+			white-space: nowrap;
+			color: var(--theme-accent-text);
+			border-bottom: 1.5px solid var(--theme-accent);
+			padding-bottom: 2px;
+		}
+
+		/* ---- hero: the headline beside real footage ---- */
+		.reel-hero {
+			padding: var(--space-7) var(--space-4) var(--space-6);
+			overflow: hidden;
+		}
+
+		.reel-hero__grid {
 			max-width: var(--container-max-width);
 			margin: 0 auto;
 			display: grid;
-			grid-template-columns: 1.05fr 0.95fr;
+			grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
 			align-items: center;
 			gap: var(--space-6);
 		}
 
-		.hero__lede {
+		.reel-hero h1 {
+			margin: var(--space-2) 0 var(--space-3);
+			font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+		}
+
+		.reel-hero__lede {
 			font-family: var(--theme-font-script);
-			font-size: clamp(2.75rem, 5vw, 4rem);
-			line-height: 0.9;
+			font-size: 1.25em;
+			line-height: 0.85;
 			color: var(--theme-accent-text);
 			display: block;
-			margin: 0.25rem 0 var(--space-3);
+			margin-top: 0.1em;
 		}
 
-		.hero h1 {
-			margin: var(--space-2) 0 0;
-			font-size: clamp(2.4rem, 4.4vw, 3.6rem);
-		}
-
-		.hero__sub {
+		.reel-hero__sub {
 			font-family: var(--theme-font-family-serif);
-			font-size: 1.2rem;
+			font-size: 1.25rem;
 			font-style: italic;
-			color: var(--theme-on-bg);
-			opacity: 0.75;
-			max-width: 42ch;
-			margin: 0 0 var(--space-5);
+			line-height: 1.55;
+			opacity: 0.8;
+			max-width: 36ch;
+			margin: 0;
 		}
 
-		.hero__trust-row {
+		.reel-hero__cta {
 			display: flex;
 			flex-wrap: wrap;
-			align-items: center;
-			gap: var(--space-4);
-			margin-top: var(--space-6);
+			gap: var(--space-2);
+			margin-top: var(--space-4);
 		}
 
-		.hero__stat {
-			display: flex;
-			flex-direction: column;
-			gap: 0.15rem;
+		.reel-hero__stats {
+			display: grid;
+			grid-template-columns: repeat(3, auto);
+			justify-content: start;
+			margin: var(--space-5) 0 0;
 		}
 
-		.hero__stat strong {
+		.reel-hero__stats div {
+			padding: 0 var(--space-3);
+			border-left: 1px solid rgba(196, 164, 132, 0.4);
+		}
+
+		.reel-hero__stats div:first-child {
+			padding-left: 0;
+			border-left: 0;
+		}
+
+		.reel-hero__stats dt {
 			font-family: var(--theme-font-family-display);
 			font-size: 1.6rem;
 			font-weight: 600;
+			line-height: 1.2;
 			color: var(--theme-primary);
 		}
 
-		.hero__stat span {
-			font-size: 0.75rem;
+		.reel-hero__stats dd {
+			margin: 0;
+			font-size: 0.8rem;
 			letter-spacing: 0.04em;
-			color: var(--theme-on-bg);
-			opacity: 0.65;
 		}
 
-		.hero__divider {
-			width: 1px;
-			height: 30px;
-			background: rgba(196, 164, 132, 0.4);
-		}
-
-		.hero__image {
-			position: relative;
-			aspect-ratio: 4 / 5;
-			border-radius: var(--theme-radius-lg);
-			box-shadow: var(--theme-image-glow);
-			overflow: hidden;
-		}
-
-		.hero__image::after {
-			content: '';
-			position: absolute;
-			inset: 0;
-			pointer-events: none;
-			background: linear-gradient(200deg, rgba(217, 165, 75, 0.32) 0%, transparent 45%);
-			mix-blend-mode: multiply;
-		}
-
-		.hero__image img {
+		/* Three clips fanned out; the first in the list sits in the middle. */
+		.reel-hero__stack {
+			display: grid;
+			grid-template-columns: 1fr 1.28fr 1fr;
+			align-items: center;
+			max-width: 640px;
+			justify-self: center;
 			width: 100%;
-			height: 100%;
-			object-fit: cover;
 		}
 
-		@media (max-width: 900px) {
-			.hero__grid {
-				grid-template-columns: 1fr;
-			}
+		.reel-hero__stack > :global(.clip-tile) {
+			grid-row: 1;
+		}
 
-			.hero__image {
-				order: -1;
-				max-width: 420px;
-				margin: 0 auto;
+		.reel-hero__stack > :global(.clip-tile:nth-child(1)) {
+			grid-column: 2;
+			z-index: 2;
+			box-shadow: 0 30px 60px -22px rgba(122, 77, 24, 0.6);
+		}
+
+		.reel-hero__stack > :global(.clip-tile:nth-child(2)) {
+			grid-column: 1;
+			transform: rotate(-4deg) translateX(14%);
+		}
+
+		.reel-hero__stack > :global(.clip-tile:nth-child(3)) {
+			grid-column: 3;
+			transform: rotate(4deg) translateX(-14%);
+		}
+
+		.reel-hero__stack > :global(.clip-tile:nth-child(4)) {
+			display: none;
+		}
+
+		.reel-hero__stack > :global(.clip-tile:hover) {
+			z-index: 3;
+		}
+
+		/* The lead clip shows its play mark and drifts slowly, so the first
+		   screen feels alive without downloading any video. */
+		.reel-hero__stack > :global(.clip-tile:nth-child(1) .clip-tile__play) {
+			opacity: 1;
+		}
+
+		.reel-hero__stack > :global(.clip-tile:nth-child(1) img) {
+			animation: reel-drift 14s ease-in-out infinite alternate;
+		}
+
+		@keyframes reel-drift {
+			from {
+				transform: scale(1);
+			}
+			to {
+				transform: scale(1.08);
 			}
 		}
 
-		/* ---- about teaser ---- */
+		@media (prefers-reduced-motion: reduce) {
+			.reel-hero__stack > :global(.clip-tile:nth-child(1) img) {
+				animation: none;
+			}
+		}
+
+		/* ---- one-line promise strip ---- */
+		.promise-strip {
+			background-color: var(--theme-surface-1);
+			border-top: 1px solid rgba(196, 164, 132, 0.35);
+			border-bottom: 1px solid rgba(196, 164, 132, 0.35);
+			padding: 0 var(--space-4);
+		}
+
+		.promise-strip__grid {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.promise-strip__item {
+			padding: var(--space-3);
+			border-left: 1px solid rgba(196, 164, 132, 0.35);
+		}
+
+		.promise-strip__item:first-child {
+			padding-left: 0;
+			border-left: 0;
+		}
+
+		.promise-strip__item h2 {
+			font-size: var(--font-size-md);
+			color: var(--theme-accent-text);
+			margin: 0 0 0.25rem;
+		}
+
+		.promise-strip__item p {
+			font-size: var(--font-size-sm);
+			line-height: 1.6;
+			margin: 0;
+		}
+
+		/* ---- reel wall ---- */
+		.wall-more {
+			display: flex;
+			justify-content: center;
+			margin-top: var(--space-5);
+		}
+
+		/* ---- packages ---- */
+		.events-link {
+			text-align: center;
+			margin: var(--space-5) 0 0;
+		}
+
+		/* ---- about strip ---- */
 		.about-teaser__grid {
 			max-width: var(--container-max-width);
 			margin: 0 auto;
@@ -174,18 +264,18 @@ const latestPost = journalPosts[0];
 		}
 
 		.about-teaser__image {
-			position: relative;
-			aspect-ratio: 1 / 1;
+			aspect-ratio: 4 / 5;
 			max-width: 420px;
 			border-radius: var(--theme-radius-lg);
 			box-shadow: var(--theme-image-glow);
 			overflow: hidden;
 		}
 
-		.about-teaser__image img {
+		.about-teaser__image :global(img) {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
+			object-position: 62% 40%;
 		}
 
 		.about-teaser__body p {
@@ -200,13 +290,99 @@ const latestPost = journalPosts[0];
 			margin-top: var(--space-2);
 		}
 
+		.about-teaser__cta {
+			margin-top: var(--space-4);
+		}
+
 		@media (max-width: 900px) {
+			.home-section {
+				padding: var(--space-6) var(--space-3);
+			}
+
+			.home-section__head--split {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			.reel-hero {
+				padding: var(--space-5) var(--space-3) var(--space-4);
+			}
+
+			.reel-hero__grid {
+				grid-template-columns: minmax(0, 1fr);
+				gap: var(--space-4);
+			}
+
+			.reel-hero__sub {
+				font-size: 1.15rem;
+				max-width: none;
+			}
+
+			.reel-hero__cta :global(.btn--outlined) {
+				display: none;
+			}
+
+			.reel-hero__stats {
+				display: none;
+			}
+
+			/* The fan becomes a swipe row, so footage is on the first screen. */
+			.reel-hero__stack {
+				display: flex;
+				gap: 0.75rem;
+				max-width: none;
+				width: auto;
+				justify-self: stretch;
+				margin: 0 calc(var(--space-3) * -1);
+				padding: 0.25rem var(--space-3) 1.5rem;
+				overflow-x: auto;
+				scroll-snap-type: x mandatory;
+				scroll-padding-left: var(--space-3);
+				scrollbar-width: none;
+			}
+
+			.reel-hero__stack::-webkit-scrollbar {
+				display: none;
+			}
+
+			.reel-hero__stack > :global(.clip-tile:nth-child(n)) {
+				display: block;
+				flex: none;
+				width: 56%;
+				transform: none;
+				scroll-snap-align: start;
+				box-shadow: var(--theme-image-glow);
+			}
+
+			.promise-strip {
+				padding: 0 var(--space-3);
+			}
+
+			.promise-strip__grid {
+				grid-template-columns: minmax(0, 1fr);
+			}
+
+			.promise-strip__item {
+				padding: var(--space-2) 0;
+				border-left: 0;
+				border-top: 1px solid rgba(196, 164, 132, 0.35);
+			}
+
+			.promise-strip__item:first-child {
+				border-top: 0;
+			}
+
 			.about-teaser__grid {
-				grid-template-columns: 1fr;
+				grid-template-columns: minmax(0, 1fr);
+				gap: var(--space-4);
 				text-align: center;
 			}
 
 			.about-teaser__image {
+				/* auto margins shrink a grid item to its content, which is 0 wide
+				   until the lazy photo loads; a width reserves the box up front */
+				width: 100%;
+				max-width: 260px;
 				margin: 0 auto;
 			}
 
@@ -214,361 +390,128 @@ const latestPost = journalPosts[0];
 				margin-left: auto;
 				margin-right: auto;
 			}
-		}
 
-		/* ---- portfolio ---- */
-		.video-container {
-			max-width: var(--container-max-width);
-			margin: 0 auto;
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			gap: var(--space-4);
-			justify-items: center;
-		}
-
-		.video-wrapper {
-			position: relative;
-			overflow: hidden;
-			transition: transform var(--theme-transition);
-		}
-
-		.video-wrapper:hover {
-			transform: translateY(-8px);
-		}
-
-		.video-container video {
-			width: 100%;
-			height: 500px;
-			object-fit: cover;
-			border-radius: var(--theme-radius-lg);
-			box-shadow: var(--theme-image-glow);
-			transition: box-shadow var(--theme-transition);
-		}
-
-		.video-wrapper:hover video {
-			box-shadow: 0 20px 44px -14px rgba(181, 119, 46, 0.45);
-		}
-
-		@media (max-width: 1024px) {
-			.video-container {
-				grid-template-columns: repeat(2, 1fr);
-			}
-		}
-
-		@media (max-width: 768px) {
-			.video-container {
-				grid-template-columns: 1fr;
-				gap: var(--space-3);
-			}
-
-			.video-container video {
-				height: 450px;
-			}
-		}
-
-		/* ---- pricing ---- */
-		.pricing-cards {
-			max-width: var(--container-max-width);
-			margin: 0 auto;
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			gap: var(--space-4);
-			align-items: start;
-		}
-
-		.pricing-card {
-			position: relative;
-			background: var(--theme-surface-1);
-			border: 1px solid rgba(196, 164, 132, 0.15);
-			border-radius: var(--theme-radius-lg);
-			padding: var(--space-5) var(--space-4);
-			text-align: center;
-			box-shadow: var(--theme-card-shadow);
-			transition: transform var(--theme-transition), box-shadow var(--theme-transition);
-		}
-
-		.pricing-card:hover {
-			transform: translateY(-10px);
-			box-shadow: 0 20px 44px -14px rgba(26, 26, 26, 0.3);
-		}
-
-		.pricing-card.featured {
-			background: var(--theme-primary);
-			color: var(--theme-on-primary);
-			transform: scale(1.05);
-			box-shadow: 0 20px 44px -12px rgba(181, 119, 46, 0.35);
-			z-index: 1;
-		}
-
-		.pricing-card.featured:hover {
-			transform: scale(1.05) translateY(-10px);
-			box-shadow: 0 28px 56px -14px rgba(181, 119, 46, 0.45);
-		}
-
-		.popular-badge {
-			position: absolute;
-			top: -14px;
-			left: 50%;
-			transform: translateX(-50%);
-			background: var(--theme-accent);
-			color: #fff;
-			font-family: var(--theme-font-family-sans);
-			font-size: 0.75rem;
-			font-weight: 600;
-			letter-spacing: 0.1em;
-			text-transform: uppercase;
-			padding: 0.4rem 1.5rem;
-			border-radius: var(--theme-button-border-radius);
-		}
-
-		.card-top {
-			margin-bottom: var(--space-4);
-			padding-bottom: var(--space-3);
-			border-bottom: 1px solid rgba(196, 164, 132, 0.2);
-		}
-
-		.pricing-card.featured .card-top {
-			border-bottom-color: rgba(255, 255, 255, 0.15);
-		}
-
-		.package-name {
-			font-family: 'Italianno', cursive;
-			font-size: 2.2rem;
-			font-weight: 400;
-			margin-bottom: 0.75rem;
-		}
-
-		.price {
-			font-family: var(--theme-font-family-display);
-			font-size: 3rem;
-			font-weight: 600;
-			line-height: 1;
-			margin-bottom: 0.25rem;
-		}
-
-		.price-note {
-			font-family: var(--theme-font-family-serif);
-			font-size: 0.9rem;
-			font-style: italic;
-			opacity: 0.7;
-		}
-
-		.features {
-			list-style: none;
-			padding: 0;
-			margin: 0 0 var(--space-4) 0;
-			text-align: left;
-		}
-
-		.features li {
-			font-family: var(--theme-font-family-sans);
-			font-size: 0.95rem;
-			padding: 0.6rem 0;
-			border-bottom: 1px solid rgba(196, 164, 132, 0.1);
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-		}
-
-		.pricing-card.featured .features li {
-			border-bottom-color: rgba(255, 255, 255, 0.08);
-		}
-
-		.features li::before {
-			content: '✓';
-			font-weight: 700;
-			color: var(--theme-accent);
-			flex-shrink: 0;
-		}
-
-		.pricing-card.featured .features li::before {
-			color: var(--theme-accent);
-		}
-
-		.card-btn {
-			display: inline-block;
-			font-family: var(--theme-font-family-sans);
-			font-size: 0.85rem;
-			font-weight: 600;
-			letter-spacing: 0.15em;
-			text-transform: uppercase;
-			text-decoration: none;
-			padding: 0.9rem 2.5rem;
-			border: 2px solid var(--theme-accent);
-			border-radius: var(--theme-button-border-radius);
-			color: var(--theme-accent-text);
-			background: transparent;
-			transition: all var(--theme-transition);
-		}
-
-		.card-btn:hover {
-			background: var(--theme-accent);
-			color: #fff;
-		}
-
-		.pricing-card.featured .card-btn {
-			border-color: var(--theme-accent);
-			color: var(--theme-on-primary);
-		}
-
-		.pricing-card.featured .card-btn:hover {
-			background: var(--theme-accent);
-			color: #fff;
-		}
-
-		@media (max-width: 1024px) {
-			.pricing-cards {
-				grid-template-columns: 1fr;
-				max-width: 420px;
-				margin: 0 auto;
-				gap: var(--space-5);
-			}
-
-			.pricing-card.featured {
-				transform: scale(1);
-			}
-
-			.pricing-card.featured:hover {
-				transform: translateY(-10px);
-			}
-		}
-
-		/* ---- journal preview ---- */
-		.journal-preview__head {
-			display: flex;
-			justify-content: space-between;
-			align-items: flex-end;
-			max-width: var(--container-max-width);
-			margin: 0 auto var(--space-6);
-			text-align: left;
-		}
-
-		.journal-preview__head h2 {
-			margin: 0.5rem 0 0;
-		}
-
-		.journal-grid {
-			max-width: var(--container-max-width);
-			margin: 0 auto;
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: var(--space-4);
-		}
-
-		.journal-card {
-			display: block;
-			text-decoration: none;
-			color: inherit;
-		}
-
-		.journal-card__image {
-			aspect-ratio: 16 / 10;
-			margin-bottom: var(--space-3);
-			border-radius: var(--theme-radius-lg);
-			box-shadow: var(--theme-image-glow);
-			overflow: hidden;
-		}
-
-		.journal-card__image img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			transition: transform var(--theme-transition-slow);
-		}
-
-		.journal-card:hover .journal-card__image img {
-			transform: scale(1.045);
-		}
-
-		.journal-card h3 {
-			margin: 0 0 0.5rem;
-			font-size: var(--font-size-md);
-		}
-
-		.journal-card p {
-			font-size: 0.95rem;
-			opacity: 0.75;
-			margin: 0 0 0.5rem;
-		}
-
-		.journal-card__read {
-			font-size: 0.8rem;
-			font-weight: 600;
-			letter-spacing: 0.08em;
-			text-transform: uppercase;
-			color: var(--theme-accent-text);
-		}
-
-		@media (max-width: 768px) {
-			.journal-preview__head {
-				flex-direction: column;
-				align-items: flex-start;
-				gap: var(--space-3);
-			}
-
-			.journal-grid {
-				grid-template-columns: 1fr;
+			.about-teaser__cta {
+				display: flex;
+				justify-content: center;
 			}
 		}
 	</style>
 
-	<!-- Hero -->
-	<section class="hero">
-		<div class="hero__grid">
+	<!-- Hero: footage on the first screen at every width -->
+	<section class="reel-hero">
+		<div class="reel-hero__grid">
 			<div>
 				<span class="eyebrow">Wedding Content Creator</span>
-				<h1>Relive the magic<span class="hero__lede">of your golden hour.</span></h1>
-				<p class="hero__sub">
-					Cinematic iPhone videography for South Florida weddings — authentic
-					moments, timeless style, delivered while the day is still warm in
-					your memory.
+				<h1>
+					Relive the magic<span class="reel-hero__lede"
+						>of your golden hour.</span
+					>
+				</h1>
+				<p class="reel-hero__sub">
+					Cinematic iPhone videography for South Florida weddings. Authentic
+					moments, timeless style, delivered while the day is still warm in your
+					memory.
 				</p>
-				<Button href="/company/contact" customIcon
-					>Message Me <Fragment slot="icon">
-						<Icon name="ic:baseline-chevron-right" />
-					</Fragment></Button
-				>
-				<div class="hero__trust-row">
-					<div class="hero__stat"><strong>5+</strong><span>years in weddings</span></div>
-					<div class="hero__divider"></div>
-					<div class="hero__stat"><strong>24–48h</strong><span>turnaround</span></div>
-					<div class="hero__divider"></div>
-					<div class="hero__stat"><strong>100%</strong><span>iPhone-shot</span></div>
+				<div class="reel-hero__cta">
+					<Button href="#enquire" customIcon
+						>Check my date <Fragment slot="icon">
+							<Icon name="ic:baseline-chevron-right" />
+						</Fragment></Button
+					>
+					<Button href="#reels" outlined>Watch the reels</Button>
 				</div>
+				<dl class="reel-hero__stats">
+					<div><dt>5+</dt><dd>years in weddings</dd></div>
+					<div><dt>24-48h</dt><dd>turnaround</dd></div>
+					<div><dt>100%</dt><dd>iPhone-shot</dd></div>
+				</dl>
 			</div>
-			<div class="hero__image">
-				<img src="/assets/images/landing-1/osmoselfie.jpg" alt="Steph filming on location" />
+			<div class="reel-hero__stack" data-clip-group>
+				{
+					heroTiles.map(tile => (
+						<ClipTile
+							tile={tile}
+							caption={false}
+							eager
+							sizes="(max-width: 900px) 56vw, 260px"
+						/>
+					))
+				}
 			</div>
 		</div>
 	</section>
 
-	<!-- Value Props -->
-	<ThreeColumnTextSection>
-		<div slot="column-1-body">
-			<h2>Authentic Moments</h2>
-			<p>
-			  Dive into the genuine emotions and spontaneous moments of your special day with access to raw footage captured on an iPhone. Experience the authenticity firsthand.
-			</p>
-		  </div>
-		<div slot="column-2-body">
-			<h2>Behind The Scenes</h2>
-			<p>
-				Gain an intimate and authentic view of your wedding day through raw footage shot on an iPhone. It's akin to peering behind the curtain, revealing the real-life moments that made your day unforgettable.
-			</p>
+	<!-- What she offers, in one line each -->
+	<section class="promise-strip" aria-label="What you get">
+		<div class="promise-strip__grid">
+			<div class="promise-strip__item">
+				<h2>Authentic Moments</h2>
+				<p>The real, unscripted parts of your day, straight from an iPhone.</p>
+			</div>
+			<div class="promise-strip__item">
+				<h2>Behind The Scenes</h2>
+				<p>A behind-the-curtain view of the day you spent so long planning.</p>
+			</div>
+			<div class="promise-strip__item">
+				<h2>Perfect Complement</h2>
+				<p>
+					Works alongside your photographer and videographer, not instead of
+					them.
+				</p>
+			</div>
 		</div>
-		<div slot="column-3-body">
-			<h2>Perfect Complement</h2>
-			<p>
-				While raw iPhone footage adds a distinctive touch, it harmoniously complements professional photography and videography. Together, we offer a comprehensive portrayal of your wedding day, blending authenticity with artistry.
-			</p>
-		</div>
-	</ThreeColumnTextSection>
+	</section>
 
-	<!-- About Teaser -->
-	<section class="home-section">
+	<!-- The reel wall: the portfolio is the home page -->
+	<section class="home-section" id="reels">
+		<div class="home-section__inner">
+			<div class="home-section__head home-section__head--split">
+				<div>
+					<span class="eyebrow">The Reel Wall</span>
+					<h2>Real weddings, straight from my phone</h2>
+				</div>
+				<a class="text-link" href="/reels">Open the full library</a>
+			</div>
+			<ClipWall tiles={homeWallTiles} />
+			<div class="wall-more">
+				<Button href="/reels" outlined customIcon
+					>See every moment <Fragment slot="icon">
+						<Icon name="ic:baseline-chevron-right" />
+					</Fragment></Button
+				>
+			</div>
+		</div>
+	</section>
+
+	<!-- Wedding packages -->
+	<section class="home-section" id="packages">
+		<div class="home-section__head">
+			<span class="eyebrow">Wedding Packages</span>
+			<h2>Capture every moment of your special day</h2>
+		</div>
+		<PackageCards packages={weddingPackages} ctaHref="#enquire" />
+		<p class="events-link">
+			Planning a birthday or a corporate gathering?
+			<a class="text-link" href="/events">See events packages</a>
+		</p>
+	</section>
+
+	<CustomerQuoteSection
+		quoteText="She's amazing at capturing the perfect moments and putting them together."
+		customerName="Samantha B."
+	/>
+
+	<!-- About strip -->
+	<section class="home-section" id="about">
 		<div class="about-teaser__grid">
 			<div class="about-teaser__image">
-				<img src="/assets/images/home/steph.jpg" alt="Stephanie, BTS By Steph" />
+				<Image
+					src={stephFilming}
+					alt="Steph filming on location with her phone on a gimbal"
+					widths={[420, 840]}
+					sizes="(max-width: 900px) 260px, 420px"
+				/>
 			</div>
 			<div class="about-teaser__body">
 				<span class="eyebrow">Behind the Lens</span>
@@ -585,7 +528,7 @@ const latestPost = journalPosts[0];
 					sure you get to relive it.
 				</p>
 				<div class="about-teaser__signature">Steph</div>
-				<div style="margin-top: var(--space-4)">
+				<div class="about-teaser__cta">
 					<Button href="/company/about" outlined customIcon
 						>More About Me <Fragment slot="icon">
 							<Icon name="ic:baseline-chevron-right" />
@@ -596,204 +539,9 @@ const latestPost = journalPosts[0];
 		</div>
 	</section>
 
-	<!-- Portfolio Video Section -->
-	<section class="home-section home-section--tinted">
-		<div class="home-section__head">
-			<span class="eyebrow">My Work</span>
-			<h2>A glimpse into the magic I capture</h2>
-		</div>
-		<div class="video-container">
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source src="https://btsbs.s3.us-east-2.amazonaws.com/C9nBkdVRoJ5.mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</div>
+	<!-- Enquiry: the form lives on the home page -->
+	<EnquiryBand />
 
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGyZELqRdgY_fixed.mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</div>
-
-			<div class="video-wrapper">
-				<video controls controlslist="nodownload" oncontextmenu="return false;">
-					<source src="https://btsbs.s3.us-east-2.amazonaws.com/DGs9WgIRL0P_fixed.mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</div>
-		</div>
-	</section>
-
-	<!-- Wedding Packages -->
-	<section class="home-section">
-		<div class="home-section__head">
-			<span class="eyebrow">Wedding Packages</span>
-			<h2>Capture every moment of your special day</h2>
-		</div>
-		<div class="pricing-cards">
-			<div class="pricing-card">
-				<div class="card-top">
-					<h3 class="package-name">Bridal Bliss</h3>
-					<div class="price">$550</div>
-					<span class="price-note">starting at</span>
-				</div>
-				<ul class="features">
-					<li>4 hours of coverage</li>
-					<li>1 consultation call</li>
-					<li>Full wedding photo and video gallery</li>
-					<li>Shot on the latest iPhone</li>
-					<li>Delivered within 24-48 hours</li>
-					<li>1 edited recap video</li>
-					<li>1 reel or TikTok</li>
-				</ul>
-				<a href="/company/contact" class="card-btn">Get Started</a>
-			</div>
-
-			<div class="pricing-card featured">
-				<div class="popular-badge">Most Popular</div>
-				<div class="card-top">
-					<h3 class="package-name">Tie The Knot</h3>
-					<div class="price">$625</div>
-					<span class="price-note">starting at</span>
-				</div>
-				<ul class="features">
-					<li>8 hours of coverage</li>
-					<li>1 consultation call</li>
-					<li>Full wedding photo and video gallery</li>
-					<li>Shot on the latest iPhone</li>
-					<li>Delivered within 24-48 hours</li>
-					<li>1 edited recap video</li>
-					<li>3 reels or TikToks</li>
-				</ul>
-				<a href="/company/contact" class="card-btn">Get Started</a>
-			</div>
-
-			<div class="pricing-card">
-				<div class="card-top">
-					<h3 class="package-name">Love Story</h3>
-					<div class="price">$700</div>
-					<span class="price-note">starting at</span>
-				</div>
-				<ul class="features">
-					<li>10 hours of coverage</li>
-					<li>2 consultation calls</li>
-					<li>Full wedding photo and video gallery</li>
-					<li>Shot on the latest iPhone</li>
-					<li>Delivered within 24-48 hours</li>
-					<li>1 edited recap video</li>
-					<li>4 reels or TikToks</li>
-				</ul>
-				<a href="/company/contact" class="card-btn">Get Started</a>
-			</div>
-		</div>
-	</section>
-
-	<CustomerQuoteSection
-		quoteText="She's amazing at capturing the perfect moments and putting them together."
-		customerName="Samantha B."
-	/>
-
-	<!-- General Events Packages -->
-	<section class="home-section home-section--tinted">
-		<div class="home-section__head">
-			<span class="eyebrow">General Events</span>
-			<h2>From birthdays to corporate gatherings</h2>
-		</div>
-		<div class="pricing-cards">
-			<div class="pricing-card">
-				<div class="card-top">
-					<h3 class="package-name">Essential Moments</h3>
-					<div class="price">$275</div>
-					<span class="price-note">starting at</span>
-				</div>
-				<ul class="features">
-					<li>2 hours of coverage</li>
-					<li>1 consultation call</li>
-					<li>Full photo & video gallery</li>
-					<li>Shot on the latest iPhone</li>
-					<li>Delivered within 24-48 hours</li>
-					<li>1 edited recap video</li>
-				</ul>
-				<a href="/company/contact" class="card-btn">Get Started</a>
-			</div>
-
-			<div class="pricing-card featured">
-				<div class="popular-badge">Most Popular</div>
-				<div class="card-top">
-					<h3 class="package-name">Elevated Experience</h3>
-					<div class="price">$395</div>
-					<span class="price-note">starting at</span>
-				</div>
-				<ul class="features">
-					<li>4 hours of coverage</li>
-					<li>1 consultation call</li>
-					<li>Full photo & video gallery</li>
-					<li>Shot on the latest iPhone</li>
-					<li>Delivered within 24-48 hours</li>
-					<li>1 edited recap video</li>
-					<li>1 reel or TikTok with trending audio</li>
-				</ul>
-				<a href="/company/contact" class="card-btn">Get Started</a>
-			</div>
-
-			<div class="pricing-card">
-				<div class="card-top">
-					<h3 class="package-name">Elite Spotlight</h3>
-					<div class="price">$480</div>
-					<span class="price-note">starting at</span>
-				</div>
-				<ul class="features">
-					<li>6 hours of coverage</li>
-					<li>1 consultation call</li>
-					<li>Full photo & video gallery</li>
-					<li>Shot on the latest iPhone</li>
-					<li>Expedited delivery within 12-24 hours</li>
-					<li>1 extended recap video</li>
-					<li>2 reels or TikToks with trending audio</li>
-				</ul>
-				<a href="/company/contact" class="card-btn">Get Started</a>
-			</div>
-		</div>
-	</section>
-
-	<!-- Journal Preview -->
-	<section class="home-section">
-		<div class="journal-preview__head">
-			<div>
-				<span class="eyebrow">From the Journal</span>
-				<h2>Notes for couples planning their day</h2>
-			</div>
-			<Button href="/blog" outlined customIcon
-				>Read the Journal <Fragment slot="icon">
-					<Icon name="ic:baseline-chevron-right" />
-				</Fragment></Button
-			>
-		</div>
-		<div class="journal-grid">
-			{journalPosts.map((post) => (
-				<a class="journal-card" href={post.href}>
-					<div class="journal-card__image">
-						<img src={post.featuredImage} alt={post.title} />
-					</div>
-					<h3>{post.title}</h3>
-					<p>{post.excerpt}</p>
-					<span class="journal-card__read">Read the story →</span>
-				</a>
-			))}
-		</div>
-	</section>
-
-	<CtaCardSection>
-		<h2>Let's Create Magic Together</h2>
-		<p>
-			Ready to capture the authentic moments of your special day?
-		</p>
-		<Button href="/company/contact" onPrimary customIcon
-			>Get In Touch <Fragment slot="icon">
-				<Icon name="ic:baseline-chevron-right" />
-			</Fragment></Button
-		>
-	</CtaCardSection>
+	<ClipViewer />
+	<StickyEnquireBar />
 </Layout>

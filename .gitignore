@@ -26,3 +26,6 @@ icon.d.ts
 .amplify
 amplify_outputs*
 amplifyconfiguration*
+
+# local review boards (Lavish artifacts are never part of the site)
+.lavish/

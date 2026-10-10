@@ -15,20 +15,31 @@ const isCurrent = (slug) =>
   let scrollPosition = 0;
 
   menuButton.addEventListener('click', toggleMenu)
+  // A link in the header may point at a section of this page, so no page load
+  // can be relied on to close the menu. The link decides where the page goes.
+  navHeader.addEventListener('click', event => {
+    if (navHeader.hasAttribute('mobile-menu-open') && event.target.closest('a')) closeMenu();
+  })
+
+  function closeMenu() {
+    menuButtonIconHam.removeAttribute('hidden');
+    menuButtonIconClose.setAttribute('hidden', '');
+    menuButton.title = "Open Main Menu"
+    // unlock scroll position
+    bodyElement.style.removeProperty('overflow');
+    bodyElement.style.removeProperty('position');
+    bodyElement.style.removeProperty('top');
+    bodyElement.style.removeProperty('width');
+    navHeader.removeAttribute('mobile-menu-open');
+  }
 
   function toggleMenu() {
-    menuButtonIconHam.toggleAttribute('hidden');
-    menuButtonIconClose.toggleAttribute('hidden');
-    
-    if (navHeader.hasAttribute('mobile-menu-open', true)) {
-      menuButton.title = "Open Main Menu"
-      // unlock scroll position
-      bodyElement.style.removeProperty('overflow');
-      bodyElement.style.removeProperty('position');
-      bodyElement.style.removeProperty('top');
-      bodyElement.style.removeProperty('width');
+    if (navHeader.hasAttribute('mobile-menu-open')) {
+      closeMenu();
       window.scrollTo(0, scrollPosition);
     } else {
+      menuButtonIconHam.setAttribute('hidden', '');
+      menuButtonIconClose.removeAttribute('hidden');
       menuButton.title = "Close Main Menu"
       // lock scroll position
       scrollPosition = window.pageYOffset;
@@ -36,9 +47,8 @@ const isCurrent = (slug) =>
       bodyElement.style.position = 'fixed';
       bodyElement.style.top = `-${scrollPosition}px`;
       bodyElement.style.width = '100%';
+      navHeader.setAttribute('mobile-menu-open', '');
     }
-    
-    navHeader.toggleAttribute('mobile-menu-open');
   }
 </script>  
 
@@ -202,7 +212,7 @@ const isCurrent = (slug) =>
     }
   }
 
-  @media(max-width: 600px) {
+  @media(max-width: 960px) {
     #menuButton {
       display: block;
       z-index: 100;
@@ -223,6 +233,16 @@ const isCurrent = (slug) =>
 
     header[mobile-menu-open] .header-nav__container {
       display: flex;
+    }
+
+    /* On a short screen the centred links reach up into the header row, so
+       only the menu button and the logo take taps there, not the row itself. */
+    header[mobile-menu-open] .header-logo-menu__container {
+      pointer-events: none;
+    }
+
+    header[mobile-menu-open] .header-logo-menu__container > * {
+      pointer-events: auto;
     }
 
     header[mobile-menu-open] nav ul {

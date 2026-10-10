@@ -1,0 +1,124 @@
+---
+import { Icon } from 'astro-icon/components';
+import {
+	Button,
+	ClipViewer,
+	ClipWall,
+	EnquiryBand,
+	StickyEnquireBar,
+} from '@components/odyssey-theme';
+import Layout from '../layouts/Page.astro';
+import { tiles, weddings } from '@data/clips';
+
+const seo = {
+	title: 'Wedding Reels | BTS By Steph',
+	description:
+		'Real wedding moments filmed on iPhone by BTS By Steph: details, reception, dance floor and after-dark clips from South Florida weddings.',
+};
+---
+
+<Layout {seo} enquireHref="#enquire">
+	<style>
+		.reels-head {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
+			padding: var(--space-6) var(--space-4) var(--space-3);
+		}
+
+		.reels-head h1 {
+			font-size: var(--font-size-xxl);
+			margin: 0.4rem 0 var(--space-2);
+		}
+
+		/* On its own line, so a late-loading script font cannot re-wrap the heading. */
+		.reels-head h1 em {
+			display: block;
+			font-family: var(--theme-font-script);
+			font-style: normal;
+			font-size: 1.25em;
+			line-height: 0.85;
+			color: var(--theme-accent-text);
+		}
+
+		.reels-head p {
+			font-family: var(--theme-font-family-serif);
+			font-size: var(--font-size-md);
+			font-style: italic;
+			line-height: 1.5;
+			opacity: 0.8;
+			max-width: 46ch;
+			margin: 0;
+		}
+
+		.reels-body {
+			max-width: var(--container-max-width);
+			margin: 0 auto;
+			padding: 0 var(--space-4) var(--space-8);
+		}
+
+		.reels-cta {
+			margin-top: var(--space-5);
+			padding: var(--space-4);
+			border-radius: var(--theme-radius-lg);
+			background: var(--theme-primary);
+			color: var(--theme-on-primary);
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--space-3);
+		}
+
+		.reels-cta p {
+			font-family: var(--theme-font-family-serif);
+			font-size: var(--font-size-md);
+			font-style: italic;
+			line-height: 1.4;
+			margin: 0;
+		}
+
+		@media (max-width: 860px) {
+			.reels-head {
+				padding: var(--space-5) var(--space-3) var(--space-2);
+			}
+
+			.reels-body {
+				padding: 0 var(--space-3) var(--space-6);
+			}
+
+			.reels-cta {
+				flex-direction: column;
+				align-items: flex-start;
+				padding: var(--space-3);
+			}
+		}
+	</style>
+
+	<section class="reels-head">
+		<span class="eyebrow">The Reel Library</span>
+		<h1>Every moment, <em>sorted.</em></h1>
+		<p>
+			Pick the part of the day you care about most and see how I film it. Tap
+			any moment to watch it full screen.
+		</p>
+	</section>
+
+	<section class="reels-body">
+		<ClipWall {tiles} variant="library" {weddings} />
+		<div class="reels-cta">
+			<p>
+				See your own day in here? Tell me the date and I'll tell you if I'm
+				free.
+			</p>
+			<Button href="#enquire" onPrimary customIcon
+				>Check my date <Fragment slot="icon">
+					<Icon name="ic:baseline-chevron-right" />
+				</Fragment></Button
+			>
+		</div>
+	</section>
+
+	<EnquiryBand />
+
+	<ClipViewer />
+	<StickyEnquireBar />
+</Layout>

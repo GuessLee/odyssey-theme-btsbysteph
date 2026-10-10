@@ -1,0 +1,202 @@
+---
+// A row of package cards. Data comes from src/data/packages.js.
+const { packages, ctaHref = '/company/contact' } = Astro.props;
+---
+
+<div class="package-cards">
+	{
+		packages.map(pkg => (
+			<div class={`package-card ${pkg.featured ? 'package-card--featured' : ''}`}>
+				{pkg.featured && <div class="package-card__badge">Most Popular</div>}
+				<div class="package-card__top">
+					<h3 class="package-card__name">{pkg.name}</h3>
+					<div class="package-card__price">{pkg.price}</div>
+					<span class="package-card__note">starting at</span>
+				</div>
+				<ul class="package-card__features">
+					{pkg.features.map(feature => (
+						<li>{feature}</li>
+					))}
+				</ul>
+				<a href={ctaHref} class="package-card__btn">
+					Check my date
+				</a>
+			</div>
+		))
+	}
+</div>
+
+<style>
+	.package-cards {
+		max-width: var(--container-max-width);
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-4);
+		align-items: start;
+	}
+
+	.package-card {
+		position: relative;
+		background: var(--theme-surface-1);
+		border: 1px solid rgba(196, 164, 132, 0.15);
+		border-radius: var(--theme-radius-lg);
+		padding: var(--space-5) var(--space-4);
+		text-align: center;
+		box-shadow: var(--theme-card-shadow);
+		transition:
+			transform var(--theme-transition),
+			box-shadow var(--theme-transition);
+	}
+
+	.package-card:hover {
+		transform: translateY(-10px);
+		box-shadow: 0 20px 44px -14px rgba(26, 26, 26, 0.3);
+	}
+
+	.package-card--featured {
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+		transform: scale(1.05);
+		box-shadow: 0 20px 44px -12px rgba(181, 119, 46, 0.35);
+		z-index: 1;
+	}
+
+	.package-card--featured:hover {
+		transform: scale(1.05) translateY(-10px);
+		box-shadow: 0 28px 56px -14px rgba(181, 119, 46, 0.45);
+	}
+
+	/* White on --theme-accent fails AA, so the badge is primary text on white. */
+	.package-card__badge {
+		position: absolute;
+		top: -14px;
+		left: 50%;
+		transform: translateX(-50%);
+		background: var(--theme-on-primary);
+		color: var(--theme-primary);
+		border: 1px solid var(--theme-accent);
+		font-family: var(--theme-font-family-sans);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		padding: 0.4rem 1.5rem;
+		border-radius: var(--theme-button-border-radius);
+	}
+
+	.package-card__top {
+		margin-bottom: var(--space-4);
+		padding-bottom: var(--space-3);
+		border-bottom: 1px solid rgba(196, 164, 132, 0.2);
+	}
+
+	.package-card--featured .package-card__top {
+		border-bottom-color: rgba(255, 255, 255, 0.15);
+	}
+
+	.package-card__name {
+		font-family: var(--theme-font-script);
+		font-size: 2.2rem;
+		font-weight: 400;
+		margin-bottom: 0.75rem;
+	}
+
+	.package-card__price {
+		font-family: var(--theme-font-family-display);
+		font-size: 3rem;
+		font-weight: 600;
+		line-height: 1;
+		margin-bottom: 0.25rem;
+	}
+
+	.package-card__note {
+		font-family: var(--theme-font-family-serif);
+		font-size: 0.95rem;
+		font-style: italic;
+	}
+
+	.package-card__features {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 var(--space-4) 0;
+		text-align: left;
+	}
+
+	.package-card__features li {
+		font-family: var(--theme-font-family-sans);
+		font-size: 0.95rem;
+		padding: 0.6rem 0;
+		border-bottom: 1px solid rgba(196, 164, 132, 0.1);
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.package-card--featured .package-card__features li {
+		border-bottom-color: rgba(255, 255, 255, 0.08);
+	}
+
+	.package-card__features li::before {
+		content: '✓';
+		font-weight: 700;
+		color: var(--theme-accent);
+		flex-shrink: 0;
+	}
+
+	.package-card__btn {
+		display: inline-block;
+		font-family: var(--theme-font-family-sans);
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		text-decoration: none;
+		padding: 0.9rem 2.5rem;
+		border: 2px solid var(--theme-accent);
+		border-radius: var(--theme-button-border-radius);
+		color: var(--theme-accent-text);
+		background: transparent;
+		transition: all var(--theme-transition);
+	}
+
+	.package-card__btn:hover {
+		background: var(--theme-primary);
+		border-color: var(--theme-primary);
+		color: var(--theme-on-primary);
+	}
+
+	.package-card--featured .package-card__btn {
+		background: var(--theme-on-primary);
+		border-color: var(--theme-on-primary);
+		color: var(--theme-primary);
+	}
+
+	.package-card--featured .package-card__btn:hover {
+		background: transparent;
+		color: var(--theme-on-primary);
+	}
+
+	@media (max-width: 1024px) {
+		.package-cards {
+			grid-template-columns: minmax(0, 1fr);
+			max-width: 420px;
+			gap: var(--space-5);
+		}
+
+		.package-card--featured {
+			transform: none;
+		}
+
+		.package-card--featured:hover {
+			transform: translateY(-10px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.package-card {
+			transition: none;
+		}
+	}
+</style>

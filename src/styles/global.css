@@ -1,6 +1,11 @@
-html,
-body {
+html {
 	height: 100%;
+}
+
+/* min-height, not height: a body pinned to one viewport is the sticky header's
+   containing block, so the header would scroll away after the first screen. */
+body {
+	min-height: 100%;
 }
 
 body {
@@ -45,11 +50,11 @@ a:hover {
 }
 
 pre {
-  padding: 1em;
-  border-radius: 0.5em;
-  overflow: auto;
+	padding: 1em;
+	border-radius: 0.5em;
+	overflow: auto;
 }
 
 pre .language-id {
-  display: none;
+	display: none;
 }
