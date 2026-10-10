@@ -69,6 +69,7 @@ const sizes = isLibrary
 
 <script>
 	document.querySelectorAll('[data-clip-wall]').forEach(wall => {
+		const tools = wall.querySelector('.clip-wall__tools');
 		const grid = wall.querySelector('[data-clip-group]');
 		const chips = [...wall.querySelectorAll('[data-clip-filter]')];
 		const select = wall.querySelector('[data-clip-wedding-select]');
@@ -87,6 +88,13 @@ const sizes = isLibrary
 			});
 			grid.classList.toggle('is-filtered', moment !== 'all' || wedding !== '');
 			empty.hidden = shown > 0;
+
+			// A shorter grid can end up behind the pinned filters, so bring its
+			// first row back to just below them.
+			const toolsBox = tools.getBoundingClientRect();
+			const gap = parseFloat(getComputedStyle(tools).marginBottom) || 0;
+			const overlap = toolsBox.bottom + gap - grid.getBoundingClientRect().top;
+			if (overlap > 1) window.scrollBy({ top: -overlap });
 		}
 
 		chips.forEach(chip =>
