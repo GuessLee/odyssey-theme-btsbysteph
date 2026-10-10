@@ -235,6 +235,16 @@ const isCurrent = (slug) =>
       display: flex;
     }
 
+    /* On a short screen the centred links reach up into the header row, so
+       only the menu button and the logo take taps there, not the row itself. */
+    header[mobile-menu-open] .header-logo-menu__container {
+      pointer-events: none;
+    }
+
+    header[mobile-menu-open] .header-logo-menu__container > * {
+      pointer-events: auto;
+    }
+
     header[mobile-menu-open] nav ul {
       align-items: center;
       flex-direction: column;
