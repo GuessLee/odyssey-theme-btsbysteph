@@ -28,7 +28,6 @@ export const moments = [
 // least two weddings are named.
 const clips = [
 	{
-		id: 'heart-shades',
 		file: 'C9nBkdVRoJ5.mp4',
 		wedding: null,
 		moments: [
@@ -47,7 +46,6 @@ const clips = [
 		],
 	},
 	{
-		id: 'day-vs-night',
 		file: 'DGyZELqRdgY_fixed.mp4',
 		wedding: null,
 		moments: [
@@ -84,7 +82,6 @@ const clips = [
 		],
 	},
 	{
-		id: 'welcome-to-first-dance',
 		file: 'DGs9WgIRL0P_fixed.mp4',
 		wedding: null,
 		moments: [
@@ -121,7 +118,6 @@ const clips = [
 		],
 	},
 	{
-		id: 'garden-venue',
 		file: 'C-IaHybR3N0_contact.mp4',
 		wedding: null,
 		moments: [
@@ -195,7 +191,6 @@ const heroCovers = [
 const allTiles = clips.flatMap(clip =>
 	clip.moments.map(moment => ({
 		...moment,
-		clipId: clip.id,
 		wedding: clip.wedding,
 		src: clipBaseUrl + clip.file,
 	}))

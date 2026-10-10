@@ -5,8 +5,6 @@
 // No video is requested until a tile is tapped.
 import { Icon } from 'astro-icon/components';
 import Button from '../buttons/Button.astro';
-
-const { enquireHref = '/company/contact' } = Astro.props;
 ---
 
 <dialog class="clip-viewer" data-clip-viewer aria-label="Clip viewer">
@@ -37,7 +35,7 @@ const { enquireHref = '/company/contact' } = Astro.props;
 			free.
 		</p>
 		<span data-clip-enquire>
-			<Button href={enquireHref} onPrimary>Check my date</Button>
+			<Button href="#enquire" onPrimary>Check my date</Button>
 		</span>
 		<div class="clip-viewer__nav">
 			<button
@@ -169,7 +167,7 @@ const { enquireHref = '/company/contact' } = Astro.props;
 		viewer
 			.querySelector('[data-clip-close]')
 			.addEventListener('click', () => viewer.close());
-		// The enquiry link may point at a section of this page, so get out of its way.
+		// The enquiry link points at a section of this page, so get out of its way.
 		viewer
 			.querySelector('[data-clip-enquire]')
 			.addEventListener('click', () => viewer.close());
